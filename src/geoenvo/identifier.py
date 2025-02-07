@@ -1,9 +1,9 @@
 """The identify module"""
 
 from typing import List
-from spinneret.resolver import Resolver
-from spinneret.geometry import Geometry
-from spinneret.utilities import compile_response, Data
+from geoenvo.resolver import Resolver
+from geoenvo.geometry import Geometry
+from geoenvo.utilities import compile_response, Data
 from tests.conftest import load_geometry
 
 
@@ -30,13 +30,13 @@ class Identifier:
 
 if __name__ == "__main__":
     import json
-    from spinneret.resolvers.world_terrestrial_ecosystems import (
+    from geoenvo.resolvers.world_terrestrial_ecosystems import (
         WorldTerrestrialEcosystems,
     )
-    from spinneret.resolvers.ecological_marine_units import EcologicalMarineUnits
-    from spinneret.resolvers.ecological_coastal_units import EcologicalCoastalUnits
-    from spinneret.identifier import Identifier
-    from spinneret.geometry import Geometry
+    from geoenvo.resolvers.ecological_marine_units import EcologicalMarineUnits
+    from geoenvo.resolvers.ecological_coastal_units import EcologicalCoastalUnits
+    from geoenvo.identifier import Identifier
+    from geoenvo.geometry import Geometry
 
     # Create a geometry in GeoJSON format
     # polygon_on_land_and_ocean = load_geometry(

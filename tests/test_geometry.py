@@ -8,7 +8,7 @@ import geopandas as gpd
 import pytest
 import shapely
 
-from spinneret.geometry import Geometry, grid_sample_polygon
+from geoenvo.geometry import Geometry, grid_sample_polygon
 from tests.conftest import load_geometry
 
 

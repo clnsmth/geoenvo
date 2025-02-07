@@ -1,7 +1,7 @@
 """Test the utilities module"""
 
-from spinneret.geometry import Geometry
-from spinneret.utilities import EnvironmentDataModel, get_attributes, compile_response
+from geoenvo.geometry import Geometry
+from geoenvo.utilities import EnvironmentDataModel, get_attributes, compile_response
 from tests.conftest import load_response
 
 

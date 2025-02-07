@@ -1,10 +1,10 @@
 """The main2 module"""
 
-from spinneret.identifier import Identifier
-from spinneret.resolvers.ecological_coastal_units import EcologicalCoastalUnits
-from spinneret.resolvers.ecological_marine_units import EcologicalMarineUnits
-from spinneret.resolvers.world_terrestrial_ecosystems import WorldTerrestrialEcosystems
-from spinneret.environment import Environment
+from geoenvo.identifier import Identifier
+from geoenvo.resolvers.ecological_coastal_units import EcologicalCoastalUnits
+from geoenvo.resolvers.ecological_marine_units import EcologicalMarineUnits
+from geoenvo.resolvers.world_terrestrial_ecosystems import WorldTerrestrialEcosystems
+from geoenvo.environment import Environment
 
 if __name__ == "__main__":
 

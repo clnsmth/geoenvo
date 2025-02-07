@@ -1,7 +1,7 @@
 """The resolvers module"""
 
 from abc import ABC, abstractmethod
-from spinneret.geometry import Geometry
+from geoenvo.geometry import Geometry
 
 
 class Resolver(ABC):

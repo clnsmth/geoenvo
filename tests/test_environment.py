@@ -1,6 +1,6 @@
 """Test the environment module."""
 
-from spinneret.environment import Environment
+from geoenvo.environment import Environment
 
 
 def test_environment_init():

@@ -3,11 +3,11 @@
 from datetime import datetime
 from json import dumps
 import requests
-from spinneret.resolver import Resolver
-from spinneret.geometry import Geometry
-from spinneret.environment import Environment
-from spinneret.utilities import user_agent
-from spinneret.utilities import EnvironmentDataModel, get_attributes
+from geoenvo.resolver import Resolver
+from geoenvo.geometry import Geometry
+from geoenvo.environment import Environment
+from geoenvo.utilities import user_agent
+from geoenvo.utilities import EnvironmentDataModel, get_attributes
 
 
 class EcologicalCoastalUnits(Resolver):

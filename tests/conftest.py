@@ -3,12 +3,11 @@
 import json
 import tempfile
 import pytest
-from lxml import etree
 from importlib.resources import files
-from spinneret.resolvers.ecological_coastal_units import EcologicalCoastalUnits
-from spinneret.resolvers.ecological_marine_units import EcologicalMarineUnits
-from spinneret.resolvers.world_terrestrial_ecosystems import WorldTerrestrialEcosystems
-from spinneret.utilities import Data
+from geoenvo.resolvers.ecological_coastal_units import EcologicalCoastalUnits
+from geoenvo.resolvers.ecological_marine_units import EcologicalMarineUnits
+from geoenvo.resolvers.world_terrestrial_ecosystems import WorldTerrestrialEcosystems
+from geoenvo.utilities import Data
 
 
 @pytest.fixture()

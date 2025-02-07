@@ -5,11 +5,11 @@ from pathlib import Path
 from importlib.resources import files
 from requests import get
 
-from spinneret.geometry import Geometry
-from spinneret.resolvers.world_terrestrial_ecosystems import WorldTerrestrialEcosystems
-from spinneret.resolvers.ecological_coastal_units import EcologicalCoastalUnits
-from spinneret.resolvers.ecological_marine_units import EcologicalMarineUnits
-from spinneret.utilities import user_agent
+from geoenvo.geometry import Geometry
+from geoenvo.resolvers.world_terrestrial_ecosystems import WorldTerrestrialEcosystems
+from geoenvo.resolvers.ecological_coastal_units import EcologicalCoastalUnits
+from geoenvo.resolvers.ecological_marine_units import EcologicalMarineUnits
+from geoenvo.utilities import user_agent
 from tests.conftest import load_geometry
 
 

@@ -1,7 +1,7 @@
 """Test the identifier module"""
 
-from spinneret.identifier import Identifier
-from spinneret.geometry import Geometry
+from geoenvo.identifier import Identifier
+from geoenvo.geometry import Geometry
 
 
 def test_identify(mocker, use_mock, scenarios, assert_identify):

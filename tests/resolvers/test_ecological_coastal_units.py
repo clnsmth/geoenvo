@@ -2,8 +2,8 @@
 
 import pytest
 
-from spinneret.geometry import Geometry
-from spinneret.resolvers.ecological_coastal_units import EcologicalCoastalUnits
+from geoenvo.geometry import Geometry
+from geoenvo.resolvers.ecological_coastal_units import EcologicalCoastalUnits
 from tests.conftest import load_geometry
 
 

@@ -3,9 +3,9 @@
 from json import loads
 
 import pytest
-from spinneret.geometry import Geometry
+from geoenvo.geometry import Geometry
 from tests.conftest import load_response, load_geometry
-from spinneret.resolvers.world_terrestrial_ecosystems import WorldTerrestrialEcosystems
+from geoenvo.resolvers.world_terrestrial_ecosystems import WorldTerrestrialEcosystems
 
 
 def test_init():

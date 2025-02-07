@@ -6,8 +6,8 @@ from yaml import safe_load
 from datetime import datetime
 from typing import List
 import pandas as pd
-from spinneret.environment import Environment
-from spinneret.geometry import Geometry
+from geoenvo.environment import Environment
+from geoenvo.geometry import Geometry
 
 
 def _json_extract(obj, key):
@@ -93,11 +93,11 @@ class Data:
 
             # Load SSSOM of environment for term mapping
             resolver = environment["dataSource"]["resolver"]
-            sssom_file = importlib.resources.files("spinneret.data.sssom").joinpath(
+            sssom_file = importlib.resources.files("geoenvo.data.sssom").joinpath(
                 f"{resolver}-envo.sssom.tsv"
             )
             sssom_meta_file = importlib.resources.files(
-                "spinneret.data.sssom"
+                "geoenvo.data.sssom"
             ).joinpath(f"{resolver}-envo.sssom.yml")
             with open(sssom_file, mode="r", encoding="utf-8") as f:
                 sssom = pd.read_csv(f, sep="\t")
@@ -177,7 +177,7 @@ def get_attributes(data, attributes):
 
 
 def user_agent():
-    """Define the spinneret user agent in HTTP requests
+    """Define the geoenvo user agent in HTTP requests
 
     For use with the `header` parameter of the requests library.
 
