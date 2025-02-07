@@ -1,0 +1,17 @@
+name: geoenvo
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.13
+  - pandas
+  - geopandas
+  - pytest
+  - pytest-cov
+  - black
+  - myst-parser
+  - pylint
+  - python-semantic-release
+  - sphinx
+  - sphinx-autoapi
+prefix: /opt/miniconda3/envs/geoenvo
