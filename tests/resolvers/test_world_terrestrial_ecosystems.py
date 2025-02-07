@@ -14,7 +14,7 @@ def test_init():
     assert resolver._grid_size is None
 
 
-def test_resolve_with_grid_size(use_mock, mocker):
+def test_resolve_with_grid_size(use_mock):
 
     if use_mock:
         pytest.skip("Skipping test when use_mock is False")

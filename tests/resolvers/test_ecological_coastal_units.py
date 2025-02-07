@@ -13,10 +13,10 @@ def test_init():
     assert resolver._buffer is None
 
 
-def test_resolve_with_buffer(use_mock, mocker):
+def test_resolve_with_buffer(use_mock):
 
-    # if use_mock:
-    #     pytest.skip("Skipping test when use_mock is False")
+    if use_mock:
+        pytest.skip("Skipping test when use_mock is False")
 
     resolver = EcologicalCoastalUnits()
     geometry = Geometry(load_geometry("point_on_land_expands_to_coast"))

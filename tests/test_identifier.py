@@ -4,7 +4,7 @@ from geoenvo.identifier import Identifier
 from geoenvo.geometry import Geometry
 
 
-def test_identify(mocker, use_mock, scenarios, assert_identify):
+def test_identify(use_mock, scenarios, assert_identify, mocker):
 
     for scenario in scenarios:
 
