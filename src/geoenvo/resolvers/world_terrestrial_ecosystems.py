@@ -1,4 +1,5 @@
 """The resolvers module"""
+
 import warnings
 from json import dumps, loads
 import requests
@@ -20,7 +21,7 @@ class WorldTerrestrialEcosystems(Resolver):
             "Raster.LC_ClassNa": None,
             "Raster.LF_ClassNa": None,
             "Raster.Temp_Moist": None,
-            "Raster.ClassName": None
+            "Raster.ClassName": None,
         }
         self._grid_size = None
 
@@ -50,9 +51,9 @@ class WorldTerrestrialEcosystems(Resolver):
     @staticmethod
     def _request(geometry: Geometry):
         base = (
-                "https://rmgsc.cr.usgs.gov/arcgis/rest/services/"
-                + "wte"
-                + "/MapServer/identify"
+            "https://rmgsc.cr.usgs.gov/arcgis/rest/services/"
+            + "wte"
+            + "/MapServer/identify"
         )
         payload = {
             "f": "json",
@@ -110,7 +111,7 @@ class WorldTerrestrialEcosystems(Resolver):
                 "landCover": descriptor["Raster.LC_ClassNa"],
                 "landForm": descriptor["Raster.LF_ClassNa"],
                 "climate": descriptor["Raster.Temp_Moist"],
-                "ecosystem": descriptor["Raster.ClassName"]
+                "ecosystem": descriptor["Raster.ClassName"],
             }
             new_descriptors.append(new_descriptor)
         return new_descriptors
@@ -123,7 +124,7 @@ class WorldTerrestrialEcosystems(Resolver):
         if data is None:
             data = self._data
         res = _json_extract(data, "UniqueValue.Pixel Value")
-        if (len(res) == 0):
+        if len(res) == 0:
             return False
         if len(res) > 0 and res[0] == "NoData":
             return False

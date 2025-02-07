@@ -17,7 +17,9 @@ class Identifier:
             for resolver in self._resolver:
                 environment = resolver.resolve(geometry)
                 results.extend(environment)
-            result = compile_response(geometry=geometry, environment=results, identifier=identifier)
+            result = compile_response(
+                geometry=geometry, environment=results, identifier=identifier
+            )
             result.set_envo_terms()
             return result
         except Exception as e:
@@ -28,12 +30,11 @@ class Identifier:
 
 if __name__ == "__main__":
     import json
-    from spinneret.resolvers.world_terrestrial_ecosystems import \
-        WorldTerrestrialEcosystems
-    from spinneret.resolvers.ecological_marine_units import \
-        EcologicalMarineUnits
-    from spinneret.resolvers.ecological_coastal_units import \
-        EcologicalCoastalUnits
+    from spinneret.resolvers.world_terrestrial_ecosystems import (
+        WorldTerrestrialEcosystems,
+    )
+    from spinneret.resolvers.ecological_marine_units import EcologicalMarineUnits
+    from spinneret.resolvers.ecological_coastal_units import EcologicalCoastalUnits
     from spinneret.identifier import Identifier
     from spinneret.geometry import Geometry
 
@@ -43,11 +44,13 @@ if __name__ == "__main__":
     polygon_on_land_and_ocean = {
         "type": "Polygon",
         "coordinates": [
-            [[-123.716239, 39.325978],
-             [-123.8222818, 39.3141049],
-             [-123.8166231, 39.2943269],
-             [-123.716239, 39.325978]]
-        ]
+            [
+                [-123.716239, 39.325978],
+                [-123.8222818, 39.3141049],
+                [-123.8166231, 39.2943269],
+                [-123.716239, 39.325978],
+            ]
+        ],
     }
     geometry = Geometry(polygon_on_land_and_ocean)
 
@@ -56,7 +59,7 @@ if __name__ == "__main__":
         resolver=[
             WorldTerrestrialEcosystems(),
             EcologicalMarineUnits(),
-            EcologicalCoastalUnits()
+            EcologicalCoastalUnits(),
         ]
     )
 
@@ -64,5 +67,3 @@ if __name__ == "__main__":
     result = identifier.identify(geometry)
 
     print(json.dumps(result._data, indent=2))
-
-

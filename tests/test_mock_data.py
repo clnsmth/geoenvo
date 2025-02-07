@@ -18,12 +18,14 @@ def test_mock_response_content(mocker, use_mock, tmp_path):
     # Iterate over files in the output directory
     for file in tmp_path.iterdir():
         # Open the file
-        with open(file, "r", encoding='utf-8') as f:
+        with open(file, "r", encoding="utf-8") as f:
             print(file.name)
             # Read the content
             content = f.read()
             # Read the corresponding mock file
-            with open(files("tests.data.response").joinpath(file.name), "r", encoding='utf-8') as mock:
+            with open(
+                files("tests.data.response").joinpath(file.name), "r", encoding="utf-8"
+            ) as mock:
                 # Read the mock content
                 mock_content = mock.read()
                 # Compare the content

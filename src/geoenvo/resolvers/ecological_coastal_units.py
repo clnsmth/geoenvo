@@ -26,7 +26,7 @@ class EcologicalCoastalUnits(Resolver):
             "Marine Physical Environment": None,
             "Turbidity": None,
             "Chlorophyll": None,
-            "CSU_Descriptor": None
+            "CSU_Descriptor": None,
         }
         self._buffer = None
 
@@ -44,11 +44,11 @@ class EcologicalCoastalUnits(Resolver):
     @staticmethod
     def _request(geometry: Geometry):
         base = (
-                "https://rmgsc.cr.usgs.gov/arcgis/rest/services/"
-                + "gceVector"
-                + "/MapServer/"
-                + "0"
-                + "/query"
+            "https://rmgsc.cr.usgs.gov/arcgis/rest/services/"
+            + "gceVector"
+            + "/MapServer/"
+            + "0"
+            + "/query"
         )
         payload = {
             "f": "geojson",
@@ -145,7 +145,9 @@ class EcologicalCoastalUnits(Resolver):
             "slope": env_attributes["Slope"],
             "sinuosity": env_attributes["Sinuosity"],
             "erodibility": env_attributes["Erodibility"],
-            "temperatureAndMoistureRegime": env_attributes["Temperature and Moisture Regime"],
+            "temperatureAndMoistureRegime": env_attributes[
+                "Temperature and Moisture Regime"
+            ],
             "riverDischarge": env_attributes["River Discharge"],
             "waveHeight": env_attributes["Wave Height"],
             "tidalRange": env_attributes["Tidal Range"],

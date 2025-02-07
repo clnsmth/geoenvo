@@ -1,8 +1,7 @@
 """Test the utilities module"""
 
 from spinneret.geometry import Geometry
-from spinneret.utilities import EnvironmentDataModel, get_attributes, \
-    compile_response
+from spinneret.utilities import EnvironmentDataModel, get_attributes, compile_response
 from tests.conftest import load_response
 
 
@@ -71,8 +70,7 @@ def test_get_attributes():
     # The get_attributes function should return a dictionary of attributes
     # from the response object. The dictionary should contain the requested
     # attributes.
-    attributes = ["Raster.LF_ClassNa", "Raster.LC_ClassNa",
-                  "Raster.Temp_Class"]
+    attributes = ["Raster.LF_ClassNa", "Raster.LC_ClassNa", "Raster.Temp_Class"]
     result = get_attributes(response.data, attributes)
     assert isinstance(result, dict)
     for a in attributes:

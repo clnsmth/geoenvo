@@ -1,4 +1,5 @@
 """The geometry module"""
+
 import json
 from io import StringIO, BytesIO
 from json import loads, dumps
@@ -14,39 +15,33 @@ class Geometry:
     def is_supported(self) -> bool:
         # If self._data is a GeoJSON object with the top level "type" property
         # set to "Point" or "Polygon", then it is valid.
-        if self._data.get('type') in ['Point', 'Polygon']:
+        if self._data.get("type") in ["Point", "Polygon"]:
             return True
         return False
 
     def to_esri(self) -> dict:
-        if self._data['type'] == 'Point':
-            x, y, *z = self._data['coordinates']
+        if self._data["type"] == "Point":
+            x, y, *z = self._data["coordinates"]
             geometry = {
-                'x': x,
-                'y': y,
-                'z': z[0] if z else None,
-                'spatialReference': {'wkid': 4326}
+                "x": x,
+                "y": y,
+                "z": z[0] if z else None,
+                "spatialReference": {"wkid": 4326},
             }
-            geometry_type = 'esriGeometryPoint'
-            return {
-                'geometry': geometry,
-                'geometryType': geometry_type
-            }
-        elif self._data['type'] == 'Polygon':
+            geometry_type = "esriGeometryPoint"
+            return {"geometry": geometry, "geometryType": geometry_type}
+        elif self._data["type"] == "Polygon":
             geometry = {
-                'rings': self._data['coordinates'],
-                'spatialReference': {'wkid': 4326}
+                "rings": self._data["coordinates"],
+                "spatialReference": {"wkid": 4326},
             }
-            geometry_type = 'esriGeometryPolygon'
-            return {
-                'geometry': geometry,
-                'geometryType': geometry_type
-            }
+            geometry_type = "esriGeometryPolygon"
+            return {"geometry": geometry, "geometryType": geometry_type}
         else:
-            raise ValueError('Invalid geometry type')
+            raise ValueError("Invalid geometry type")
 
     def geometry_type(self) -> str:  # TODO deprecate in favor of self._data.get('type')
-        return self._data.get('type')
+        return self._data.get("type")
 
     def data(self) -> dict:
         return self._data
@@ -58,10 +53,8 @@ class Geometry:
 
         point = gpd.GeoSeries.from_file(StringIO(dumps(self._data)))
         point = point.to_crs(32634)  # A CRS in units of meters
-        expanded_point = point.geometry.buffer(
-            buffer * 1000)  # buffer to meters
-        expanded_point = expanded_point.to_crs(
-            4326)  # Convert back to EPSG:4326
+        expanded_point = point.geometry.buffer(buffer * 1000)  # buffer to meters
+        expanded_point = expanded_point.to_crs(4326)  # Convert back to EPSG:4326
         bounds = expanded_point.bounds
         polygon = {
             "type": "Polygon",
@@ -78,13 +71,12 @@ class Geometry:
         return polygon
 
     def polygon_to_points(self, grid_size):
-        if self._data.get('type') != 'Polygon':
+        if self._data.get("type") != "Polygon":
             return self._data
 
         # Get points from within the polygon
         polygon = gpd.GeoSeries.from_file(StringIO(dumps(self._data)))
-        representative_points = polygon.apply(grid_sample_polygon,
-                                                 args=(grid_size,))
+        representative_points = polygon.apply(grid_sample_polygon, args=(grid_size,))
         points = []
         for item in representative_points.items():
             geojson = json.loads(gpd.GeoSeries(item[1]).to_json())
@@ -122,7 +114,14 @@ def grid_sample_polygon(polygon, grid_size):
     grid_cells = []
     for x in cols:
         for y in rows:
-            grid_cell = Polygon([(x, y), (x + grid_size, y), (x + grid_size, y + grid_size), (x, y + grid_size)])
+            grid_cell = Polygon(
+                [
+                    (x, y),
+                    (x + grid_size, y),
+                    (x + grid_size, y + grid_size),
+                    (x, y + grid_size),
+                ]
+            )
             grid_cells.append(grid_cell)
 
     grid_gdf = gpd.GeoDataFrame(geometry=grid_cells)

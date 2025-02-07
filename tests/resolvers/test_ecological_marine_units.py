@@ -1,4 +1,5 @@
 """Test the EcologicalMarineUnits resolver"""
+
 from json import loads
 
 from tests.conftest import load_response, load_geometry

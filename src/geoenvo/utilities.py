@@ -1,4 +1,5 @@
 """The utils module"""
+
 import importlib
 import json
 from yaml import safe_load
@@ -47,13 +48,10 @@ class EnvironmentDataModel:  # TODO: rename to EnvironmentDataModel
     def __init__(self):
         self.data = {
             "type": "Environment",
-            "dataSource": {
-                "identifier": None,
-                "resolver": None
-            },
+            "dataSource": {"identifier": None, "resolver": None},
             "dateCreated": None,
             "properties": {},
-            "envoTerms": []
+            "envoTerms": [],
         }
 
     def set_identifier(self, identifier):
@@ -99,9 +97,8 @@ class Data:
                 f"{resolver}-envo.sssom.tsv"
             )
             sssom_meta_file = importlib.resources.files(
-                "spinneret.data.sssom").joinpath(
-                f"{resolver}-envo.sssom.yml"
-            )
+                "spinneret.data.sssom"
+            ).joinpath(f"{resolver}-envo.sssom.yml")
             with open(sssom_file, mode="r", encoding="utf-8") as f:
                 sssom = pd.read_csv(f, sep="\t")
             with open(sssom_meta_file, mode="r", encoding="utf-8") as f:
@@ -111,8 +108,13 @@ class Data:
             envo_terms = []
             for key, value in environment["properties"].items():
                 try:
-                    label = sssom.loc[sssom["subject_label"].str.lower() == value.lower(), "object_label"].values[0]
-                    curie = sssom.loc[sssom["subject_label"].str.lower() == value.lower(), "object_id"].values[0]
+                    label = sssom.loc[
+                        sssom["subject_label"].str.lower() == value.lower(),
+                        "object_label",
+                    ].values[0]
+                    curie = sssom.loc[
+                        sssom["subject_label"].str.lower() == value.lower(), "object_id"
+                    ].values[0]
                     curie_prefix = curie.split(":")[0]
                     uri = sssom_meta["curie_map"][curie_prefix] + curie.split(":")[1]
                 except IndexError:
@@ -121,12 +123,7 @@ class Data:
 
                 # Don't add empty values. Empty implies no mapping was found
                 if pd.notna(label) and uri is not None:
-                    envo_terms.append(
-                        {
-                            "label": label,
-                            "uri": uri
-                        }
-                    )
+                    envo_terms.append({"label": label, "uri": uri})
 
             # Add list of ENVO terms back to the environment object
             environment["envoTerms"] = envo_terms
@@ -134,7 +131,9 @@ class Data:
         return self
 
 
-def compile_response(geometry: Geometry, environment: List[Environment], identifier: str = None) -> Data:
+def compile_response(
+    geometry: Geometry, environment: List[Environment], identifier: str = None
+) -> Data:
 
     # Move data from Environment objects and into a list  # TODO: clean up
     environments = []

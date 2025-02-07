@@ -1,4 +1,5 @@
 """Test the EcologicalCoastalUnits resolver"""
+
 import pytest
 
 from spinneret.geometry import Geometry

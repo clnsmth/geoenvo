@@ -1,4 +1,5 @@
 """Test the geometry module."""
+
 import json
 from io import StringIO
 
@@ -13,8 +14,7 @@ from tests.conftest import load_geometry
 
 def test_geometry_init():
     """Test Environment class initialization has the expected attributes."""
-    geometry = Geometry(
-        load_geometry("point_on_land"))  # any valid geometry
+    geometry = Geometry(load_geometry("point_on_land"))  # any valid geometry
     assert isinstance(geometry.data(), dict)
 
 
@@ -68,8 +68,7 @@ def test_point_to_polygon():
     assert result == geometry._data
 
     # Non-point geometry inputs are unchanged
-    json = load_geometry(
-        "polygon_with_exclusion_ring_on_land_and_ocean")
+    json = load_geometry("polygon_with_exclusion_ring_on_land_and_ocean")
     geometry = Geometry(json)
     result = geometry.point_to_polygon()
     assert result["type"] == "Polygon"
@@ -82,16 +81,15 @@ def test_point_to_polygon():
     assert geometry._data != result
 
 
-
 def test_to_esri():
     # GeoJSON point to ESRI point
     point = Geometry(load_geometry("point_on_land"))
     result = point.to_esri()
     assert result["geometry"] == {
-        'x': -72.22,
-        'y': 42.48,
-        'z': None,
-        'spatialReference': {'wkid': 4326}
+        "x": -72.22,
+        "y": 42.48,
+        "z": None,
+        "spatialReference": {"wkid": 4326},
     }
     assert result["geometryType"] == "esriGeometryPoint"
 
@@ -99,21 +97,25 @@ def test_to_esri():
     point = Geometry(load_geometry("point_on_ocean"))
     result = point.to_esri()
     assert result["geometry"] == {
-        'x': -122.76,
-        'y': 37.774,
-        'z': -100.0,
-        'spatialReference': {'wkid': 4326}
+        "x": -122.76,
+        "y": 37.774,
+        "z": -100.0,
+        "spatialReference": {"wkid": 4326},
     }
 
     # GeoJSON polygon (triangle) to ESRI polygon
     polygon = Geometry(load_geometry("polygon_on_land_and_ocean"))
     result = polygon.to_esri()
     assert result["geometry"] == {
-        'rings': [[[-123.8, 39.312],
-                   [-123.8222818, 39.3141049],
-                   [-123.8166231, 39.2943269],
-                   [-123.8, 39.312]]],
-        'spatialReference': {'wkid': 4326}
+        "rings": [
+            [
+                [-123.8, 39.312],
+                [-123.8222818, 39.3141049],
+                [-123.8166231, 39.2943269],
+                [-123.8, 39.312],
+            ]
+        ],
+        "spatialReference": {"wkid": 4326},
     }
     assert result["geometryType"] == "esriGeometryPolygon"
 
@@ -122,13 +124,15 @@ def test_to_esri():
     result = polygon.to_esri()
     assert result["geometry"] == {
         "rings": [
-            [[-123.552, 39.804],
-             [-120.83, 39.804],
-             [-120.83, 40.441],
-             [-123.552, 40.441],
-             [-123.552, 39.804]]
+            [
+                [-123.552, 39.804],
+                [-120.83, 39.804],
+                [-120.83, 40.441],
+                [-123.552, 40.441],
+                [-123.552, 39.804],
+            ]
         ],
-        "spatialReference": {"wkid": 4326}
+        "spatialReference": {"wkid": 4326},
     }
     assert result["geometryType"] == "esriGeometryPolygon"
 
@@ -142,20 +146,13 @@ def test_grid_sample_polygon():
     # A simple polygon
     polygon = {
         "type": "Polygon",
-        "coordinates": [
-            [[0, 0],
-             [1, 0],
-             [1, 1],
-             [0, 1],
-             [0, 0]]
-        ]
+        "coordinates": [[[0, 0], [1, 0], [1, 1], [0, 1], [0, 0]]],
     }
     geo_series = gpd.GeoSeries.from_file(StringIO(json.dumps(polygon)))
 
     # Sample the polygon
     grid_size = 0.5
-    representative_points = geo_series.apply(grid_sample_polygon,
-                                             args=(grid_size,))
+    representative_points = geo_series.apply(grid_sample_polygon, args=(grid_size,))
 
     # Representative points are midpoints of each grid cell
     assert isinstance(representative_points, pd.DataFrame)
@@ -163,22 +160,18 @@ def test_grid_sample_polygon():
     for item in representative_points.items():
         point = item[1][0]
         assert isinstance(point, shapely.Point)
-        assert point in [shapely.Point(0.25, 0.25),
-                         shapely.Point(0.25, 0.75),
-                         shapely.Point(0.75, 0.25),
-                         shapely.Point(0.75, 0.75)]
+        assert point in [
+            shapely.Point(0.25, 0.25),
+            shapely.Point(0.25, 0.75),
+            shapely.Point(0.75, 0.25),
+            shapely.Point(0.75, 0.75),
+        ]
 
 
 def test_polygon_to_points():
     polygon = {
         "type": "Polygon",
-        "coordinates": [
-            [[0, 0],
-             [1, 0],
-             [1, 1],
-             [0, 1],
-             [0, 0]]
-        ]
+        "coordinates": [[[0, 0], [1, 0], [1, 1], [0, 1], [0, 0]]],
     }
     geometry = Geometry(polygon)
     points = geometry.polygon_to_points(grid_size=0.5)

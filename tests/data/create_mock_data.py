@@ -6,12 +6,9 @@ from importlib.resources import files
 from requests import get
 
 from spinneret.geometry import Geometry
-from spinneret.resolvers.world_terrestrial_ecosystems import \
-    WorldTerrestrialEcosystems
-from spinneret.resolvers.ecological_coastal_units import \
-    EcologicalCoastalUnits
-from spinneret.resolvers.ecological_marine_units import \
-    EcologicalMarineUnits
+from spinneret.resolvers.world_terrestrial_ecosystems import WorldTerrestrialEcosystems
+from spinneret.resolvers.ecological_coastal_units import EcologicalCoastalUnits
+from spinneret.resolvers.ecological_marine_units import EcologicalMarineUnits
 from spinneret.utilities import user_agent
 from tests.conftest import load_geometry
 
@@ -78,7 +75,9 @@ def create_mock_response_content(
     resolver = EcologicalMarineUnits()
     response = resolver._request(geometry)
     json = dumps(response, indent=4)
-    with open(output_directory.joinpath("emu_success_point_on_ocean_with_depth.json"), "w") as f:
+    with open(
+        output_directory.joinpath("emu_success_point_on_ocean_with_depth.json"), "w"
+    ) as f:
         f.write(json)
 
 

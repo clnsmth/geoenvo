@@ -28,12 +28,12 @@ def resolvers():
 
 @pytest.fixture
 def scenarios(
-        raw_attributes_of_ecological_coastal_units,
-        raw_attributes_of_ecological_marine_units,
-        raw_attributes_of_world_terrestrial_ecosystems,
-        attributes_of_ecological_coastal_units,
-        attributes_of_ecological_marine_units,
-        attributes_of_world_terrestrial_ecosystems,
+    raw_attributes_of_ecological_coastal_units,
+    raw_attributes_of_ecological_marine_units,
+    raw_attributes_of_world_terrestrial_ecosystems,
+    attributes_of_ecological_coastal_units,
+    attributes_of_ecological_marine_units,
+    attributes_of_world_terrestrial_ecosystems,
 ):
     scenarios = [
         {  # WTE Success (Envelop on land)
@@ -44,7 +44,7 @@ def scenarios(
             "has_ecosystem": True,
             "raw_attributes": raw_attributes_of_world_terrestrial_ecosystems,
             "attributes": attributes_of_world_terrestrial_ecosystems,
-            "identifier": "https://doi.org/10.5066/P9DO61LP"
+            "identifier": "https://doi.org/10.5066/P9DO61LP",
         },
         {  # WTE Fail (A point over the ocean)
             "resolvers": WorldTerrestrialEcosystems(),
@@ -54,7 +54,7 @@ def scenarios(
             "has_ecosystem": False,
             "raw_attributes": raw_attributes_of_world_terrestrial_ecosystems,
             "attributes": attributes_of_world_terrestrial_ecosystems,
-            "identifier": "https://doi.org/10.5066/P9DO61LP"
+            "identifier": "https://doi.org/10.5066/P9DO61LP",
         },
         {  # ECU Success (Envelop spanning coastal area)
             "resolvers": EcologicalCoastalUnits(),
@@ -64,7 +64,7 @@ def scenarios(
             "has_ecosystem": True,
             "raw_attributes": raw_attributes_of_ecological_coastal_units,
             "attributes": attributes_of_ecological_coastal_units,
-            "identifier": "https://doi.org/10.5066/P9HWHSPU"
+            "identifier": "https://doi.org/10.5066/P9HWHSPU",
         },
         {  # ECU Fail (Envelope on land)
             "resolvers": EcologicalCoastalUnits(),
@@ -74,7 +74,7 @@ def scenarios(
             "has_ecosystem": False,
             "raw_attributes": raw_attributes_of_ecological_coastal_units,
             "attributes": attributes_of_ecological_coastal_units,
-            "identifier": "https://doi.org/10.5066/P9HWHSPU"
+            "identifier": "https://doi.org/10.5066/P9HWHSPU",
         },
         {  # EMU Success (Envelope over ocean)
             "resolvers": EcologicalMarineUnits(),
@@ -84,7 +84,7 @@ def scenarios(
             "has_ecosystem": True,
             "raw_attributes": raw_attributes_of_ecological_marine_units,
             "attributes": attributes_of_ecological_marine_units,
-            "identifier": "https://doi.org/10.5066/P9Q6ZSGN"
+            "identifier": "https://doi.org/10.5066/P9Q6ZSGN",
         },
         {  # EMU Fail (Envelope on land)
             "resolvers": EcologicalMarineUnits(),
@@ -94,7 +94,7 @@ def scenarios(
             "has_ecosystem": False,
             "raw_attributes": raw_attributes_of_ecological_marine_units,
             "attributes": attributes_of_ecological_marine_units,
-            "identifier": "https://doi.org/10.5066/P9Q6ZSGN"
+            "identifier": "https://doi.org/10.5066/P9Q6ZSGN",
         },
     ]
     return scenarios
@@ -178,27 +178,17 @@ def raw_attributes_of_world_terrestrial_ecosystems():
 
 @pytest.fixture
 def attributes_of_world_terrestrial_ecosystems():
-    return {
-        "temperature",
-        "moisture",
-        "landCover",
-        "landForm",
-        "climate",
-        "ecosystem"
-    }
+    return {"temperature", "moisture", "landCover", "landForm", "climate", "ecosystem"}
 
 
 @pytest.fixture
 def empty_environment_data_model():
     return {
         "type": "Environment",
-        "dataSource": {
-            "identifier": None,
-            "resolver": None
-        },
+        "dataSource": {"identifier": None, "resolver": None},
         "dateCreated": None,
         "properties": {},
-        "envoTerms": []
+        "envoTerms": [],
     }
 
 
@@ -263,7 +253,6 @@ def assert_identify():  # FIXME: success/fail is not the best description
                 assert value is not None
                 if key == "uri":
                     assert value.startswith("http")
-
 
         # Write to file
         with tempfile.TemporaryDirectory() as tmpdirname:

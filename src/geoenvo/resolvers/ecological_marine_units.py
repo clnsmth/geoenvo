@@ -1,4 +1,5 @@
 """The resolvers module"""
+
 from datetime import datetime
 from json import dumps, loads
 import pandas as pd
@@ -32,15 +33,14 @@ class EcologicalMarineUnits(Resolver):
         self._data = self._request(geometry)
         return self.convert_data()
 
-
     @staticmethod
     def _request(geometry: Geometry):
         base = (
-                "https://services.arcgis.com/P3ePLMYs2RVChkJx/ArcGIS/rest/services/"
-                + "EMU_2018"
-                + "/FeatureServer/"
-                + "0"
-                + "/query"
+            "https://services.arcgis.com/P3ePLMYs2RVChkJx/ArcGIS/rest/services/"
+            + "EMU_2018"
+            + "/FeatureServer/"
+            + "0"
+            + "/query"
         )
         payload = {
             "f": "json",  # GEOJSON doesn't return OceanName and Name_2018
@@ -237,9 +237,7 @@ class EcologicalMarineUnits(Resolver):
             data.get("features")[i]["attributes"]["Name_2018"] = value
         return data  # TODO: why not set to self._data?
 
-    def get_ecosystems_for_geometry_z_values(
-        self, data
-    ):
+    def get_ecosystems_for_geometry_z_values(self, data):
         # - Get the z values from the geometry attribute of the response
         # object
         geometry = self._geometry

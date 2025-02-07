@@ -1,4 +1,5 @@
 """Test the WorldTerrestrialEcosystems resolver"""
+
 from json import loads
 
 import pytest
@@ -32,4 +33,3 @@ def test_resolve_with_grid_size(use_mock, mocker):
     resolver._grid_size = 0.5
     result = resolver.resolve(geometry)
     assert len(result) == 1
-
