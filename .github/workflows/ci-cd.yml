@@ -35,7 +35,7 @@ jobs:
     - uses: psf/black@stable
       with:
         jupyter: true
-        src: ./testss
+        src: ./tests
 
       # Analyze code but don't error on issues. This check encourages best
       # practices and offers flexibility in adoption.
