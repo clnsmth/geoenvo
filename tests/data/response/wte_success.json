@@ -1,0 +1,34 @@
+{
+    "results": [
+        {
+            "layerId": 0,
+            "layerName": "World Terrestrial Ecosystems",
+            "displayFieldName": "",
+            "attributes": {
+                "UniqueValue.Pixel Value": "189",
+                "Raster.OID": "188",
+                "Raster.Count": "5831214",
+                "Raster.World_Lan1": "4",
+                "Raster.World_Mois": "2",
+                "Raster.World_Temp": "3",
+                "Raster.World_Lan2": "4",
+                "Raster.LF_ClassNa": "Plains",
+                "Raster.LC_ClassNa": "Grassland",
+                "Raster.Temp_Class": "Warm Temperate",
+                "Raster.Moisture_C": "Dry",
+                "Raster.Temp_Moist": "Warm Temperate Dry",
+                "Raster.W_Ecosystm": "Warm Temperate Dry Grassland on Plains",
+                "Raster.ClassName": "Warm Temperate Dry Grassland on Plains"
+            },
+            "geometryType": "esriGeometryPoint",
+            "geometry": {
+                "x": -122.191,
+                "y": 40.1225,
+                "spatialReference": {
+                    "wkid": 4326,
+                    "latestWkid": 4326
+                }
+            }
+        }
+    ]
+}
