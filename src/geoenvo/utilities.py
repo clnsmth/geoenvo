@@ -96,9 +96,9 @@ class Data:
             sssom_file = importlib.resources.files("geoenvo.data.sssom").joinpath(
                 f"{resolver}-envo.sssom.tsv"
             )
-            sssom_meta_file = importlib.resources.files(
-                "geoenvo.data.sssom"
-            ).joinpath(f"{resolver}-envo.sssom.yml")
+            sssom_meta_file = importlib.resources.files("geoenvo.data.sssom").joinpath(
+                f"{resolver}-envo.sssom.yml"
+            )
             with open(sssom_file, mode="r", encoding="utf-8") as f:
                 sssom = pd.read_csv(f, sep="\t")
             with open(sssom_meta_file, mode="r", encoding="utf-8") as f:
