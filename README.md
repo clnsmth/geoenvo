@@ -20,14 +20,14 @@ pip install git+https://github.com/clnsmth/geoenvo.git@main
 
 ```python
 from json import dumps
-from spinneret.resolvers.world_terrestrial_ecosystems import \
+from geoenvo.resolvers.world_terrestrial_ecosystems import \
     WorldTerrestrialEcosystems
-from spinneret.resolvers.ecological_marine_units import \
+from geoenvo.resolvers.ecological_marine_units import \
     EcologicalMarineUnits
-from spinneret.resolvers.ecological_coastal_units import \
+from geoenvo.resolvers.ecological_coastal_units import \
     EcologicalCoastalUnits
-from spinneret.identifier import Identifier
-from spinneret.geometry import Geometry
+from geoenvo.identifier import Identifier
+from geoenvo.geometry import Geometry
 
 # Create a geometry in GeoJSON format
 # polygon_on_land_and_ocean = load_geometry(
