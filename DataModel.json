@@ -1,0 +1,69 @@
+{
+    "type": "Feature",
+    "identifier": "512e15db8cbd8b10aa9fc4ae024387b96bd51f81",
+    "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+            [
+                [
+                    -123.552,
+                    39.804
+                ],
+                [
+                    -120.83,
+                    39.804
+                ],
+                [
+                    -120.83,
+                    40.441
+                ],
+                [
+                    -123.552,
+                    40.441
+                ],
+                [
+                    -123.552,
+                    39.804
+                ]
+            ]
+        ]
+    },
+    "properties": {
+        "environment": [
+            {
+                "type": "Environment",
+                "dataSource": {
+                    "identifier": "https://doi.org/10.5066/P9DO61LP",
+                    "resolver": "WorldTerrestrialEcosystems"
+                },
+                "dateCreated": "2025-01-24 13:15:00",
+                "properties": {
+                    "landForm": "Plains",
+                    "landCover": "Grassland",
+                    "temperature": "Warm Temperate",
+                    "moisture": "Dry",
+                    "climate": "Warm Temperate Dry",
+                    "ecosystem": "Warm Temperate Dry Grassland on Plains"
+                },
+                "envoTerms": [
+                    {
+                        "label": "plain",
+                        "uri": "http://purl.obolibrary.org/obo/ENVO_00000086"
+                    },
+                    {
+                        "label": "grassland area",
+                        "uri": "http://purl.obolibrary.org/obo/ENVO_00000106"
+                    },
+                    {
+                        "label": "oceanic temperate",
+                        "uri": "http://purl.obolibrary.org/obo/ENVO_01000380"
+                    },
+                    {
+                        "label": "dry",
+                        "uri": "http://purl.obolibrary.org/obo/PATO_0001824"
+                    }
+                ]
+            }
+        ]
+    }
+}

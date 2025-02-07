@@ -1,0 +1,64 @@
+@startuml
+package "geoenvo" {
+
+    class Identifier {
+        # resolver : Resolver[*]
+        + Identifier(resolver : Resolver[*])
+        + identify(geometry : Geometry) : Data
+    }
+
+    interface Resolver {
+        # geometry : dictionary
+        # data : dictionary
+        # env_attributes : dictionary
+        + Resolver()
+        + resolve(geometry : Geometry) : Environment[0..*]
+        - convert_data() : dictionary
+        - unique_environment() : dictionary[*]
+        - has_ecosystem() : bool
+        - set_attributes() : Resolver
+        - set_envo_terms() : string
+    }
+
+    class WorldTerrestrialEcosystems implements Resolver {
+    }
+
+    class EcologicalCoastalUnits implements Resolver {
+    }
+
+    class EcologicalMarineUnits implements Resolver {
+    }
+
+    class Geometry {
+        # data : dictionary
+        + Geometry(geometry : dictionary)
+        + is_valid() : bool
+        + to_esri_point() : dictionary
+        + to_esri_envelope() : dictionary
+        + to_esri_polygon() : dictionary
+        + geometry_type() : string
+    }
+
+    class Environment {
+        # data : dictionary
+        + Environment()
+        + has_environment() : bool
+        + data() : dictionary
+    }
+
+    class Data {
+        # data : dictionary
+        + Data(geometry : Geometry, environment : Environment)
+        + set_envo_terms(vocabulary : string) : Environment
+        + write(file_path : string)
+        + read(file_path : string) : Environment
+        + to_schema_org() : dictionary
+    }
+
+    Identifier "1" -- "1..*" Resolver
+    Identifier "1" -- "1" Data
+    Identifier "1" -- "1" Geometry
+    Resolver "1" -- "0..*" Environment
+    Resolver "1" -- "1" Geometry
+}
+@enduml

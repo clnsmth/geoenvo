@@ -1,0 +1,21 @@
+{
+    "results": [
+        {
+            "layerId": 0,
+            "layerName": "World Terrestrial Ecosystems",
+            "displayFieldName": "",
+            "attributes": {
+                "UniqueValue.Pixel Value": "NoData"
+            },
+            "geometryType": "esriGeometryPoint",
+            "geometry": {
+                "x": -122.76,
+                "y": 37.774,
+                "spatialReference": {
+                    "wkid": 4326,
+                    "latestWkid": 4326
+                }
+            }
+        }
+    ]
+}
