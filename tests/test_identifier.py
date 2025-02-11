@@ -36,5 +36,3 @@ def test_resolver():
     assert identifier.resolver is not None
     assert isinstance(identifier.resolver, list)
     assert isinstance(identifier.resolver[0], EcologicalMarineUnits)
-
-

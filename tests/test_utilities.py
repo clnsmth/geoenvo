@@ -1,8 +1,12 @@
 """Test the utilities module"""
 
 from geoenvo.geometry import Geometry
-from geoenvo.utilities import EnvironmentDataModel, get_attributes, \
-    compile_response, Data
+from geoenvo.utilities import (
+    EnvironmentDataModel,
+    get_attributes,
+    compile_response,
+    Data,
+)
 from tests.conftest import load_response
 
 
@@ -71,8 +75,7 @@ def test_get_attributes():
     # The get_attributes function should return a dictionary of attributes
     # from the response object. The dictionary should contain the requested
     # attributes.
-    attributes = ["Raster.LF_ClassNa", "Raster.LC_ClassNa",
-                  "Raster.Temp_Class"]
+    attributes = ["Raster.LF_ClassNa", "Raster.LC_ClassNa", "Raster.Temp_Class"]
     result = get_attributes(response.data, attributes)
     assert isinstance(result, dict)
     for a in attributes:
@@ -170,4 +173,3 @@ def test_data_methods_of_environment_data_model_class():
     assert environment.data != value
     environment.data = value
     assert environment.data == value
-

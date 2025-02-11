@@ -118,4 +118,3 @@ def test_env_attributes(scenarios):
         default_value = resolver.env_attributes
         resolver.env_attributes = {"test": "test"}
         assert resolver.env_attributes != default_value
-

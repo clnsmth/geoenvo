@@ -34,6 +34,7 @@ def test_resolve_with_grid_size(use_mock):
     result = resolver.resolve(geometry)
     assert len(result) == 1
 
+
 def test_grid_size(scenarios):
     for scenario in scenarios:
         if scenario.get("resolvers") == WorldTerrestrialEcosystems():
@@ -44,4 +45,3 @@ def test_grid_size(scenarios):
             grid_size = 0.5
             resolver.grid_size = grid_size
             assert resolver.grid_size == grid_size
-

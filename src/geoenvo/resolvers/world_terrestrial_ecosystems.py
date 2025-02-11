@@ -57,7 +57,6 @@ class WorldTerrestrialEcosystems(Resolver):
     def grid_size(self, grid_size: float):
         self._grid_size = grid_size
 
-
     def resolve(self, geometry: Geometry):
 
         # Enable the grid size sampling option for polygons, which the data
