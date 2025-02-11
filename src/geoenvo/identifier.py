@@ -11,10 +11,18 @@ class Identifier:
     def __init__(self, resolver: List[Resolver]):
         self._resolver = resolver
 
+    @property
+    def resolver(self):
+        return self._resolver
+
+    @resolver.setter
+    def resolver(self, resolver: List[Resolver]):
+        self._resolver = resolver
+
     def identify(self, geometry: Geometry, identifier: str = None) -> Data:
         try:
             results = []
-            for resolver in self._resolver:
+            for resolver in self.resolver:
                 environment = resolver.resolve(geometry)
                 results.extend(environment)
             result = compile_response(
@@ -66,4 +74,4 @@ if __name__ == "__main__":
     # Identify the environment for the geometry
     result = identifier.identify(geometry)
 
-    print(json.dumps(result._data, indent=2))
+    print(json.dumps(result.data, indent=2))

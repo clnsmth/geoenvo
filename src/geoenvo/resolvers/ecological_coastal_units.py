@@ -30,6 +30,38 @@ class EcologicalCoastalUnits(Resolver):
         }
         self._buffer = None
 
+    @property
+    def geometry(self):
+        return self._geometry
+
+    @geometry.setter
+    def geometry(self, geometry: dict):
+        self._geometry = geometry
+
+    @property
+    def data(self):
+        return self._data
+
+    @data.setter
+    def data(self, data: dict):
+        self._data = data
+
+    @property
+    def env_attributes(self):
+        return self._env_attributes
+
+    @env_attributes.setter
+    def env_attributes(self, env_attributes: dict):
+        self._env_attributes = env_attributes
+
+    @property
+    def buffer(self, buffer: float):
+        return self._buffer
+
+    @buffer.setter
+    def buffer(self, buffer: float):
+        self._buffer = buffer
+
     def resolve(self, geometry: Geometry):
 
         # Enable the buffer size sampling option for points, which the data

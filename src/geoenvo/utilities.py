@@ -46,13 +46,21 @@ def _json_extract(obj, key):
 
 class EnvironmentDataModel:  # TODO: rename to EnvironmentDataModel
     def __init__(self):
-        self.data = {
+        self._data = {
             "type": "Environment",
             "dataSource": {"identifier": None, "resolver": None},
             "dateCreated": None,
             "properties": {},
             "envoTerms": [],
         }
+
+    @property
+    def data(self):
+        return self._data
+
+    @data.setter
+    def data(self, data: dict):
+        self._data = data
 
     def set_identifier(self, identifier):
         self.data["dataSource"]["identifier"] = identifier
@@ -71,25 +79,41 @@ class EnvironmentDataModel:  # TODO: rename to EnvironmentDataModel
 class Data:
     def __init__(self, data: dict = dict()):
         self._data = data
-        self.attributes = {
+        self._attributes = {
             "type": "Feature",
             "identifier": None,
             "geometry": None,
             "properties": {"environment": []},
         }
 
+    @property
+    def data(self):
+        return self._data
+
+    @data.setter
+    def data(self, data: dict):
+        self._data = data
+
+    @property
+    def attributes(self):
+        return self._attributes
+
+    @attributes.setter
+    def attributes(self, attributes: dict):
+        self._attributes = attributes
+
     def write(self, file_path: str) -> None:
         with open(file_path, "w") as file:
-            file.write(json.dumps(self._data))
+            file.write(json.dumps(self.data))
 
     def read(self, file_path: str):
         with open(file_path, "r") as file:
-            self._data = json.loads(file.read())
+            self.data = json.loads(file.read())
         return self
 
     def set_envo_terms(self):
         # Iterate over list of environments in data
-        for environment in self._data["properties"]["environment"]:
+        for environment in self.data["properties"]["environment"]:
 
             # Load SSSOM of environment for term mapping
             resolver = environment["dataSource"]["resolver"]
@@ -138,12 +162,12 @@ def compile_response(
     # Move data from Environment objects and into a list  # TODO: clean up
     environments = []
     for env in environment:
-        environments.append(env._data)
+        environments.append(env.data)
 
     result = {  # FIXME: just a rudimentary implementation
         "type": "Feature",
         "identifier": identifier,
-        "geometry": geometry._data,
+        "geometry": geometry.data,
         "properties": {"environment": environments},
     }
     return Data(result)

@@ -12,16 +12,24 @@ class Geometry:
     def __init__(self, geometry: dict):
         self._data = geometry
 
+    @property
+    def data(self):
+        return self._data
+
+    @data.setter
+    def data(self, geometry: dict):
+        self._data = geometry
+
     def is_supported(self) -> bool:
-        # If self._data is a GeoJSON object with the top level "type" property
+        # If self.data is a GeoJSON object with the top level "type" property
         # set to "Point" or "Polygon", then it is valid.
-        if self._data.get("type") in ["Point", "Polygon"]:
+        if self.data.get("type") in ["Point", "Polygon"]:
             return True
         return False
 
     def to_esri(self) -> dict:
-        if self._data["type"] == "Point":
-            x, y, *z = self._data["coordinates"]
+        if self.data["type"] == "Point":
+            x, y, *z = self.data["coordinates"]
             geometry = {
                 "x": x,
                 "y": y,
@@ -30,9 +38,9 @@ class Geometry:
             }
             geometry_type = "esriGeometryPoint"
             return {"geometry": geometry, "geometryType": geometry_type}
-        elif self._data["type"] == "Polygon":
+        elif self.data["type"] == "Polygon":
             geometry = {
-                "rings": self._data["coordinates"],
+                "rings": self.data["coordinates"],
                 "spatialReference": {"wkid": 4326},
             }
             geometry_type = "esriGeometryPolygon"
@@ -40,18 +48,15 @@ class Geometry:
         else:
             raise ValueError("Invalid geometry type")
 
-    def geometry_type(self) -> str:  # TODO deprecate in favor of self._data.get('type')
-        return self._data.get("type")
-
-    def data(self) -> dict:
-        return self._data
+    def geometry_type(self) -> str:  # TODO deprecate in favor of self.data.get('type')
+        return self.data.get("type")
 
     def point_to_polygon(self, buffer=None):
 
         if self.geometry_type() != "Point" or buffer is None:
-            return self._data
+            return self.data
 
-        point = gpd.GeoSeries.from_file(StringIO(dumps(self._data)))
+        point = gpd.GeoSeries.from_file(StringIO(dumps(self.data)))
         point = point.to_crs(32634)  # A CRS in units of meters
         expanded_point = point.geometry.buffer(buffer * 1000)  # buffer to meters
         expanded_point = expanded_point.to_crs(4326)  # Convert back to EPSG:4326
@@ -71,11 +76,11 @@ class Geometry:
         return polygon
 
     def polygon_to_points(self, grid_size):
-        if self._data.get("type") != "Polygon":
-            return self._data
+        if self.data.get("type") != "Polygon":
+            return self.data
 
         # Get points from within the polygon
-        polygon = gpd.GeoSeries.from_file(StringIO(dumps(self._data)))
+        polygon = gpd.GeoSeries.from_file(StringIO(dumps(self.data)))
         representative_points = polygon.apply(grid_sample_polygon, args=(grid_size,))
         points = []
         for item in representative_points.items():

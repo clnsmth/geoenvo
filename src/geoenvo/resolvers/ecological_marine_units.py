@@ -28,9 +28,33 @@ class EcologicalMarineUnits(Resolver):
             "EMU_Descriptor": None,
         }
 
+    @property
+    def geometry(self):
+        return self._geometry
+
+    @geometry.setter
+    def geometry(self, geometry: dict):
+        self._geometry = geometry
+
+    @property
+    def data(self):
+        return self._data
+
+    @data.setter
+    def data(self, data: dict):
+        self._data = data
+
+    @property
+    def env_attributes(self):
+        return self._env_attributes
+
+    @env_attributes.setter
+    def env_attributes(self, env_attributes: dict):
+        self._env_attributes = env_attributes
+
     def resolve(self, geometry: Geometry):
-        self._geometry = geometry.data()  # required for filtering on depth
-        self._data = self._request(geometry)
+        self.geometry = geometry.data  # required for filtering on depth
+        self.data = self._request(geometry)
         return self.convert_data()
 
     @staticmethod
@@ -109,7 +133,7 @@ class EcologicalMarineUnits(Resolver):
     def has_ecosystem(self):
         # FIXME: This produces an error when running the geographic
         #  coverage in the file knb-lter-ntl.420.2.
-        res = len(self._data["features"])
+        res = len(self.data["features"])
         if res == 0:
             return False
         if res > 0:

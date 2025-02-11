@@ -87,3 +87,35 @@ def test_convert_data(scenarios, empty_environment_data_model):
                 assert len(item._data["envoTerms"]) == 0
         else:
             assert result == []
+
+
+def test_geometry(scenarios):
+    for scenario in scenarios:
+        # Get
+        resolver = scenario["resolvers"]
+        assert resolver.geometry is None
+        # Set
+        resolver.geometry = scenario["geometry"]
+        assert resolver.geometry == scenario["geometry"]
+
+
+def test_data(scenarios):
+    for scenario in scenarios:
+        # Get
+        resolver = scenario["resolvers"]
+        assert resolver.data is None
+        # Set
+        resolver.data = scenario["response"]
+        assert resolver.data == scenario["response"]
+
+
+def test_env_attributes(scenarios):
+    for scenario in scenarios:
+        # Get
+        resolver = scenario["resolvers"]
+        assert resolver.env_attributes is not None
+        # Set
+        default_value = resolver.env_attributes
+        resolver.env_attributes = {"test": "test"}
+        assert resolver.env_attributes != default_value
+

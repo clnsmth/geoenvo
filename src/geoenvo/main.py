@@ -19,11 +19,11 @@ if __name__ == "__main__":
 
     # Resolve
     environment = identifier.identify(geometry)
-    print(f"Identification returned: {environment.data()}")
+    print(f"Identification returned: {environment.data}")
 
     # Set vocabulary terms (optional)
     environment.apply_vocabulary("ENVO")
-    print(f"Set vocabulary terms returned: {environment.data()}")
+    print(f"Set vocabulary terms returned: {environment.data}")
 
     # Write to file
     environment.write_data("/Users/me/data")
@@ -31,4 +31,4 @@ if __name__ == "__main__":
     # Read from file
     environment = Environment()
     environment.read_data("/Users/me/data/file.json")
-    print(environment.data())
+    print(environment.data)

@@ -32,3 +32,15 @@ def test_resolve_with_buffer(use_mock):
     resolver._buffer = 0.5
     result = resolver.resolve(geometry)
     assert len(result) == 1
+
+
+def test_buffer(scenarios):
+    for scenario in scenarios:
+        if scenario.get("resolvers") == EcologicalCoastalUnits():
+            # Get
+            resolver = scenario["resolvers"]
+            assert resolver.buffer is None
+            # Set
+            buffer = 0.5
+            resolver.buffer = buffer
+            assert resolver.buffer == buffer

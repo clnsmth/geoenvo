@@ -15,7 +15,7 @@ from tests.conftest import load_geometry
 def test_geometry_init():
     """Test Environment class initialization has the expected attributes."""
     geometry = Geometry(load_geometry("point_on_land"))  # any valid geometry
-    assert isinstance(geometry.data(), dict)
+    assert isinstance(geometry.data, dict)
 
 
 def test_geometry_type():
@@ -180,3 +180,13 @@ def test_polygon_to_points():
     for item in points:
         assert item["type"] == "Point"
         assert isinstance(item["coordinates"][0], float)
+
+
+def test_data():
+    geometry = Geometry(load_geometry("point_on_land"))
+    # Get
+    assert geometry.data is not None
+    # Set
+    default_value = geometry.data
+    geometry.data = {"test": "test"}
+    assert geometry.data != default_value

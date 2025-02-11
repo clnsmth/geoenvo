@@ -1,7 +1,8 @@
 """Test the utilities module"""
 
 from geoenvo.geometry import Geometry
-from geoenvo.utilities import EnvironmentDataModel, get_attributes, compile_response
+from geoenvo.utilities import EnvironmentDataModel, get_attributes, \
+    compile_response, Data
 from tests.conftest import load_response
 
 
@@ -70,7 +71,8 @@ def test_get_attributes():
     # The get_attributes function should return a dictionary of attributes
     # from the response object. The dictionary should contain the requested
     # attributes.
-    attributes = ["Raster.LF_ClassNa", "Raster.LC_ClassNa", "Raster.Temp_Class"]
+    attributes = ["Raster.LF_ClassNa", "Raster.LC_ClassNa",
+                  "Raster.Temp_Class"]
     result = get_attributes(response.data, attributes)
     assert isinstance(result, dict)
     for a in attributes:
@@ -112,7 +114,6 @@ def test_compile_response(scenarios, mocker, empty_data_model):
 
 
 def test_set_envo_terms(scenarios, mocker):
-
     # Compile the data model from a list of Environment objects, one from
     # each resolver scenario
     environments = []
@@ -131,3 +132,42 @@ def test_set_envo_terms(scenarios, mocker):
     # Check that the ENVO terms are set for each environment
     for item in data._data["properties"]["environment"]:
         assert len(item["envoTerms"]) > 0
+
+
+def test_data_methods_of_data_class():
+    # Getter
+    d = {"type": "Feature"}
+    data = Data({"type": "Feature"})
+    assert data.data == d
+
+    # Setter
+    d = {"type": "Environment"}
+    data.data = d
+    assert data.data == d
+
+
+def test_attributes_methods_of_data_class():
+    # Getter
+    data = Data({"type": "Feature"})
+    assert data.attributes is not None
+    assert isinstance(data.attributes, dict)
+
+    # Setter
+    value = {"Some attribute": "Some value"}
+    assert data.attributes != value
+    data.attributes = value
+    assert data.attributes == value
+
+
+def test_data_methods_of_environment_data_model_class():
+    # Getter
+    environment = EnvironmentDataModel()
+    assert environment.data is not None
+    assert isinstance(environment.data, dict)
+
+    # Setter
+    value = {"type": "Feature"}
+    assert environment.data != value
+    environment.data = value
+    assert environment.data == value
+

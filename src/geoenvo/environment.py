@@ -7,10 +7,15 @@ class Environment:
     def __init__(self, data: dict = dict()):
         self._data = data
 
+    @property
+    def data(self):
+        return self._data
+
+    @data.setter
+    def data(self, data: dict):
+        self._data = data
+
     def has_environment(self) -> bool:
-        if len(self._data) == 0:
+        if len(self.data) == 0:
             return False
         return True
-
-    def data(self) -> str:  # TODO: remove me
-        return self._data

@@ -25,6 +25,39 @@ class WorldTerrestrialEcosystems(Resolver):
         }
         self._grid_size = None
 
+    @property
+    def geometry(self):
+        return self._geometry
+
+    @geometry.setter
+    def geometry(self, geometry: dict):
+        self._geometry = geometry
+
+    @property
+    def data(self):
+        return self._data
+
+    @data.setter
+    def data(self, data: dict):
+        self._data = data
+
+    @property
+    def env_attributes(self):
+        return self._env_attributes
+
+    @env_attributes.setter
+    def env_attributes(self, env_attributes: dict):
+        self._env_attributes = env_attributes
+
+    @property
+    def grid_size(self, grid_size: float):
+        return self._grid_size
+
+    @grid_size.setter
+    def grid_size(self, grid_size: float):
+        self._grid_size = grid_size
+
+
     def resolve(self, geometry: Geometry):
 
         # Enable the grid size sampling option for polygons, which the data
@@ -44,7 +77,7 @@ class WorldTerrestrialEcosystems(Resolver):
         for geometry in geometries:
             response = self._request(geometry)
             results.extend(response.get("results", []))
-        self._data = {"results": results}
+        self.data = {"results": results}
 
         return self.convert_data()
 
@@ -89,8 +122,8 @@ class WorldTerrestrialEcosystems(Resolver):
         if not self.has_ecosystem():
             return list()
         descriptors = []
-        attributes = self._env_attributes.keys()
-        results = self._data.get("results")
+        attributes = self.env_attributes.keys()
+        results = self.data.get("results")
         for result in results:
             if not self.has_ecosystem(result):
                 continue
@@ -122,7 +155,7 @@ class WorldTerrestrialEcosystems(Resolver):
         dataset than the one stored in the resolver instance.
         """
         if data is None:
-            data = self._data
+            data = self.data
         res = _json_extract(data, "UniqueValue.Pixel Value")
         if len(res) == 0:
             return False
