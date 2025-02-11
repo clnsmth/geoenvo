@@ -145,9 +145,11 @@ class Data:
                     envo_label = None
                     envo_uri = None
 
-                # Don't add empty values. Empty implies no mapping was found
+                # Don't add empty labels. Empty implies no mapping was found.
                 if pd.notna(label) and uri is not None:
-                    envo_terms.append({"label": label, "uri": uri})
+                    # Unmappable objects are useless. Don't add them.
+                    if curie.lower() != "sssom:nomapping":
+                        envo_terms.append({"label": label, "uri": uri})
 
             # Add list of ENVO terms back to the environment object
             environment["envoTerms"] = envo_terms

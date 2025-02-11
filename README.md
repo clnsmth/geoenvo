@@ -53,7 +53,7 @@ identifier = Identifier(
 )
 
 # Identify the environment for the geometry
-result = identifier.identify(geometry)
+result = identifier.identify(geometry, "A polygon on land and ocean")
 
 # The result is a JSON object
 print(dumps(result._data, indent=2))
@@ -96,7 +96,7 @@ print(dumps(result._data, indent=2))
                     "identifier": "https://doi.org/10.5066/P9DO61LP",
                     "resolver": "WorldTerrestrialEcosystems"
                 },
-                "dateCreated": "2025-02-06 10:07:17",
+                "dateCreated": "2025-02-11 17:42:22",
                 "properties": {
                     "temperature": "Warm Temperate",
                     "moisture": "Moist",
@@ -130,44 +130,7 @@ print(dumps(result._data, indent=2))
                     "identifier": "https://doi.org/10.5066/P9Q6ZSGN",
                     "resolver": "EcologicalMarineUnits"
                 },
-                "dateCreated": "2025-02-06 10:07:17",
-                "properties": {
-                    "oceanName": "North Pacific",
-                    "depth": "Epipelagic",
-                    "temperature": "Cold",
-                    "salinity": "Euhaline",
-                    "dissolvedOxygen": "Oxic",
-                    "nitrate": "Medium Nitrate",
-                    "phosphate": "Low Phosphate",
-                    "silicate": "Low Silicate",
-                    "ecosystem": "North Pacific, Epipelagic, Cold, Euhaline, Oxic, Medium Nitrate, Low Phosphate, Low Silicate"
-                },
-                "envoTerms": [
-                    {
-                        "label": "North Pacific Ocean",
-                        "uri": "http://purl.obolibrary.org/obo/GAZ_00002410"
-                    },
-                    {
-                        "label": "marine photic zone",
-                        "uri": "http://purl.obolibrary.org/obo/ENVO_00000209"
-                    },
-                    {
-                        "label": "oxic water",
-                        "uri": "http://purl.obolibrary.org/obo/ENVO_01001063"
-                    },
-                    {
-                        "label": "oxic water",
-                        "uri": "http://purl.obolibrary.org/obo/ENVO_01001063"
-                    }
-                ]
-            },
-            {
-                "type": "Environment",
-                "dataSource": {
-                    "identifier": "https://doi.org/10.5066/P9Q6ZSGN",
-                    "resolver": "EcologicalMarineUnits"
-                },
-                "dateCreated": "2025-02-06 10:07:17",
+                "dateCreated": "2025-02-11 17:42:22",
                 "properties": {
                     "oceanName": "North Pacific",
                     "depth": "Epipelagic",
@@ -201,39 +164,37 @@ print(dumps(result._data, indent=2))
             {
                 "type": "Environment",
                 "dataSource": {
-                    "identifier": "https://doi.org/10.5066/P9HWHSPU",
-                    "resolver": "EcologicalCoastalUnits"
+                    "identifier": "https://doi.org/10.5066/P9Q6ZSGN",
+                    "resolver": "EcologicalMarineUnits"
                 },
-                "dateCreated": "2025-02-06 10:07:17",
+                "dateCreated": "2025-02-11 17:42:22",
                 "properties": {
-                    "slope": "steeply sloping",
-                    "sinuosity": "sinuous",
-                    "erodibility": "medium erodibility",
-                    "temperatureAndMoistureRegime": "warm temperate moist",
-                    "riverDischarge": "moderate river discharge",
-                    "waveHeight": "moderate wave energy",
-                    "tidalRange": "moderately tidal",
-                    "marinePhysicalEnvironment": "euhaline-oxic-very cold",
-                    "turbidity": "moderately turbid",
-                    "chlorophyll": "low chlorophyll",
-                    "ecosystem": "steeply sloping, sinuous, medium erodibility, warm temperate moist, moderate river discharge, moderate wave energy, moderately tidal, euhaline-oxic-very cold, moderately turbid, low chlorophyll"
+                    "oceanName": "North Pacific",
+                    "depth": "Epipelagic",
+                    "temperature": "Cold",
+                    "salinity": "Euhaline",
+                    "dissolvedOxygen": "Oxic",
+                    "nitrate": "Medium Nitrate",
+                    "phosphate": "Low Phosphate",
+                    "silicate": "Low Silicate",
+                    "ecosystem": "North Pacific, Epipelagic, Cold, Euhaline, Oxic, Medium Nitrate, Low Phosphate, Low Silicate"
                 },
                 "envoTerms": [
                     {
-                        "label": "sloped",
-                        "uri": "http://purl.obolibrary.org/obo/PATO_0001481"
+                        "label": "North Pacific Ocean",
+                        "uri": "http://purl.obolibrary.org/obo/GAZ_00002410"
                     },
                     {
-                        "label": "undulate",
-                        "uri": "http://purl.obolibrary.org/obo/PATO_0000967"
+                        "label": "marine photic zone",
+                        "uri": "http://purl.obolibrary.org/obo/ENVO_00000209"
                     },
                     {
-                        "label": "oligotrophic water",
-                        "uri": "https://w3id.org/sssom/NoMapping"
+                        "label": "oxic water",
+                        "uri": "http://purl.obolibrary.org/obo/ENVO_01001063"
                     },
                     {
-                        "label": "oligotrophic water",
-                        "uri": "https://w3id.org/sssom/NoMapping"
+                        "label": "oxic water",
+                        "uri": "http://purl.obolibrary.org/obo/ENVO_01001063"
                     }
                 ]
             },
@@ -243,124 +204,7 @@ print(dumps(result._data, indent=2))
                     "identifier": "https://doi.org/10.5066/P9HWHSPU",
                     "resolver": "EcologicalCoastalUnits"
                 },
-                "dateCreated": "2025-02-06 10:07:17",
-                "properties": {
-                    "slope": "sloping",
-                    "sinuosity": "sinuous",
-                    "erodibility": "high erodibility",
-                    "temperatureAndMoistureRegime": "warm temperate moist",
-                    "riverDischarge": "moderate river discharge",
-                    "waveHeight": "moderate wave energy",
-                    "tidalRange": "moderately tidal",
-                    "marinePhysicalEnvironment": "euhaline-oxic-very cold",
-                    "turbidity": "moderately turbid",
-                    "chlorophyll": "low chlorophyll",
-                    "ecosystem": "sloping, sinuous, high erodibility, warm temperate moist, moderate river discharge, moderate wave energy, moderately tidal, euhaline-oxic-very cold, moderately turbid, low chlorophyll"
-                },
-                "envoTerms": [
-                    {
-                        "label": "sloped",
-                        "uri": "http://purl.obolibrary.org/obo/PATO_0001481"
-                    },
-                    {
-                        "label": "undulate",
-                        "uri": "http://purl.obolibrary.org/obo/PATO_0000967"
-                    },
-                    {
-                        "label": "oligotrophic water",
-                        "uri": "https://w3id.org/sssom/NoMapping"
-                    },
-                    {
-                        "label": "oligotrophic water",
-                        "uri": "https://w3id.org/sssom/NoMapping"
-                    }
-                ]
-            },
-            {
-                "type": "Environment",
-                "dataSource": {
-                    "identifier": "https://doi.org/10.5066/P9HWHSPU",
-                    "resolver": "EcologicalCoastalUnits"
-                },
-                "dateCreated": "2025-02-06 10:07:17",
-                "properties": {
-                    "slope": "sloping",
-                    "sinuosity": "straight",
-                    "erodibility": "high erodibility",
-                    "temperatureAndMoistureRegime": "warm temperate moist",
-                    "riverDischarge": "moderate river discharge",
-                    "waveHeight": "moderate wave energy",
-                    "tidalRange": "moderately tidal",
-                    "marinePhysicalEnvironment": "euhaline-oxic-very cold",
-                    "turbidity": "moderately turbid",
-                    "chlorophyll": "low chlorophyll",
-                    "ecosystem": "sloping, straight, high erodibility, warm temperate moist, moderate river discharge, moderate wave energy, moderately tidal, euhaline-oxic-very cold, moderately turbid, low chlorophyll"
-                },
-                "envoTerms": [
-                    {
-                        "label": "sloped",
-                        "uri": "http://purl.obolibrary.org/obo/PATO_0001481"
-                    },
-                    {
-                        "label": "straight",
-                        "uri": "http://purl.obolibrary.org/obo/PATO_0002180"
-                    },
-                    {
-                        "label": "oligotrophic water",
-                        "uri": "https://w3id.org/sssom/NoMapping"
-                    },
-                    {
-                        "label": "oligotrophic water",
-                        "uri": "https://w3id.org/sssom/NoMapping"
-                    }
-                ]
-            },
-            {
-                "type": "Environment",
-                "dataSource": {
-                    "identifier": "https://doi.org/10.5066/P9HWHSPU",
-                    "resolver": "EcologicalCoastalUnits"
-                },
-                "dateCreated": "2025-02-06 10:07:17",
-                "properties": {
-                    "slope": "steeply sloping",
-                    "sinuosity": "sinuous",
-                    "erodibility": "high erodibility",
-                    "temperatureAndMoistureRegime": "warm temperate moist",
-                    "riverDischarge": "moderate river discharge",
-                    "waveHeight": "moderate wave energy",
-                    "tidalRange": "moderately tidal",
-                    "marinePhysicalEnvironment": "euhaline-oxic-very cold",
-                    "turbidity": "moderately turbid",
-                    "chlorophyll": "low chlorophyll",
-                    "ecosystem": "steeply sloping, sinuous, high erodibility, warm temperate moist, moderate river discharge, moderate wave energy, moderately tidal, euhaline-oxic-very cold, moderately turbid, low chlorophyll"
-                },
-                "envoTerms": [
-                    {
-                        "label": "sloped",
-                        "uri": "http://purl.obolibrary.org/obo/PATO_0001481"
-                    },
-                    {
-                        "label": "undulate",
-                        "uri": "http://purl.obolibrary.org/obo/PATO_0000967"
-                    },
-                    {
-                        "label": "oligotrophic water",
-                        "uri": "https://w3id.org/sssom/NoMapping"
-                    },
-                    {
-                        "label": "oligotrophic water",
-                        "uri": "https://w3id.org/sssom/NoMapping"
-                    }
-                ]
-            },
-            {
-                "type": "Environment",
-                "dataSource": {
-                    "identifier": "https://doi.org/10.5066/P9HWHSPU",
-                    "resolver": "EcologicalCoastalUnits"
-                },
-                "dateCreated": "2025-02-06 10:07:17",
+                "dateCreated": "2025-02-11 17:42:22",
                 "properties": {
                     "slope": "sloping",
                     "sinuosity": "sinuous",
@@ -382,14 +226,6 @@ print(dumps(result._data, indent=2))
                     {
                         "label": "undulate",
                         "uri": "http://purl.obolibrary.org/obo/PATO_0000967"
-                    },
-                    {
-                        "label": "mesotrophic water",
-                        "uri": "https://w3id.org/sssom/NoMapping"
-                    },
-                    {
-                        "label": "mesotrophic water",
-                        "uri": "https://w3id.org/sssom/NoMapping"
                     }
                 ]
             },
@@ -399,7 +235,131 @@ print(dumps(result._data, indent=2))
                     "identifier": "https://doi.org/10.5066/P9HWHSPU",
                     "resolver": "EcologicalCoastalUnits"
                 },
-                "dateCreated": "2025-02-06 10:07:17",
+                "dateCreated": "2025-02-11 17:42:22",
+                "properties": {
+                    "slope": "steeply sloping",
+                    "sinuosity": "sinuous",
+                    "erodibility": "high erodibility",
+                    "temperatureAndMoistureRegime": "warm temperate moist",
+                    "riverDischarge": "moderate river discharge",
+                    "waveHeight": "moderate wave energy",
+                    "tidalRange": "moderately tidal",
+                    "marinePhysicalEnvironment": "euhaline-oxic-very cold",
+                    "turbidity": "moderately turbid",
+                    "chlorophyll": "low chlorophyll",
+                    "ecosystem": "steeply sloping, sinuous, high erodibility, warm temperate moist, moderate river discharge, moderate wave energy, moderately tidal, euhaline-oxic-very cold, moderately turbid, low chlorophyll"
+                },
+                "envoTerms": [
+                    {
+                        "label": "sloped",
+                        "uri": "http://purl.obolibrary.org/obo/PATO_0001481"
+                    },
+                    {
+                        "label": "undulate",
+                        "uri": "http://purl.obolibrary.org/obo/PATO_0000967"
+                    }
+                ]
+            },
+            {
+                "type": "Environment",
+                "dataSource": {
+                    "identifier": "https://doi.org/10.5066/P9HWHSPU",
+                    "resolver": "EcologicalCoastalUnits"
+                },
+                "dateCreated": "2025-02-11 17:42:22",
+                "properties": {
+                    "slope": "steeply sloping",
+                    "sinuosity": "sinuous",
+                    "erodibility": "medium erodibility",
+                    "temperatureAndMoistureRegime": "warm temperate moist",
+                    "riverDischarge": "moderate river discharge",
+                    "waveHeight": "moderate wave energy",
+                    "tidalRange": "moderately tidal",
+                    "marinePhysicalEnvironment": "euhaline-oxic-very cold",
+                    "turbidity": "moderately turbid",
+                    "chlorophyll": "low chlorophyll",
+                    "ecosystem": "steeply sloping, sinuous, medium erodibility, warm temperate moist, moderate river discharge, moderate wave energy, moderately tidal, euhaline-oxic-very cold, moderately turbid, low chlorophyll"
+                },
+                "envoTerms": [
+                    {
+                        "label": "sloped",
+                        "uri": "http://purl.obolibrary.org/obo/PATO_0001481"
+                    },
+                    {
+                        "label": "undulate",
+                        "uri": "http://purl.obolibrary.org/obo/PATO_0000967"
+                    }
+                ]
+            },
+            {
+                "type": "Environment",
+                "dataSource": {
+                    "identifier": "https://doi.org/10.5066/P9HWHSPU",
+                    "resolver": "EcologicalCoastalUnits"
+                },
+                "dateCreated": "2025-02-11 17:42:22",
+                "properties": {
+                    "slope": "sloping",
+                    "sinuosity": "sinuous",
+                    "erodibility": "high erodibility",
+                    "temperatureAndMoistureRegime": "warm temperate moist",
+                    "riverDischarge": "moderate river discharge",
+                    "waveHeight": "moderate wave energy",
+                    "tidalRange": "moderately tidal",
+                    "marinePhysicalEnvironment": "euhaline-oxic-very cold",
+                    "turbidity": "moderately turbid",
+                    "chlorophyll": "low chlorophyll",
+                    "ecosystem": "sloping, sinuous, high erodibility, warm temperate moist, moderate river discharge, moderate wave energy, moderately tidal, euhaline-oxic-very cold, moderately turbid, low chlorophyll"
+                },
+                "envoTerms": [
+                    {
+                        "label": "sloped",
+                        "uri": "http://purl.obolibrary.org/obo/PATO_0001481"
+                    },
+                    {
+                        "label": "undulate",
+                        "uri": "http://purl.obolibrary.org/obo/PATO_0000967"
+                    }
+                ]
+            },
+            {
+                "type": "Environment",
+                "dataSource": {
+                    "identifier": "https://doi.org/10.5066/P9HWHSPU",
+                    "resolver": "EcologicalCoastalUnits"
+                },
+                "dateCreated": "2025-02-11 17:42:22",
+                "properties": {
+                    "slope": "sloping",
+                    "sinuosity": "straight",
+                    "erodibility": "high erodibility",
+                    "temperatureAndMoistureRegime": "warm temperate moist",
+                    "riverDischarge": "moderate river discharge",
+                    "waveHeight": "moderate wave energy",
+                    "tidalRange": "moderately tidal",
+                    "marinePhysicalEnvironment": "euhaline-oxic-very cold",
+                    "turbidity": "moderately turbid",
+                    "chlorophyll": "low chlorophyll",
+                    "ecosystem": "sloping, straight, high erodibility, warm temperate moist, moderate river discharge, moderate wave energy, moderately tidal, euhaline-oxic-very cold, moderately turbid, low chlorophyll"
+                },
+                "envoTerms": [
+                    {
+                        "label": "sloped",
+                        "uri": "http://purl.obolibrary.org/obo/PATO_0001481"
+                    },
+                    {
+                        "label": "straight",
+                        "uri": "http://purl.obolibrary.org/obo/PATO_0002180"
+                    }
+                ]
+            },
+            {
+                "type": "Environment",
+                "dataSource": {
+                    "identifier": "https://doi.org/10.5066/P9HWHSPU",
+                    "resolver": "EcologicalCoastalUnits"
+                },
+                "dateCreated": "2025-02-11 17:42:22",
                 "properties": {
                     "slope": "sloping",
                     "sinuosity": "sinuous",
@@ -421,19 +381,10 @@ print(dumps(result._data, indent=2))
                     {
                         "label": "undulate",
                         "uri": "http://purl.obolibrary.org/obo/PATO_0000967"
-                    },
-                    {
-                        "label": "oligotrophic water",
-                        "uri": "https://w3id.org/sssom/NoMapping"
-                    },
-                    {
-                        "label": "oligotrophic water",
-                        "uri": "https://w3id.org/sssom/NoMapping"
                     }
                 ]
             }
         ]
     }
 }
-
 ```

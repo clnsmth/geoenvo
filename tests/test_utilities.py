@@ -136,6 +136,10 @@ def test_set_envo_terms(scenarios, mocker):
     for item in data._data["properties"]["environment"]:
         assert len(item["envoTerms"]) > 0
 
+        # Check that no "sssom:NoMapping" is present in the envoTerms
+        for term in item["envoTerms"]:
+            assert "sssom:nomapping" not in term["uri"].lower()
+
 
 def test_data_methods_of_data_class():
     # Getter
