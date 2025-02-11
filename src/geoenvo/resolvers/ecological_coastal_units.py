@@ -67,10 +67,10 @@ class EcologicalCoastalUnits(Resolver):
         # Enable the buffer size sampling option for points, which the data
         # source would otherwise resolve to None, because points don't
         # overlap the vector data of the source.
-        if geometry.geometry_type() == "Point" and self._buffer is not None:
-            geometry._data = geometry.point_to_polygon(buffer=self._buffer)
+        if geometry.geometry_type() == "Point" and self.buffer is not None:
+            geometry.data = geometry.point_to_polygon(buffer=self.buffer)
 
-        self._data = self._request(geometry)
+        self.data = self._request(geometry)
         return self.convert_data()
 
     @staticmethod

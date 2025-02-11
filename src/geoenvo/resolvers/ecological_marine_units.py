@@ -154,7 +154,7 @@ class EcologicalMarineUnits(Resolver):
         # Add ocean name to front of descriptors list in preparation for the
         # zipping operation below
         descriptors = [ocean_name] + descriptors
-        env_attributes = self._env_attributes
+        env_attributes = self.env_attributes
         atomic_attribute_labels = env_attributes.keys()
         # Zip descriptors and atomic attribute labels
         ecosystems = [dict(zip(atomic_attribute_labels, descriptors))]

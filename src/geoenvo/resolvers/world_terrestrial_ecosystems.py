@@ -50,7 +50,7 @@ class WorldTerrestrialEcosystems(Resolver):
         self._env_attributes = env_attributes
 
     @property
-    def grid_size(self, grid_size: float):
+    def grid_size(self):
         return self._grid_size
 
     @grid_size.setter
@@ -62,8 +62,8 @@ class WorldTerrestrialEcosystems(Resolver):
         # Enable the grid size sampling option for polygons, which the data
         # source would otherwise convert to a centroid point.
         geometries = []
-        if geometry.geometry_type() == "Polygon" and self._grid_size is not None:
-            points = geometry.polygon_to_points(grid_size=self._grid_size)
+        if geometry.geometry_type() == "Polygon" and self.grid_size is not None:
+            points = geometry.polygon_to_points(grid_size=self.grid_size)
             for point in points:
                 geometries.append(Geometry(point))
         else:
