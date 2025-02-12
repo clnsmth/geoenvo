@@ -1,5 +1,6 @@
 """Test the utilities module"""
-
+import json
+from importlib.resources import files
 from geoenvo.geometry import Geometry
 from geoenvo.resolvers.world_terrestrial_ecosystems import \
     WorldTerrestrialEcosystems
@@ -187,10 +188,11 @@ def test_to_schema_org(data_model):
 
     schema_org = data_model.to_schema_org()
 
-    # TODO Compare against a snapshot of schema_org. Because the Data model
-    #  instance is based on the integration test any changes in the Data model
-    #  will break the test and alert us to changes needed in the to_schema_org
-    #  conversion method.
+    # Load from file
+    with open(files("tests.data.schema_org").joinpath(f"schema_org.jsonld"), "r") as f:
+        expected = json.load(f)
+
+    assert schema_org == expected
 
 
 def test__to_schema_org_geo(data_model):
