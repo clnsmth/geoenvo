@@ -62,16 +62,20 @@ class EnvironmentDataModel:  # TODO: rename to EnvironmentDataModel
     def data(self, data: dict):
         self._data = data
 
+    # TODO convert to getter/setter pair
     def set_identifier(self, identifier):
         self.data["dataSource"]["identifier"] = identifier
 
+    # TODO convert to getter/setter pair
     def set_resolver(self, resolver):
         self.data["dataSource"]["resolver"] = resolver
 
+    # TODO convert to getter/setter pair
     def set_date_created(self):
         date_created = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         self.data["dateCreated"] = date_created
 
+    # TODO convert to getter/setter pair
     def set_properties(self, properties):
         self.data["properties"] = properties
 
@@ -83,7 +87,10 @@ class Data:
             "type": "Feature",
             "identifier": None,
             "geometry": None,
-            "properties": {"environment": []},
+            "properties": {
+                "description": None,
+                "environment": []
+            },
         }
 
     @property
@@ -237,7 +244,7 @@ class Data:
         return keywords
 
 def compile_response(
-    geometry: Geometry, environment: List[Environment], identifier: str = None
+    geometry: Geometry, environment: List[Environment], identifier: str = None, description: str = None
 ) -> Data:
 
     # Move data from Environment objects and into a list  # TODO: clean up
@@ -249,7 +256,10 @@ def compile_response(
         "type": "Feature",
         "identifier": identifier,
         "geometry": geometry.data,
-        "properties": {"environment": environments},
+        "properties": {
+            "description": description,
+            "environment": environments
+        },
     }
     return Data(result)
 

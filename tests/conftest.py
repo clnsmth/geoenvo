@@ -199,7 +199,10 @@ def empty_data_model():
         "type": "Feature",
         "identifier": None,
         "geometry": None,
-        "properties": {"environment": []},
+        "properties": {
+            "description": None,
+            "environment": []
+        },
     }
 
 
@@ -211,7 +214,7 @@ def data_model(mocker):
     geometry = Geometry(load_geometry("polygon_on_land"))
     environment = resolver.resolve(geometry)
 
-    data = compile_response(geometry, environment, identifier="An area on land")
+    data = compile_response(geometry, environment, identifier="5b4edec5-ea5e-471a-8a3c-2c1171d59dee", description="Polygon on land")
     data.set_envo_terms()
     return data
 

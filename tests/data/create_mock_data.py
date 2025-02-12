@@ -84,12 +84,15 @@ def create_mock_response_content(
 
 
 def create_schema_org_fixture(output_directory: Path = files("tests.data.schema_org")) -> None:
+    # This code should match that of the data_model fixture for purposes of
+    # comparison.
 
     resolver = WorldTerrestrialEcosystems()
     geometry = Geometry(load_geometry("polygon_on_land"))
     environment = resolver.resolve(geometry)
     data = compile_response(geometry, environment,
-                            identifier="An area on land")
+                            identifier="5b4edec5-ea5e-471a-8a3c-2c1171d59dee",
+                            description="Polygon on land")
 
     data.set_envo_terms()
     schema_org = dumps(data.to_schema_org(), indent=4)

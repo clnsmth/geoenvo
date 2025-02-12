@@ -1,8 +1,8 @@
 {
     "@context": "https://schema.org/",
-    "@id": "An area on land",
+    "@id": "5b4edec5-ea5e-471a-8a3c-2c1171d59dee",
     "@type": "Place",
-    "description": null,
+    "description": "Polygon on land",
     "geo": {
         "@type": "GeoShape",
         "polygon": "39.804 -123.552 39.804 -120.83 40.441 -120.83 40.441 -123.552 39.804 -123.552"
