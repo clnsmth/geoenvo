@@ -28,6 +28,6 @@ ECU:Tidal Range	ECU:Megatidal	Megatidal	skos:exactMatch	SSSOM:NoMapping		0.8	The
 ECU:Turbidity	ECU:Clear	Clear	skos:exactMatch	SSSOM:NoMapping		0.8	The subject is not in ENVO.	semapv:ManualMappingCuration	2025-02-03	https://orcid.org/0000-0003-2261-9931
 ECU:Turbidity	ECU:Moderately Turbid	Moderately Turbid	skos:exactMatch	SSSOM:NoMapping		0.8	The subject is not in ENVO.	semapv:ManualMappingCuration	2025-02-03	https://orcid.org/0000-0003-2261-9931
 ECU:Turbidity	ECU:Turbid	Turbid	skos:exactMatch	SSSOM:NoMapping		0.8	The subject is not in ENVO.	semapv:ManualMappingCuration	2025-02-03	https://orcid.org/0000-0003-2261-9931
-ECU:Chlorophyll	ECU:Low Chlorophyll	Low Chlorophyll	skos:exactMatch	SSSOM:NoMapping	oligotrophic water	0.8	The subject is not in ENVO.	semapv:ManualMappingCuration	2025-02-03	https://orcid.org/0000-0003-2261-9931
-ECU:Chlorophyll	ECU:Moderate Chlorophyll	Moderate Chlorophyll	skos:exactMatch	SSSOM:NoMapping	mesotrophic water	0.8	The subject is not in ENVO.	semapv:ManualMappingCuration	2025-02-03	https://orcid.org/0000-0003-2261-9931
-ECU:Chlorophyll	ECU:High Chlorophyll	High Chlorophyll	skos:exactMatch	SSSOM:NoMapping	eutrophic water	0.8	The subject is not in ENVO.	semapv:ManualMappingCuration	2025-02-03	https://orcid.org/0000-0003-2261-9931
+ECU:Chlorophyll	ECU:Low Chlorophyll	Low Chlorophyll	skos:exactMatch	SSSOM:NoMapping		0.8	The subject is not in ENVO.	semapv:ManualMappingCuration	2025-02-12	https://orcid.org/0000-0003-2261-9931
+ECU:Chlorophyll	ECU:Moderate Chlorophyll	Moderate Chlorophyll	skos:exactMatch	SSSOM:NoMapping		0.8	The subject is not in ENVO.	semapv:ManualMappingCuration	2025-02-12	https://orcid.org/0000-0003-2261-9931
+ECU:Chlorophyll	ECU:High Chlorophyll	High Chlorophyll	skos:exactMatch	SSSOM:NoMapping		0.8	The subject is not in ENVO.	semapv:ManualMappingCuration	2025-02-12	https://orcid.org/0000-0003-2261-9931
