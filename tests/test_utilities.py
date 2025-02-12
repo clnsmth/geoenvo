@@ -1,9 +1,9 @@
 """Test the utilities module"""
+
 import json
 from importlib.resources import files
 from geoenvo.geometry import Geometry
-from geoenvo.resolvers.world_terrestrial_ecosystems import \
-    WorldTerrestrialEcosystems
+from geoenvo.resolvers.world_terrestrial_ecosystems import WorldTerrestrialEcosystems
 from geoenvo.utilities import (
     EnvironmentDataModel,
     get_attributes,
@@ -78,8 +78,7 @@ def test_get_attributes():
     # The get_attributes function should return a dictionary of attributes
     # from the response object. The dictionary should contain the requested
     # attributes.
-    attributes = ["Raster.LF_ClassNa", "Raster.LC_ClassNa",
-                  "Raster.Temp_Class"]
+    attributes = ["Raster.LF_ClassNa", "Raster.LC_ClassNa", "Raster.Temp_Class"]
     result = get_attributes(response.data, attributes)
     assert isinstance(result, dict)
     for a in attributes:
@@ -199,8 +198,8 @@ def test__to_schema_org_geo(data_model):
     # Polygon
     geo = data_model._to_schema_org_geo()
     assert geo == {
-        '@type': 'GeoShape',
-        'polygon': '39.804 -123.552 39.804 -120.83 40.441 -120.83 40.441 -123.552 39.804 -123.552'
+        "@type": "GeoShape",
+        "polygon": "39.804 -123.552 39.804 -120.83 40.441 -120.83 40.441 -123.552 39.804 -123.552",
     }
 
     # Point
@@ -208,10 +207,10 @@ def test__to_schema_org_geo(data_model):
     data_model.data["geometry"]["coordinates"] = [-123.552, 39.804, 0]
     geo = data_model._to_schema_org_geo()
     assert geo == {
-        '@type': 'GeoCoordinates',
-        'latitude': 39.804,
-        'longitude': -123.552,
-        'elevation': 0
+        "@type": "GeoCoordinates",
+        "latitude": 39.804,
+        "longitude": -123.552,
+        "elevation": 0,
     }
 
     # Other types
@@ -269,6 +268,3 @@ def test__to_schema_org_keywords(data_model):
     data.data["properties"]["environment"] = []
     keywords = data._to_schema_org_keywords()
     assert keywords is None
-
-
-

@@ -87,10 +87,7 @@ class Data:
             "type": "Feature",
             "identifier": None,
             "geometry": None,
-            "properties": {
-                "description": None,
-                "environment": []
-            },
+            "properties": {"description": None, "environment": []},
         }
 
     @property
@@ -170,7 +167,7 @@ class Data:
                 "@type": "PropertyValue",
                 "name": "Spatial reference system",
                 "propertyID": "https://dbpedia.org/page/Spatial_reference_system",
-                "value": "https://www.w3.org/2003/01/geo/wgs84_pos"
+                "value": "https://www.w3.org/2003/01/geo/wgs84_pos",
             }
         ]
         additional_property.extend(self._to_schema_org_additional_property())
@@ -181,7 +178,7 @@ class Data:
             "description": self.data.get("properties").get("description"),
             "geo": self._to_schema_org_geo(),
             "additionalProperty": additional_property,
-            "keywords": self._to_schema_org_keywords()
+            "keywords": self._to_schema_org_keywords(),
         }
         return schema_org
 
@@ -189,20 +186,18 @@ class Data:
         if self.data["geometry"]["type"] == "Polygon":
             polygon = " ".join(  # TODO: can have z?
                 [
-                    f"{coord[1]} {coord[0]}" for coord in self.data["geometry"]["coordinates"][0]
+                    f"{coord[1]} {coord[0]}"
+                    for coord in self.data["geometry"]["coordinates"][0]
                 ]
             )
-            return {
-                "@type": "GeoShape",
-                "polygon": polygon
-            }
+            return {"@type": "GeoShape", "polygon": polygon}
         elif self.data["geometry"]["type"] == "Point":
             x, y, *z = self.data["geometry"]["coordinates"]
             return {
                 "@type": "GeoCoordinates",
                 "latitude": y,
                 "longitude": x,
-                "elevation": z[0] if z else None
+                "elevation": z[0] if z else None,
             }
         else:
             return None
@@ -215,13 +210,13 @@ class Data:
         additional_properties = []
         for environment in environments:
             for key, value in environment.get("properties").items():
-                additional_properties.append({
-                    "@type": "PropertyValue",
-                    "name": key,
-                    "value": value
-                })
+                additional_properties.append(
+                    {"@type": "PropertyValue", "name": key, "value": value}
+                )
         # Remove duplicates
-        additional_properties = list({v['name']:v for v in additional_properties}.values())
+        additional_properties = list(
+            {v["name"]: v for v in additional_properties}.values()
+        )
         return additional_properties
 
     def _to_schema_org_keywords(self):
@@ -232,19 +227,25 @@ class Data:
         keywords = []
         for environment in environments:
             for term in environment.get("envoTerms"):
-                keywords.append({
-                    "@id": term["uri"],
-                    "@type": "DefinedTerm",
-                    "name": term["label"],
-                    "inDefinedTermSet": "https://ontobee.org/ontology/ENVO",
-                    "termCode": term["uri"].split("/")[-1]
-                })
+                keywords.append(
+                    {
+                        "@id": term["uri"],
+                        "@type": "DefinedTerm",
+                        "name": term["label"],
+                        "inDefinedTermSet": "https://ontobee.org/ontology/ENVO",
+                        "termCode": term["uri"].split("/")[-1],
+                    }
+                )
         # Remove duplicates
-        keywords = list({v['name']:v for v in keywords}.values())
+        keywords = list({v["name"]: v for v in keywords}.values())
         return keywords
 
+
 def compile_response(
-    geometry: Geometry, environment: List[Environment], identifier: str = None, description: str = None
+    geometry: Geometry,
+    environment: List[Environment],
+    identifier: str = None,
+    description: str = None,
 ) -> Data:
 
     # Move data from Environment objects and into a list  # TODO: clean up
@@ -256,10 +257,7 @@ def compile_response(
         "type": "Feature",
         "identifier": identifier,
         "geometry": geometry.data,
-        "properties": {
-            "description": description,
-            "environment": environments
-        },
+        "properties": {"description": description, "environment": environments},
     }
     return Data(result)
 
