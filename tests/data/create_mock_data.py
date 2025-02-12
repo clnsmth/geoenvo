@@ -108,4 +108,5 @@ def create_schema_org_fixture(
 
 if __name__ == "__main__":
     # create_mock_response_content()
-    create_schema_org_fixture()
+    # create_schema_org_fixture()
+    pass
