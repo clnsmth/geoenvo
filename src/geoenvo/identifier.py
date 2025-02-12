@@ -19,14 +19,19 @@ class Identifier:
     def resolver(self, resolver: List[Resolver]):
         self._resolver = resolver
 
-    def identify(self, geometry: Geometry, identifier: str = None, description: str = None) -> Data:
+    def identify(
+        self, geometry: Geometry, identifier: str = None, description: str = None
+    ) -> Data:
         try:
             results = []
             for resolver in self.resolver:
                 environment = resolver.resolve(geometry)
                 results.extend(environment)
             result = compile_response(
-                geometry=geometry, environment=results, identifier=identifier, description=description
+                geometry=geometry,
+                environment=results,
+                identifier=identifier,
+                description=description,
             )
             result.set_envo_terms()
             return result
@@ -49,12 +54,14 @@ if __name__ == "__main__":
     polygon_on_land = {
         "type": "Polygon",
         "coordinates": [
-            [[-123.552, 39.804],
-             [-120.83, 39.804],
-             [-120.83, 40.441],
-             [-123.552, 40.441],
-             [-123.552, 39.804]]
-        ]
+            [
+                [-123.552, 39.804],
+                [-120.83, 39.804],
+                [-120.83, 40.441],
+                [-123.552, 40.441],
+                [-123.552, 39.804],
+            ]
+        ],
     }
     geometry = Geometry(polygon_on_land)
 
@@ -65,7 +72,7 @@ if __name__ == "__main__":
     result = identifier.identify(
         geometry,
         identifier="5b4edec5-ea5e-471a-8a3c-2c1171d59dee",
-        description="Polygon on land"
+        description="Polygon on land",
     )
 
     # The result is a GeoJSON feature with environmental properties
