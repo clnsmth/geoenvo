@@ -1,13 +1,15 @@
 """Test the utilities module"""
 
 from geoenvo.geometry import Geometry
+from geoenvo.resolvers.world_terrestrial_ecosystems import \
+    WorldTerrestrialEcosystems
 from geoenvo.utilities import (
     EnvironmentDataModel,
     get_attributes,
     compile_response,
     Data,
 )
-from tests.conftest import load_response
+from tests.conftest import load_response, load_geometry
 
 
 def test_set_identifier():
@@ -75,7 +77,8 @@ def test_get_attributes():
     # The get_attributes function should return a dictionary of attributes
     # from the response object. The dictionary should contain the requested
     # attributes.
-    attributes = ["Raster.LF_ClassNa", "Raster.LC_ClassNa", "Raster.Temp_Class"]
+    attributes = ["Raster.LF_ClassNa", "Raster.LC_ClassNa",
+                  "Raster.Temp_Class"]
     result = get_attributes(response.data, attributes)
     assert isinstance(result, dict)
     for a in attributes:
@@ -177,3 +180,93 @@ def test_data_methods_of_environment_data_model_class():
     assert environment.data != value
     environment.data = value
     assert environment.data == value
+
+
+def test_to_schema_org(data_model):
+    # Create instance of the Data object to convert to schema.org format.
+
+    schema_org = data_model.to_schema_org()
+
+    # TODO Compare against a snapshot of schema_org. Because the Data model
+    #  instance is based on the integration test any changes in the Data model
+    #  will break the test and alert us to changes needed in the to_schema_org
+    #  conversion method.
+
+
+def test__to_schema_org_geo(data_model):
+    # Polygon
+    geo = data_model._to_schema_org_geo()
+    assert geo == {
+        '@type': 'GeoShape',
+        'polygon': '39.804 -123.552 39.804 -120.83 40.441 -120.83 40.441 -123.552 39.804 -123.552'
+    }
+
+    # Point
+    data_model.data["geometry"]["type"] = "Point"
+    data_model.data["geometry"]["coordinates"] = [-123.552, 39.804, 0]
+    geo = data_model._to_schema_org_geo()
+    assert geo == {
+        '@type': 'GeoCoordinates',
+        'latitude': 39.804,
+        'longitude': -123.552,
+        'elevation': 0
+    }
+
+    # Other types
+    data_model.data["geometry"]["type"] = "LineString"
+    geo = data_model._to_schema_org_geo()
+    assert geo is None
+
+
+def test__to_schema_org_additional_property(data_model):
+    # With properties
+    additional_property = data_model._to_schema_org_additional_property()
+    assert isinstance(additional_property, list)
+    for item in additional_property:
+        assert isinstance(item, dict)
+        assert item["@type"] == "PropertyValue"
+        assert "name" in item
+        assert "value" in item
+
+    # With duplicates removed
+    data_model.data["properties"]["environment"].append(
+        data_model.data["properties"]["environment"][0]
+    )
+    additional_property = data_model._to_schema_org_additional_property()
+    for item in additional_property:
+        assert additional_property.count(item) == 1
+
+    # Without properties
+    data = data_model
+    data.data["properties"]["environment"] = []
+    additional_property = data._to_schema_org_additional_property()
+    assert additional_property is None
+
+
+def test__to_schema_org_keywords(data_model):
+    # With ENVO terms
+    keywords = data_model._to_schema_org_keywords()
+    assert isinstance(keywords, list)
+    for item in keywords:
+        assert "@id" in item
+        assert "@type" in item
+        assert "name" in item
+        assert "inDefinedTermSet" in item
+        assert "termCode" in item
+
+    # With duplicates removed
+    data_model.data["properties"]["environment"].append(
+        data_model.data["properties"]["environment"][0]
+    )
+    keywords = data_model._to_schema_org_keywords()
+    for item in keywords:
+        assert keywords.count(item) == 1
+
+    # Without ENVO terms
+    data = data_model
+    data.data["properties"]["environment"] = []
+    keywords = data._to_schema_org_keywords()
+    assert keywords is None
+
+
+

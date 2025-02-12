@@ -4,10 +4,12 @@ import json
 import tempfile
 import pytest
 from importlib.resources import files
+
+from geoenvo.geometry import Geometry
 from geoenvo.resolvers.ecological_coastal_units import EcologicalCoastalUnits
 from geoenvo.resolvers.ecological_marine_units import EcologicalMarineUnits
 from geoenvo.resolvers.world_terrestrial_ecosystems import WorldTerrestrialEcosystems
-from geoenvo.utilities import Data
+from geoenvo.utilities import Data, compile_response
 
 
 @pytest.fixture()
@@ -199,6 +201,19 @@ def empty_data_model():
         "geometry": None,
         "properties": {"environment": []},
     }
+
+
+@pytest.fixture
+def data_model(mocker):
+    mocker.patch("requests.get", return_value=load_response("wte_success"))
+
+    resolver = WorldTerrestrialEcosystems()
+    geometry = Geometry(load_geometry("polygon_on_land"))
+    environment = resolver.resolve(geometry)
+
+    data = compile_response(geometry, environment, identifier="An area on land")
+    data.set_envo_terms()
+    return data
 
 
 def load_geometry(filename: str):

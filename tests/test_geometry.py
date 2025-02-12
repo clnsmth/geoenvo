@@ -142,7 +142,6 @@ def test_to_esri():
 
 
 def test_grid_sample_polygon():
-
     # A simple polygon
     polygon = {
         "type": "Polygon",
@@ -152,7 +151,8 @@ def test_grid_sample_polygon():
 
     # Sample the polygon
     grid_size = 0.5
-    representative_points = geo_series.apply(grid_sample_polygon, args=(grid_size,))
+    representative_points = geo_series.apply(grid_sample_polygon,
+                                             args=(grid_size,))
 
     # Representative points are midpoints of each grid cell
     assert isinstance(representative_points, pd.DataFrame)

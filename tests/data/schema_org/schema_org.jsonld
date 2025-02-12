@@ -1,15 +1,11 @@
 {
     "@context": "https://schema.org/",
-    "@id": "512e15db8cbd8b10aa9fc4ae024387b96bd51f81",
+    "@id": "An area on land",
     "@type": "Place",
-    "description": "A client supplied description",
+    "description": null,
     "geo": {
-        "@list": [
-            {
-                "@type": "GeoShape",
-                "polygon": "39.804 -123.552 39.804 -120.83 40.441 -120.83 40.441 -123.552 39.804 -123.552"
-            }
-        ]
+        "@type": "GeoShape",
+        "polygon": "39.804 -123.552 39.804 -120.83 40.441 -120.83 40.441 -123.552 39.804 -123.552"
     },
     "additionalProperty": [
         {
@@ -20,8 +16,13 @@
         },
         {
             "@type": "PropertyValue",
-            "name": "landForm",
-            "value": "Plains"
+            "name": "temperature",
+            "value": "Warm Temperate"
+        },
+        {
+            "@type": "PropertyValue",
+            "name": "moisture",
+            "value": "Dry"
         },
         {
             "@type": "PropertyValue",
@@ -30,13 +31,8 @@
         },
         {
             "@type": "PropertyValue",
-            "name": "temperature",
-            "value": "Warm Temperate"
-        },
-        {
-            "@type": "PropertyValue",
-            "name": "moisture",
-            "value": "Dry"
+            "name": "landForm",
+            "value": "Plains"
         },
         {
             "@type": "PropertyValue",
@@ -51,11 +47,18 @@
     ],
     "keywords": [
         {
-            "@id": "http://purl.obolibrary.org/obo/ENVO_00000086",
+            "@id": "http://purl.obolibrary.org/obo/ENVO_01000206",
             "@type": "DefinedTerm",
-            "name": "plain",
+            "name": "temperate",
             "inDefinedTermSet": "https://ontobee.org/ontology/ENVO",
-            "termCode": "ENVO_00000086"
+            "termCode": "ENVO_01000206"
+        },
+        {
+            "@id": "http://purl.obolibrary.org/obo/ENVO_01000230",
+            "@type": "DefinedTerm",
+            "name": "arid",
+            "inDefinedTermSet": "https://ontobee.org/ontology/ENVO",
+            "termCode": "ENVO_01000230"
         },
         {
             "@id": "http://purl.obolibrary.org/obo/ENVO_00000106",
@@ -65,18 +68,11 @@
             "termCode": "ENVO_00000106"
         },
         {
-            "@id": "http://purl.obolibrary.org/obo/ENVO_01000380",
+            "@id": "http://purl.obolibrary.org/obo/ENVO_00000086",
             "@type": "DefinedTerm",
-            "name": "oceanic temperate",
+            "name": "plain",
             "inDefinedTermSet": "https://ontobee.org/ontology/ENVO",
-            "termCode": "ENVO_01000380"
-        },
-        {
-            "@id": "http://purl.obolibrary.org/obo/PATO_0001824",
-            "@type": "DefinedTerm",
-            "name": "dry",
-            "inDefinedTermSet": "https://ontobee.org/ontology/PATO",
-            "termCode": "PATO_0001824"
+            "termCode": "ENVO_00000086"
         }
     ]
 }
