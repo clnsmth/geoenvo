@@ -3,5 +3,5 @@
 Developer Interface
 ===================
 
-.. automodule:: geoenvo.geoenvo
+.. automodule:: geoenvo
    :members:
