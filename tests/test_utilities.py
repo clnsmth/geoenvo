@@ -119,29 +119,32 @@ def test_compile_response(scenarios, mocker, empty_data_model):
         assert isinstance(env, dict)
 
 
-def test_set_envo_terms(scenarios, mocker):
-    # Compile the data model from a list of Environment objects, one from
-    # each resolver scenario
-    environments = []
-    for scenario in scenarios:
-        mocker.patch("requests.get", return_value=scenario.get("response"))
-        resolver = scenario["resolvers"]
-        environment = resolver.resolve(Geometry(scenario["geometry"]))
-        environments.extend(environment)
-    identifier = "Some identifier"
-    geometry = scenarios[0]["geometry"]  # any geometry will do
-    data = compile_response(Geometry(geometry), environments, identifier)
+def test_apply_vocabulary_mapping(data_model):
+    # Remove the vocabulary terms from the test data model to set the baseline
+    # for the test
+    data_model.data["properties"]["environment"][0]["mappedProperties"] = []
+    data = data_model
 
-    # Set ENVO terms for each environment
-    data.set_envo_terms()
+    # Apply vocabulary mapping for each environment
+    data.apply_vocabulary_mapping("ENVO")
 
-    # Check that the ENVO terms are set for each environment
+    # Check that the vocabulary terms are set for each environment, and that
+    # no "sssom:NoMapping" is present
     for item in data._data["properties"]["environment"]:
-        assert len(item["envoTerms"]) > 0
-
-        # Check that no "sssom:NoMapping" is present in the envoTerms
-        for term in item["envoTerms"]:
+        assert len(item["mappedProperties"]) > 0
+        for term in item["mappedProperties"]:
             assert "sssom:nomapping" not in term["uri"].lower()
+
+
+def test_apply_vocabulary_mapping_for_unrecognized_vocabularies(data_model):
+    # Remove the vocabulary terms from the test data model to set the baseline
+    # for the test
+    data_model.data["properties"]["environment"][0]["mappedProperties"] = []
+
+    # Apply a vocabulary mapping for an unrecognized vocabulary results in no
+    # changes to the data model
+    data_model.apply_vocabulary_mapping("SomeUnrecognizedVocabulary")
+    assert data_model.data["properties"]["environment"][0]["mappedProperties"] == []
 
 
 def test_data_methods_of_data_class():

@@ -17,7 +17,7 @@ package "geoenvo" {
         - unique_environment() : dictionary[*]
         - has_ecosystem() : bool
         - set_attributes() : Resolver
-        - set_envo_terms() : string
+        - apply_vocabulary_mapping() : string
     }
 
     class WorldTerrestrialEcosystems implements Resolver {
@@ -49,7 +49,7 @@ package "geoenvo" {
     class Data {
         # data : dictionary
         + Data(geometry : Geometry, environment : Environment)
-        + set_envo_terms(vocabulary : string) : Environment
+        + apply_vocabulary_mapping(vocabulary : string) : Environment
         + write(file_path : string)
         + read(file_path : string) : Environment
         + to_schema_org() : dictionary

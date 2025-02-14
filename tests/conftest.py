@@ -189,7 +189,7 @@ def empty_environment_data_model():
         "dataSource": {"identifier": None, "resolver": None},
         "dateCreated": None,
         "properties": {},
-        "envoTerms": [],
+        "mappedProperties": [],
     }
 
 
@@ -217,7 +217,7 @@ def data_model(mocker):
         identifier="5b4edec5-ea5e-471a-8a3c-2c1171d59dee",
         description="Polygon on land",
     )
-    data.set_envo_terms()
+    data.apply_vocabulary_mapping()
     return data
 
 
@@ -261,13 +261,13 @@ def assert_identify():  # FIXME: success/fail is not the best description
             assert isinstance(item, dict)
 
         # Set vocabulary terms
-        env_with_terms = result.set_envo_terms()
+        env_with_terms = result.apply_vocabulary_mapping()
         assert isinstance(env_with_terms, Data)
         assert isinstance(env_with_terms._data, dict)
         environment = env_with_terms._data["properties"]["environment"]
         if len(environment) > 0:
-            assert isinstance(environment[0]["envoTerms"], list)
-            for key, value in environment[0]["envoTerms"][0].items():
+            assert isinstance(environment[0]["mappedProperties"], list)
+            for key, value in environment[0]["mappedProperties"][0].items():
                 assert key in {"label", "uri"}
                 assert value is not None
                 if key == "uri":

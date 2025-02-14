@@ -82,9 +82,9 @@ def test_convert_data(scenarios, empty_environment_data_model):
                 for key, value in item._data["properties"].items():
                     assert key in item._data["properties"].keys()
                     assert item._data["properties"][key] is not None
-                # envoTerms are not yet populated
-                assert isinstance(item._data["envoTerms"], list)
-                assert len(item._data["envoTerms"]) == 0
+                # mappedProperties are not yet populated
+                assert isinstance(item._data["mappedProperties"], list)
+                assert len(item._data["mappedProperties"]) == 0
         else:
             assert result == []
 

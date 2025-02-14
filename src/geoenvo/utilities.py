@@ -51,7 +51,7 @@ class EnvironmentDataModel:  # TODO: rename to EnvironmentDataModel
             "dataSource": {"identifier": None, "resolver": None},
             "dateCreated": None,
             "properties": {},
-            "envoTerms": [],
+            "mappedProperties": [],
         }
 
     @property
@@ -115,18 +115,22 @@ class Data:
             self.data = json.loads(file.read())
         return self
 
-    def set_envo_terms(self):
+    def apply_vocabulary_mapping(self, vocabulary: str = "ENVO"):
         # Iterate over list of environments in data
         for environment in self.data["properties"]["environment"]:
 
             # Load SSSOM of environment for term mapping
             resolver = environment["dataSource"]["resolver"]
             sssom_file = importlib.resources.files("geoenvo.data.sssom").joinpath(
-                f"{resolver}-envo.sssom.tsv"
+                f"{resolver}-{vocabulary.lower()}.sssom.tsv"
             )
+            if not sssom_file.exists():
+                return []
             sssom_meta_file = importlib.resources.files("geoenvo.data.sssom").joinpath(
-                f"{resolver}-envo.sssom.yml"
+                f"{resolver}-{vocabulary.lower()}.sssom.yml"
             )
+            if not sssom_meta_file.exists():
+                return []
             with open(sssom_file, mode="r", encoding="utf-8") as f:
                 sssom = pd.read_csv(f, sep="\t")
             with open(sssom_meta_file, mode="r", encoding="utf-8") as f:
@@ -146,8 +150,8 @@ class Data:
                     curie_prefix = curie.split(":")[0]
                     uri = sssom_meta["curie_map"][curie_prefix] + curie.split(":")[1]
                 except IndexError:
-                    envo_label = None
-                    envo_uri = None
+                    label = None
+                    uri = None
 
                 # Don't add empty labels. Empty implies no mapping was found.
                 if pd.notna(label) and uri is not None:
@@ -156,7 +160,7 @@ class Data:
                         envo_terms.append({"label": label, "uri": uri})
 
             # Add list of ENVO terms back to the environment object
-            environment["envoTerms"] = envo_terms
+            environment["mappedProperties"] = envo_terms
 
         return self
 
@@ -223,10 +227,10 @@ class Data:
         environments = self.data["properties"]["environment"]
         if len(environments) == 0:
             return None
-        # Flatten the list of environment envoTerms into a single list
+        # Flatten the list of environment mappedProperties into a single list
         keywords = []
         for environment in environments:
-            for term in environment.get("envoTerms"):
+            for term in environment.get("mappedProperties"):
                 keywords.append(
                     {
                         "@id": term["uri"],

@@ -42,11 +42,12 @@ geometry = Geometry(polygon_on_land)
 # Configure the identifier with one or more data sources
 identifier = Identifier(resolver=[WorldTerrestrialEcosystems()])
 
-# Identify the environment for the geometry
+# Identify the environment for the geometry and map to ENVO
 result = identifier.identify(
     geometry,
     identifier="5b4edec5-ea5e-471a-8a3c-2c1171d59dee",
-    description="Polygon on land"
+    description="Polygon on land",
+    vocabulary="ENVO"
 )
 
 # The result is a GeoJSON Feature with description and environment properties
@@ -55,75 +56,76 @@ print(dumps(result.data, indent=2))
 
 ```json
 {
-    "type": "Feature",
-    "identifier": "5b4edec5-ea5e-471a-8a3c-2c1171d59dee",
-    "geometry": {
-        "type": "Polygon",
-        "coordinates": [
-            [
-                [
-                    -123.552,
-                    39.804
-                ],
-                [
-                    -120.83,
-                    39.804
-                ],
-                [
-                    -120.83,
-                    40.441
-                ],
-                [
-                    -123.552,
-                    40.441
-                ],
-                [
-                    -123.552,
-                    39.804
-                ]
-            ]
+  "type": "Feature",
+  "identifier": "5b4edec5-ea5e-471a-8a3c-2c1171d59dee",
+  "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+      [
+        [
+          -123.552,
+          39.804
+        ],
+        [
+          -120.83,
+          39.804
+        ],
+        [
+          -120.83,
+          40.441
+        ],
+        [
+          -123.552,
+          40.441
+        ],
+        [
+          -123.552,
+          39.804
         ]
-    },
-    "properties": {
-        "description": "Polygon on land",
-        "environment": [
-            {
-                "type": "Environment",
-                "dataSource": {
-                    "identifier": "https://doi.org/10.5066/P9DO61LP",
-                    "resolver": "WorldTerrestrialEcosystems"
-                },
-                "dateCreated": "2025-02-12 15:35:22",
-                "properties": {
-                    "temperature": "Warm Temperate",
-                    "moisture": "Dry",
-                    "landCover": "Grassland",
-                    "landForm": "Plains",
-                    "climate": "Warm Temperate Dry",
-                    "ecosystem": "Warm Temperate Dry Grassland on Plains"
-                },
-                "envoTerms": [
-                    {
-                        "label": "temperate",
-                        "uri": "http://purl.obolibrary.org/obo/ENVO_01000206"
-                    },
-                    {
-                        "label": "arid",
-                        "uri": "http://purl.obolibrary.org/obo/ENVO_01000230"
-                    },
-                    {
-                        "label": "grassland area",
-                        "uri": "http://purl.obolibrary.org/obo/ENVO_00000106"
-                    },
-                    {
-                        "label": "plain",
-                        "uri": "http://purl.obolibrary.org/obo/ENVO_00000086"
-                    }
-                ]
-            }
+      ]
+    ]
+  },
+  "properties": {
+    "description": "Polygon on land",
+    "environment": [
+      {
+        "type": "Environment",
+        "dataSource": {
+          "identifier": "https://doi.org/10.5066/P9DO61LP",
+          "resolver": "WorldTerrestrialEcosystems"
+        },
+        "dateCreated": "2025-02-14 11:51:57",
+        "properties": {
+          "temperature": "Warm Temperate",
+          "moisture": "Dry",
+          "landCover": "Grassland",
+          "landForm": "Plains",
+          "climate": "Warm Temperate Dry",
+          "ecosystem": "Warm Temperate Dry Grassland on Plains"
+        },
+        "mappedProperties": [
+          {
+            "label": "temperate",
+            "uri": "http://purl.obolibrary.org/obo/ENVO_01000206"
+          },
+          {
+            "label": "arid",
+            "uri": "http://purl.obolibrary.org/obo/ENVO_01000230"
+          },
+          {
+            "label": "grassland area",
+            "uri": "http://purl.obolibrary.org/obo/ENVO_00000106"
+          },
+          {
+            "label": "plain",
+            "uri": "http://purl.obolibrary.org/obo/ENVO_00000086"
+          }
         ]
-    }
+      }
+    ]
+  }
 }
+
 ```
 
 ``` python
