@@ -27,429 +27,211 @@ Quick Start
 
 Install the current release from GitHub.
 
-```bash
+``` bash
 pip install git+https://github.com/clnsmth/geoenvo.git@main
+
 ```
 
 ```python
 from json import dumps
-from spinneret.resolvers.world_terrestrial_ecosystems import \
-    WorldTerrestrialEcosystems
-from spinneret.resolvers.ecological_marine_units import \
-    EcologicalMarineUnits
-from spinneret.resolvers.ecological_coastal_units import \
-    EcologicalCoastalUnits
-from spinneret.identifier import Identifier
-from spinneret.geometry import Geometry
+from geoenvo.resolvers.world_terrestrial_ecosystems import (
+    WorldTerrestrialEcosystems,
+)
+from geoenvo.identifier import Identifier
+from geoenvo.geometry import Geometry
 
 # Create a geometry in GeoJSON format
-# polygon_on_land_and_ocean = load_geometry(
-#     "polygon_on_land_and_ocean_example")
-polygon_on_land_and_ocean = {
+polygon_on_land = {
     "type": "Polygon",
     "coordinates": [
-        [[-123.716239, 39.325978],
-         [-123.8222818, 39.3141049],
-         [-123.8166231, 39.2943269],
-         [-123.716239, 39.325978]]
+        [[-123.552, 39.804],
+         [-120.83, 39.804],
+         [-120.83, 40.441],
+         [-123.552, 40.441],
+         [-123.552, 39.804]]
     ]
 }
-geometry = Geometry(polygon_on_land_and_ocean)
+geometry = Geometry(polygon_on_land)
 
-# Configure the identifier with data sources to query
-identifier = Identifier(
-    resolver=[
-        WorldTerrestrialEcosystems(),
-        EcologicalMarineUnits(),
-        EcologicalCoastalUnits()
-    ]
+# Configure the identifier with one or more data sources
+identifier = Identifier(resolver=[WorldTerrestrialEcosystems()])
+
+# Identify the environment for the geometry and map to ENVO
+result = identifier.identify(
+    geometry,
+    identifier="5b4edec5-ea5e-471a-8a3c-2c1171d59dee",
+    description="Polygon on land",
+    vocabulary="ENVO"
 )
 
-# Identify the environment for the geometry
-result = identifier.identify(geometry)
-
-# The result is a JSON object
-print(dumps(result._data, indent=2))
-
+# The result is a GeoJSON Feature with description and environment properties
+print(dumps(result.data, indent=2))
 
 ```
 
 ```json
 {
-    "type": "Feature",
-    "identifier": "A polygon on land and ocean",
-    "geometry": {
-        "type": "Polygon",
-        "coordinates": [
-            [
-                [
-                    -123.716239,
-                    39.325978
-                ],
-                [
-                    -123.8222818,
-                    39.3141049
-                ],
-                [
-                    -123.8166231,
-                    39.2943269
-                ],
-                [
-                    -123.716239,
-                    39.325978
-                ]
-            ]
+  "type": "Feature",
+  "identifier": "5b4edec5-ea5e-471a-8a3c-2c1171d59dee",
+  "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+      [
+        [
+          -123.552,
+          39.804
+        ],
+        [
+          -120.83,
+          39.804
+        ],
+        [
+          -120.83,
+          40.441
+        ],
+        [
+          -123.552,
+          40.441
+        ],
+        [
+          -123.552,
+          39.804
         ]
-    },
-    "properties": {
-        "environment": [
-            {
-                "type": "Environment",
-                "dataSource": {
-                    "identifier": "https://doi.org/10.5066/P9DO61LP",
-                    "resolver": "WorldTerrestrialEcosystems"
-                },
-                "dateCreated": "2025-02-06 10:07:17",
-                "properties": {
-                    "temperature": "Warm Temperate",
-                    "moisture": "Moist",
-                    "landCover": "Forest",
-                    "landForm": "Mountains",
-                    "climate": "Warm Temperate Moist",
-                    "ecosystem": "Warm Temperate Moist Forest on Mountains"
-                },
-                "envoTerms": [
-                    {
-                        "label": "temperate",
-                        "uri": "http://purl.obolibrary.org/obo/ENVO_01000206"
-                    },
-                    {
-                        "label": "humid air",
-                        "uri": "http://purl.obolibrary.org/obo/ENVO_01000828"
-                    },
-                    {
-                        "label": "forested area",
-                        "uri": "http://purl.obolibrary.org/obo/ENVO_00000111"
-                    },
-                    {
-                        "label": "mountain range",
-                        "uri": "http://purl.obolibrary.org/obo/ENVO_00000080"
-                    }
-                ]
-            },
-            {
-                "type": "Environment",
-                "dataSource": {
-                    "identifier": "https://doi.org/10.5066/P9Q6ZSGN",
-                    "resolver": "EcologicalMarineUnits"
-                },
-                "dateCreated": "2025-02-06 10:07:17",
-                "properties": {
-                    "oceanName": "North Pacific",
-                    "depth": "Epipelagic",
-                    "temperature": "Cold",
-                    "salinity": "Euhaline",
-                    "dissolvedOxygen": "Oxic",
-                    "nitrate": "Medium Nitrate",
-                    "phosphate": "Low Phosphate",
-                    "silicate": "Low Silicate",
-                    "ecosystem": "North Pacific, Epipelagic, Cold, Euhaline, Oxic, Medium Nitrate, Low Phosphate, Low Silicate"
-                },
-                "envoTerms": [
-                    {
-                        "label": "North Pacific Ocean",
-                        "uri": "http://purl.obolibrary.org/obo/GAZ_00002410"
-                    },
-                    {
-                        "label": "marine photic zone",
-                        "uri": "http://purl.obolibrary.org/obo/ENVO_00000209"
-                    },
-                    {
-                        "label": "oxic water",
-                        "uri": "http://purl.obolibrary.org/obo/ENVO_01001063"
-                    },
-                    {
-                        "label": "oxic water",
-                        "uri": "http://purl.obolibrary.org/obo/ENVO_01001063"
-                    }
-                ]
-            },
-            {
-                "type": "Environment",
-                "dataSource": {
-                    "identifier": "https://doi.org/10.5066/P9Q6ZSGN",
-                    "resolver": "EcologicalMarineUnits"
-                },
-                "dateCreated": "2025-02-06 10:07:17",
-                "properties": {
-                    "oceanName": "North Pacific",
-                    "depth": "Epipelagic",
-                    "temperature": "Very Cold",
-                    "salinity": "Euhaline",
-                    "dissolvedOxygen": "Oxic",
-                    "nitrate": "Medium Nitrate",
-                    "phosphate": "Low Phosphate",
-                    "silicate": "Low Silicate",
-                    "ecosystem": "North Pacific, Epipelagic, Very Cold, Euhaline, Oxic, Medium Nitrate, Low Phosphate, Low Silicate"
-                },
-                "envoTerms": [
-                    {
-                        "label": "North Pacific Ocean",
-                        "uri": "http://purl.obolibrary.org/obo/GAZ_00002410"
-                    },
-                    {
-                        "label": "marine photic zone",
-                        "uri": "http://purl.obolibrary.org/obo/ENVO_00000209"
-                    },
-                    {
-                        "label": "oxic water",
-                        "uri": "http://purl.obolibrary.org/obo/ENVO_01001063"
-                    },
-                    {
-                        "label": "oxic water",
-                        "uri": "http://purl.obolibrary.org/obo/ENVO_01001063"
-                    }
-                ]
-            },
-            {
-                "type": "Environment",
-                "dataSource": {
-                    "identifier": "https://doi.org/10.5066/P9HWHSPU",
-                    "resolver": "EcologicalCoastalUnits"
-                },
-                "dateCreated": "2025-02-06 10:07:17",
-                "properties": {
-                    "slope": "steeply sloping",
-                    "sinuosity": "sinuous",
-                    "erodibility": "medium erodibility",
-                    "temperatureAndMoistureRegime": "warm temperate moist",
-                    "riverDischarge": "moderate river discharge",
-                    "waveHeight": "moderate wave energy",
-                    "tidalRange": "moderately tidal",
-                    "marinePhysicalEnvironment": "euhaline-oxic-very cold",
-                    "turbidity": "moderately turbid",
-                    "chlorophyll": "low chlorophyll",
-                    "ecosystem": "steeply sloping, sinuous, medium erodibility, warm temperate moist, moderate river discharge, moderate wave energy, moderately tidal, euhaline-oxic-very cold, moderately turbid, low chlorophyll"
-                },
-                "envoTerms": [
-                    {
-                        "label": "sloped",
-                        "uri": "http://purl.obolibrary.org/obo/PATO_0001481"
-                    },
-                    {
-                        "label": "undulate",
-                        "uri": "http://purl.obolibrary.org/obo/PATO_0000967"
-                    },
-                    {
-                        "label": "oligotrophic water",
-                        "uri": "https://w3id.org/sssom/NoMapping"
-                    },
-                    {
-                        "label": "oligotrophic water",
-                        "uri": "https://w3id.org/sssom/NoMapping"
-                    }
-                ]
-            },
-            {
-                "type": "Environment",
-                "dataSource": {
-                    "identifier": "https://doi.org/10.5066/P9HWHSPU",
-                    "resolver": "EcologicalCoastalUnits"
-                },
-                "dateCreated": "2025-02-06 10:07:17",
-                "properties": {
-                    "slope": "sloping",
-                    "sinuosity": "sinuous",
-                    "erodibility": "high erodibility",
-                    "temperatureAndMoistureRegime": "warm temperate moist",
-                    "riverDischarge": "moderate river discharge",
-                    "waveHeight": "moderate wave energy",
-                    "tidalRange": "moderately tidal",
-                    "marinePhysicalEnvironment": "euhaline-oxic-very cold",
-                    "turbidity": "moderately turbid",
-                    "chlorophyll": "low chlorophyll",
-                    "ecosystem": "sloping, sinuous, high erodibility, warm temperate moist, moderate river discharge, moderate wave energy, moderately tidal, euhaline-oxic-very cold, moderately turbid, low chlorophyll"
-                },
-                "envoTerms": [
-                    {
-                        "label": "sloped",
-                        "uri": "http://purl.obolibrary.org/obo/PATO_0001481"
-                    },
-                    {
-                        "label": "undulate",
-                        "uri": "http://purl.obolibrary.org/obo/PATO_0000967"
-                    },
-                    {
-                        "label": "oligotrophic water",
-                        "uri": "https://w3id.org/sssom/NoMapping"
-                    },
-                    {
-                        "label": "oligotrophic water",
-                        "uri": "https://w3id.org/sssom/NoMapping"
-                    }
-                ]
-            },
-            {
-                "type": "Environment",
-                "dataSource": {
-                    "identifier": "https://doi.org/10.5066/P9HWHSPU",
-                    "resolver": "EcologicalCoastalUnits"
-                },
-                "dateCreated": "2025-02-06 10:07:17",
-                "properties": {
-                    "slope": "sloping",
-                    "sinuosity": "straight",
-                    "erodibility": "high erodibility",
-                    "temperatureAndMoistureRegime": "warm temperate moist",
-                    "riverDischarge": "moderate river discharge",
-                    "waveHeight": "moderate wave energy",
-                    "tidalRange": "moderately tidal",
-                    "marinePhysicalEnvironment": "euhaline-oxic-very cold",
-                    "turbidity": "moderately turbid",
-                    "chlorophyll": "low chlorophyll",
-                    "ecosystem": "sloping, straight, high erodibility, warm temperate moist, moderate river discharge, moderate wave energy, moderately tidal, euhaline-oxic-very cold, moderately turbid, low chlorophyll"
-                },
-                "envoTerms": [
-                    {
-                        "label": "sloped",
-                        "uri": "http://purl.obolibrary.org/obo/PATO_0001481"
-                    },
-                    {
-                        "label": "straight",
-                        "uri": "http://purl.obolibrary.org/obo/PATO_0002180"
-                    },
-                    {
-                        "label": "oligotrophic water",
-                        "uri": "https://w3id.org/sssom/NoMapping"
-                    },
-                    {
-                        "label": "oligotrophic water",
-                        "uri": "https://w3id.org/sssom/NoMapping"
-                    }
-                ]
-            },
-            {
-                "type": "Environment",
-                "dataSource": {
-                    "identifier": "https://doi.org/10.5066/P9HWHSPU",
-                    "resolver": "EcologicalCoastalUnits"
-                },
-                "dateCreated": "2025-02-06 10:07:17",
-                "properties": {
-                    "slope": "steeply sloping",
-                    "sinuosity": "sinuous",
-                    "erodibility": "high erodibility",
-                    "temperatureAndMoistureRegime": "warm temperate moist",
-                    "riverDischarge": "moderate river discharge",
-                    "waveHeight": "moderate wave energy",
-                    "tidalRange": "moderately tidal",
-                    "marinePhysicalEnvironment": "euhaline-oxic-very cold",
-                    "turbidity": "moderately turbid",
-                    "chlorophyll": "low chlorophyll",
-                    "ecosystem": "steeply sloping, sinuous, high erodibility, warm temperate moist, moderate river discharge, moderate wave energy, moderately tidal, euhaline-oxic-very cold, moderately turbid, low chlorophyll"
-                },
-                "envoTerms": [
-                    {
-                        "label": "sloped",
-                        "uri": "http://purl.obolibrary.org/obo/PATO_0001481"
-                    },
-                    {
-                        "label": "undulate",
-                        "uri": "http://purl.obolibrary.org/obo/PATO_0000967"
-                    },
-                    {
-                        "label": "oligotrophic water",
-                        "uri": "https://w3id.org/sssom/NoMapping"
-                    },
-                    {
-                        "label": "oligotrophic water",
-                        "uri": "https://w3id.org/sssom/NoMapping"
-                    }
-                ]
-            },
-            {
-                "type": "Environment",
-                "dataSource": {
-                    "identifier": "https://doi.org/10.5066/P9HWHSPU",
-                    "resolver": "EcologicalCoastalUnits"
-                },
-                "dateCreated": "2025-02-06 10:07:17",
-                "properties": {
-                    "slope": "sloping",
-                    "sinuosity": "sinuous",
-                    "erodibility": "high erodibility",
-                    "temperatureAndMoistureRegime": "warm temperate moist",
-                    "riverDischarge": "moderate river discharge",
-                    "waveHeight": "moderate wave energy",
-                    "tidalRange": "moderately tidal",
-                    "marinePhysicalEnvironment": "euhaline-oxic-very cold",
-                    "turbidity": "moderately turbid",
-                    "chlorophyll": "moderate chlorophyll",
-                    "ecosystem": "sloping, sinuous, high erodibility, warm temperate moist, moderate river discharge, moderate wave energy, moderately tidal, euhaline-oxic-very cold, moderately turbid, moderate chlorophyll"
-                },
-                "envoTerms": [
-                    {
-                        "label": "sloped",
-                        "uri": "http://purl.obolibrary.org/obo/PATO_0001481"
-                    },
-                    {
-                        "label": "undulate",
-                        "uri": "http://purl.obolibrary.org/obo/PATO_0000967"
-                    },
-                    {
-                        "label": "mesotrophic water",
-                        "uri": "https://w3id.org/sssom/NoMapping"
-                    },
-                    {
-                        "label": "mesotrophic water",
-                        "uri": "https://w3id.org/sssom/NoMapping"
-                    }
-                ]
-            },
-            {
-                "type": "Environment",
-                "dataSource": {
-                    "identifier": "https://doi.org/10.5066/P9HWHSPU",
-                    "resolver": "EcologicalCoastalUnits"
-                },
-                "dateCreated": "2025-02-06 10:07:17",
-                "properties": {
-                    "slope": "sloping",
-                    "sinuosity": "sinuous",
-                    "erodibility": "medium erodibility",
-                    "temperatureAndMoistureRegime": "warm temperate moist",
-                    "riverDischarge": "moderate river discharge",
-                    "waveHeight": "moderate wave energy",
-                    "tidalRange": "moderately tidal",
-                    "marinePhysicalEnvironment": "euhaline-oxic-very cold",
-                    "turbidity": "moderately turbid",
-                    "chlorophyll": "low chlorophyll",
-                    "ecosystem": "sloping, sinuous, medium erodibility, warm temperate moist, moderate river discharge, moderate wave energy, moderately tidal, euhaline-oxic-very cold, moderately turbid, low chlorophyll"
-                },
-                "envoTerms": [
-                    {
-                        "label": "sloped",
-                        "uri": "http://purl.obolibrary.org/obo/PATO_0001481"
-                    },
-                    {
-                        "label": "undulate",
-                        "uri": "http://purl.obolibrary.org/obo/PATO_0000967"
-                    },
-                    {
-                        "label": "oligotrophic water",
-                        "uri": "https://w3id.org/sssom/NoMapping"
-                    },
-                    {
-                        "label": "oligotrophic water",
-                        "uri": "https://w3id.org/sssom/NoMapping"
-                    }
-                ]
-            }
+      ]
+    ]
+  },
+  "properties": {
+    "description": "Polygon on land",
+    "environment": [
+      {
+        "type": "Environment",
+        "dataSource": {
+          "identifier": "https://doi.org/10.5066/P9DO61LP",
+          "resolver": "WorldTerrestrialEcosystems"
+        },
+        "dateCreated": "2025-02-14 11:51:57",
+        "properties": {
+          "temperature": "Warm Temperate",
+          "moisture": "Dry",
+          "landCover": "Grassland",
+          "landForm": "Plains",
+          "climate": "Warm Temperate Dry",
+          "ecosystem": "Warm Temperate Dry Grassland on Plains"
+        },
+        "mappedProperties": [
+          {
+            "label": "temperate",
+            "uri": "http://purl.obolibrary.org/obo/ENVO_01000206"
+          },
+          {
+            "label": "arid",
+            "uri": "http://purl.obolibrary.org/obo/ENVO_01000230"
+          },
+          {
+            "label": "grassland area",
+            "uri": "http://purl.obolibrary.org/obo/ENVO_00000106"
+          },
+          {
+            "label": "plain",
+            "uri": "http://purl.obolibrary.org/obo/ENVO_00000086"
+          }
         ]
-    }
+      }
+    ]
+  }
 }
 
 ```
+
+``` python
+# The result can be converted to Schema.org JSON-LD
+schema_org = result.to_schema_org()
+print(dumps(schema_org, indent=2))
+
+```
+
+```json
+{
+    "@context": "https://schema.org/",
+    "@id": "5b4edec5-ea5e-471a-8a3c-2c1171d59dee",
+    "@type": "Place",
+    "description": "Polygon on land",
+    "geo": {
+        "@type": "GeoShape",
+        "polygon": "39.804 -123.552 39.804 -120.83 40.441 -120.83 40.441 -123.552 39.804 -123.552"
+    },
+    "additionalProperty": [
+        {
+            "@type": "PropertyValue",
+            "name": "Spatial reference system",
+            "propertyID": "https://dbpedia.org/page/Spatial_reference_system",
+            "value": "https://www.w3.org/2003/01/geo/wgs84_pos"
+        },
+        {
+            "@type": "PropertyValue",
+            "name": "temperature",
+            "value": "Warm Temperate"
+        },
+        {
+            "@type": "PropertyValue",
+            "name": "moisture",
+            "value": "Dry"
+        },
+        {
+            "@type": "PropertyValue",
+            "name": "landCover",
+            "value": "Grassland"
+        },
+        {
+            "@type": "PropertyValue",
+            "name": "landForm",
+            "value": "Plains"
+        },
+        {
+            "@type": "PropertyValue",
+            "name": "climate",
+            "value": "Warm Temperate Dry"
+        },
+        {
+            "@type": "PropertyValue",
+            "name": "ecosystem",
+            "value": "Warm Temperate Dry Grassland on Plains"
+        }
+    ],
+    "keywords": [
+        {
+            "@id": "http://purl.obolibrary.org/obo/ENVO_01000206",
+            "@type": "DefinedTerm",
+            "name": "temperate",
+            "inDefinedTermSet": "https://ontobee.org/ontology/ENVO",
+            "termCode": "ENVO_01000206"
+        },
+        {
+            "@id": "http://purl.obolibrary.org/obo/ENVO_01000230",
+            "@type": "DefinedTerm",
+            "name": "arid",
+            "inDefinedTermSet": "https://ontobee.org/ontology/ENVO",
+            "termCode": "ENVO_01000230"
+        },
+        {
+            "@id": "http://purl.obolibrary.org/obo/ENVO_00000106",
+            "@type": "DefinedTerm",
+            "name": "grassland area",
+            "inDefinedTermSet": "https://ontobee.org/ontology/ENVO",
+            "termCode": "ENVO_00000106"
+        },
+        {
+            "@id": "http://purl.obolibrary.org/obo/ENVO_00000086",
+            "@type": "DefinedTerm",
+            "name": "plain",
+            "inDefinedTermSet": "https://ontobee.org/ontology/ENVO",
+            "termCode": "ENVO_00000086"
+        }
+    ]
+}
+
+```
+
 
 
 The API Documentation / Guide

@@ -20,7 +20,7 @@ class Identifier:
         self._resolver = resolver
 
     def identify(
-        self, geometry: Geometry, identifier: str = None, description: str = None
+        self, geometry: Geometry, vocabulary: str = "ENVO", identifier: str = None, description: str = None
     ) -> Data:
         try:
             results = []
@@ -33,7 +33,7 @@ class Identifier:
                 identifier=identifier,
                 description=description,
             )
-            result.set_envo_terms()
+            result.apply_vocabulary_mapping(vocabulary)
             return result
         except Exception as e:
             print(f"An error occurred: {e}")
