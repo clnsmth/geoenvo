@@ -105,26 +105,26 @@ class WorldTerrestrialEcosystems(Resolver):
 
     def convert_data(self):
         result = []
-        unique_wte_ecosystems = self.unique_environment()
-        for unique_wte_ecosystem in unique_wte_ecosystems:
-            ecosystem = EnvironmentDataModel()
-            ecosystem.set_identifier("https://doi.org/10.5066/P9DO61LP")
-            ecosystem.set_resolver(self.__class__.__name__)
-            ecosystem.set_date_created()
-            ecosystem.set_properties(unique_wte_ecosystem)
-            result.append(Environment(data=ecosystem.data))
+        unique_wte_environments = self.unique_environment()
+        for unique_wte_environment in unique_wte_environments:
+            environment = EnvironmentDataModel()
+            environment.set_identifier("https://doi.org/10.5066/P9DO61LP")
+            environment.set_resolver(self.__class__.__name__)
+            environment.set_date_created()
+            environment.set_properties(unique_wte_environment)
+            result.append(Environment(data=environment.data))
         return result
 
     def unique_environment(self):
         # Parse the attributes of the environment(s) in the data to a form
         # that can be compared for uniqueness.
-        if not self.has_ecosystem():
+        if not self.has_environment():
             return list()
         descriptors = []
         attributes = self.env_attributes.keys()
         results = self.data.get("results")
         for result in results:
-            if not self.has_ecosystem(result):
+            if not self.has_environment(result):
                 continue
             res = dict()
             for attribute in attributes:
@@ -148,7 +148,7 @@ class WorldTerrestrialEcosystems(Resolver):
             new_descriptors.append(new_descriptor)
         return new_descriptors
 
-    def has_ecosystem(self, data=None):
+    def has_environment(self, data=None):
         """
         The data parameter enables the method to be used with a different
         dataset than the one stored in the resolver instance.

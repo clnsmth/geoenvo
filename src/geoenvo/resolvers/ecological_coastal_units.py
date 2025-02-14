@@ -107,21 +107,21 @@ class EcologicalCoastalUnits(Resolver):
 
     def convert_data(self):
         result = []
-        unique_ecu_ecosystems = self.unique_environment()
-        for unique_ecu_ecosystem in unique_ecu_ecosystems:
-            ecosystem = EnvironmentDataModel()
-            ecosystem.set_identifier("https://doi.org/10.5066/P9HWHSPU")
-            ecosystem.set_resolver(self.__class__.__name__)
-            ecosystem.set_date_created()
+        unique_ecu_environments = self.unique_environment()
+        for unique_ecu_environment in unique_ecu_environments:
+            environment = EnvironmentDataModel()
+            environment.set_identifier("https://doi.org/10.5066/P9HWHSPU")
+            environment.set_resolver(self.__class__.__name__)
+            environment.set_date_created()
             attributes = self.set_attributes(  # TODO: Move this processing to self.unique_environment() to match WTE implmementation
-                unique_ecosystem_attributes=unique_ecu_ecosystem
+                unique_environment_attributes=unique_ecu_environment
             )
-            ecosystem.set_properties(attributes)
-            result.append(Environment(data=ecosystem.data))
+            environment.set_properties(attributes)
+            result.append(Environment(data=environment.data))
         return result
 
     def unique_environment(self):
-        if not self.has_ecosystem():
+        if not self.has_environment():
             return list()
         attribute = "CSU_Descriptor"
         descriptors = get_attributes(self._data, [attribute])[attribute]
@@ -129,7 +129,7 @@ class EcologicalCoastalUnits(Resolver):
         descriptors = list(descriptors)
         return descriptors
 
-    def has_ecosystem(self):
+    def has_environment(self):
         # FIXME: This produces an error when running the geographic
         #  coverage in the file knb-lter-ntl.420.2.
         res = len(self._data["features"])
@@ -138,28 +138,28 @@ class EcologicalCoastalUnits(Resolver):
         if res > 0:
             return True
 
-    def set_attributes(self, unique_ecosystem_attributes):
-        if len(unique_ecosystem_attributes) == 0:
+    def set_attributes(self, unique_environment_attributes):
+        if len(unique_environment_attributes) == 0:
             return None
         # There is only one attribute for ECU, CSU_Descriptor, which is
         # composed of 10 atomic attributes.
-        descriptors = unique_ecosystem_attributes
+        descriptors = unique_environment_attributes
         # Atomize: Split on commas and remove whitespace
         descriptors = descriptors.split(",")
         descriptors = [g.strip() for g in descriptors]
         atomic_attribute_labels = self._env_attributes.keys()
         # Zip descriptors and atomic attribute labels
-        ecosystems = [dict(zip(atomic_attribute_labels, descriptors))]
+        environments = [dict(zip(atomic_attribute_labels, descriptors))]
         # Iterate over atomic attributes and set labels and annotations
-        ecosystem = ecosystems[0]
+        environment = environments[0]
         # attributes = {}
         # self._env_attributes
         env_attributes = self._env_attributes
-        for attribute in ecosystem.keys():
-            label = ecosystem.get(attribute)
+        for attribute in environment.keys():
+            label = environment.get(attribute)
             env_attributes[attribute] = label
         # Add composite CSU_Description class and annotation.
-        # Get ecosystems values and join with commas
+        # Get environments values and join with commas
         # TODO Fix issue where an attribute from the initialized list returned
         #  by  Attributes() was missing for some reason and thus an annotation
         #  couldn't  be found for it. If arbitrary joining of empties to the

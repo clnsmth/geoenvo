@@ -96,27 +96,27 @@ class EcologicalMarineUnits(Resolver):
 
     def convert_data(self):
         result = []
-        unique_emu_ecosystems = self.unique_environment()
-        for unique_emu_ecosystem in unique_emu_ecosystems:
-            ecosystem = EnvironmentDataModel()
-            ecosystem.set_identifier("https://doi.org/10.5066/P9Q6ZSGN")
-            ecosystem.set_resolver(self.__class__.__name__)
-            ecosystem.set_date_created()
+        unique_emu_environments = self.unique_environment()
+        for unique_emu_environment in unique_emu_environments:
+            environment = EnvironmentDataModel()
+            environment.set_identifier("https://doi.org/10.5066/P9Q6ZSGN")
+            environment.set_resolver(self.__class__.__name__)
+            environment.set_date_created()
             attributes = self.set_attributes(  # TODO: Move this processing to self.unique_environment() to match WTE implmementation
-                unique_ecosystem_attributes=unique_emu_ecosystem
+                unique_environment_attributes=unique_emu_environment
             )
-            ecosystem.set_properties(attributes)
-            result.append(Environment(data=ecosystem.data))
+            environment.set_properties(attributes)
+            result.append(Environment(data=environment.data))
         return result
 
     def unique_environment(self):
-        if not self.has_ecosystem():
+        if not self.has_environment():
             return list()
-        # FIXME? - get_ecosystems_for_geometry_z_values does two things:
-        #  1. gets ecosystems for z values
-        #  2. gets unique ecosystems
+        # FIXME? - get_environments_for_geometry_z_values does two things:
+        #  1. gets environments for z values
+        #  2. gets unique environments
         #  This doesn't follow the pattern for WTE and ECU, where all
-        #  ecosystems are first retrieved, then unique ecosystems are
+        #  environments are first retrieved, then unique environments are
         #  derived. Either this function should be split into two, or the
         #  WTE and ECU function's get and unique operations should be
         #  combined into one.
@@ -127,10 +127,10 @@ class EcologicalMarineUnits(Resolver):
 
         # FIXME? This pattern differs from WTE and ECU implementations.
         #  Change? See implementation notes.
-        descriptors = self.get_ecosystems_for_geometry_z_values(data=data)
+        descriptors = self.get_environments_for_geometry_z_values(data=data)
         return descriptors
 
-    def has_ecosystem(self):
+    def has_environment(self):
         # FIXME: This produces an error when running the geographic
         #  coverage in the file knb-lter-ntl.420.2.
         res = len(self.data["features"])
@@ -139,12 +139,12 @@ class EcologicalMarineUnits(Resolver):
         if res > 0:
             return True
 
-    def set_attributes(self, unique_ecosystem_attributes):
-        if len(unique_ecosystem_attributes) == 0:
+    def set_attributes(self, unique_environment_attributes):
+        if len(unique_environment_attributes) == 0:
             return None
         # There are two attributes for EMU, OceanName and Name_2018, the latter
         # of which is composed of 7 atomic attributes.
-        attributes = loads(unique_ecosystem_attributes)["attributes"]
+        attributes = loads(unique_environment_attributes)["attributes"]
         # Get OceanName
         ocean_name = attributes.get("OceanName")
         # Atomize Name_2018: Split on commas and remove whitespace
@@ -157,16 +157,16 @@ class EcologicalMarineUnits(Resolver):
         env_attributes = self.env_attributes
         atomic_attribute_labels = env_attributes.keys()
         # Zip descriptors and atomic attribute labels
-        ecosystems = [dict(zip(atomic_attribute_labels, descriptors))]
+        environments = [dict(zip(atomic_attribute_labels, descriptors))]
         # Iterate over atomic attributes and set labels and annotations
-        ecosystem = ecosystems[0]
+        environment = environments[0]
         # attributes = {}
         # env_attributes
-        for attribute in ecosystem.keys():
-            label = ecosystem.get(attribute)
+        for attribute in environment.keys():
+            label = environment.get(attribute)
             env_attributes[attribute] = label
         # Add composite EMU_Description class and annotation.
-        # Get ecosystems values and join with commas
+        # Get environments values and join with commas
         # TODO Fix issue where an attribute from the initialized list returned
         #  by  Attributes() was missing for some reason and thus an annotation
         #  couldn't  be found for it. If arbitrary joining of empties to the
@@ -261,7 +261,7 @@ class EcologicalMarineUnits(Resolver):
             data.get("features")[i]["attributes"]["Name_2018"] = value
         return data  # TODO: why not set to self._data?
 
-    def get_ecosystems_for_geometry_z_values(self, data):
+    def get_environments_for_geometry_z_values(self, data):
         # - Get the z values from the geometry attribute of the response
         # object
         geometry = self._geometry
@@ -306,7 +306,7 @@ class EcologicalMarineUnits(Resolver):
                         }
                     }
                     res.append(dumps(parsed))
-        # Get the unique set of ecosystems (don't want duplicates) and
+        # Get the unique set of environments (don't want duplicates) and
         # convert back to a list as preferred by subsequent operations
         res = set(res)
         res = list(res)

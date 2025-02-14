@@ -53,5 +53,5 @@ class Resolver(ABC):
         pass
 
     @abstractmethod
-    def has_ecosystem(self) -> bool:
+    def has_environment(self) -> bool:
         pass

@@ -15,7 +15,7 @@ package "geoenvo" {
         + resolve(geometry : Geometry) : Environment[0..*]
         - convert_data() : dictionary
         - unique_environment() : dictionary[*]
-        - has_ecosystem() : bool
+        - has_environment() : bool
         - set_attributes() : Resolver
         - apply_vocabulary_mapping() : string
     }

@@ -17,18 +17,18 @@ def test_resolver_attributes(scenarios):
         assert all([key in expected_attributes for key in attributes.keys()])
 
 
-def test_get_unique_ecosystems(scenarios):
-    """Test the get_unique_ecosystems method.
+def test_get_unique_environments(scenarios):
+    """Test the get_unique_environments method.
 
-    The get_unique_ecosystems method should return a set of unique ecosystems
-    contained in a given server response object. The way ecosystems are
+    The get_unique_environments method should return a set of unique environments
+    contained in a given server response object. The way environments are
     expressed by each server (in JSON format) differs, so the function should
     be capable of recognizing the format and parsing it accordingly. The set
-    object returned by the get_unique_ecosystems method enables iterative
-    parsing of the contents by the builder routine of the get_wte_ecosystems
-    and get_ecu_ecosystems methods of the Response object. Note, currently,
+    object returned by the get_unique_environments method enables iterative
+    parsing of the contents by the builder routine of the get_wte_environments
+    and get_ecu_environments methods of the Response object. Note, currently,
     the identify operation used to query the WTE server does not return more
-    than one ecosystem per query.
+    than one environment per query.
     """
     for scenario in scenarios:
         # Configure the resolver
@@ -42,13 +42,13 @@ def test_get_unique_ecosystems(scenarios):
         assert len(unique_environments) == scenario["unique_environment"]
 
 
-def test_has_ecosystem(scenarios):
-    """Test the has_ecosystem method."""
+def test_has_environment(scenarios):
+    """Test the has_environment method."""
     for scenario in scenarios:
         resolver = scenario["resolvers"]
         resolver._data = scenario["response"].json()
         resolver._geometry = scenario["geometry"]
-        assert resolver.has_ecosystem() == scenario["has_ecosystem"]
+        assert resolver.has_environment() == scenario["has_environment"]
 
 
 def test_convert_data(scenarios, empty_environment_data_model):
