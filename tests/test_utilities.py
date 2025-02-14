@@ -135,6 +135,7 @@ def test_apply_vocabulary_mapping(data_model):
         for term in item["mappedProperties"]:
             assert "sssom:nomapping" not in term["uri"].lower()
 
+
 def test_apply_vocabulary_mapping_for_unrecognized_vocabularies(data_model):
     # Remove the vocabulary terms from the test data model to set the baseline
     # for the test

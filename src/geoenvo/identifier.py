@@ -20,7 +20,11 @@ class Identifier:
         self._resolver = resolver
 
     def identify(
-        self, geometry: Geometry, vocabulary: str = "ENVO", identifier: str = None, description: str = None
+        self,
+        geometry: Geometry,
+        vocabulary: str = "ENVO",
+        identifier: str = None,
+        description: str = None,
     ) -> Data:
         try:
             results = []
