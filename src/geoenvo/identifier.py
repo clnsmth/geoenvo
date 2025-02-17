@@ -48,7 +48,7 @@ class Identifier:
 if __name__ == "__main__":
 
     from json import dumps
-    from geoenvo.resolvers.world_terrestrial_ecosystems import (
+    from geoenvo.resolvers import (
         WorldTerrestrialEcosystems,
     )
     from geoenvo.identifier import Identifier

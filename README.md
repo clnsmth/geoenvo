@@ -20,7 +20,7 @@ pip install git+https://github.com/clnsmth/geoenvo.git@main
 
 ```python
 from json import dumps
-from geoenvo.resolvers.world_terrestrial_ecosystems import (
+from geoenvo.resolvers import (
     WorldTerrestrialEcosystems,
 )
 from geoenvo.identifier import Identifier

@@ -1,9 +1,9 @@
 """The main2 module"""
 
 from geoenvo.identifier import Identifier
-from geoenvo.resolvers.ecological_coastal_units import EcologicalCoastalUnits
-from geoenvo.resolvers.ecological_marine_units import EcologicalMarineUnits
-from geoenvo.resolvers.world_terrestrial_ecosystems import WorldTerrestrialEcosystems
+from geoenvo.resolvers import EcologicalCoastalUnits
+from geoenvo.resolvers import EcologicalMarineUnits
+from geoenvo.resolvers import WorldTerrestrialEcosystems
 from geoenvo.environment import Environment
 
 if __name__ == "__main__":

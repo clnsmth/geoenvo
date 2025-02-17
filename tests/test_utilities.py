@@ -3,7 +3,7 @@
 import json
 from importlib.resources import files
 from geoenvo.geometry import Geometry
-from geoenvo.resolvers.world_terrestrial_ecosystems import WorldTerrestrialEcosystems
+from geoenvo.resolvers import WorldTerrestrialEcosystems
 from geoenvo.utilities import (
     EnvironmentDataModel,
     get_attributes,

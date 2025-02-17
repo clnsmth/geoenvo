@@ -3,7 +3,7 @@
 import pytest
 
 from geoenvo.geometry import Geometry
-from geoenvo.resolvers.ecological_coastal_units import EcologicalCoastalUnits
+from geoenvo.resolvers import EcologicalCoastalUnits
 from tests.conftest import load_geometry
 
 

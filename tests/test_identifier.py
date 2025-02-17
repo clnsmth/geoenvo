@@ -2,8 +2,8 @@
 
 from geoenvo.identifier import Identifier
 from geoenvo.geometry import Geometry
-from geoenvo.resolvers.world_terrestrial_ecosystems import WorldTerrestrialEcosystems
-from geoenvo.resolvers.ecological_marine_units import EcologicalMarineUnits
+from geoenvo.resolvers import WorldTerrestrialEcosystems
+from geoenvo.resolvers import EcologicalMarineUnits
 
 
 def test_identify(use_mock, scenarios, assert_identify, mocker):

@@ -3,7 +3,7 @@
 from json import loads
 
 from tests.conftest import load_response, load_geometry
-from geoenvo.resolvers.ecological_marine_units import EcologicalMarineUnits
+from geoenvo.resolvers import EcologicalMarineUnits
 
 
 def test_convert_codes_to_values():

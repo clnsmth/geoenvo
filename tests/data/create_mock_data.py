@@ -8,9 +8,9 @@ from pytest_mock import mocker
 from requests import get
 
 from geoenvo.geometry import Geometry
-from geoenvo.resolvers.world_terrestrial_ecosystems import WorldTerrestrialEcosystems
-from geoenvo.resolvers.ecological_coastal_units import EcologicalCoastalUnits
-from geoenvo.resolvers.ecological_marine_units import EcologicalMarineUnits
+from geoenvo.resolvers import WorldTerrestrialEcosystems
+from geoenvo.resolvers import EcologicalCoastalUnits
+from geoenvo.resolvers import EcologicalMarineUnits
 from geoenvo.utilities import user_agent, compile_response
 from tests.conftest import load_geometry, load_response
 
