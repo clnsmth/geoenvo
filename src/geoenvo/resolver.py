@@ -8,7 +8,7 @@ class Resolver(ABC):
     def __init__(self):
         self._geometry = None  # TODO: should be dict?
         self._data = None  # TODO: should be dict?
-        self._env_attributes = None  # TODO: should be dict?
+        self._env_properties = None  # TODO: should be dict?
 
     @property
     @abstractmethod
@@ -32,12 +32,12 @@ class Resolver(ABC):
 
     @property
     @abstractmethod
-    def env_attributes(self):
+    def env_properties(self):
         pass
 
-    @env_attributes.setter
+    @env_properties.setter
     @abstractmethod
-    def env_attributes(self, env_attributes: dict):
+    def env_properties(self, env_properties: dict):
         pass
 
     @abstractmethod

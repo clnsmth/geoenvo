@@ -22,7 +22,7 @@ class Geometry:
 
     def is_supported(self) -> bool:
         # If self.data is a GeoJSON object with the top level "type" property
-        # set to "Point" or "Polygon", then it is valid.
+        # having a value of "Point" or "Polygon", then it is valid.
         if self.data.get("type") in ["Point", "Polygon"]:
             return True
         return False

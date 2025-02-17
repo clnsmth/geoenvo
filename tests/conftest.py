@@ -29,12 +29,12 @@ def resolvers():
 
 @pytest.fixture
 def scenarios(
-    raw_attributes_of_ecological_coastal_units,
-    raw_attributes_of_ecological_marine_units,
-    raw_attributes_of_world_terrestrial_ecosystems,
-    attributes_of_ecological_coastal_units,
-    attributes_of_ecological_marine_units,
-    attributes_of_world_terrestrial_ecosystems,
+    raw_properties_of_ecological_coastal_units,
+    raw_properties_of_ecological_marine_units,
+    raw_properties_of_world_terrestrial_ecosystems,
+    properties_of_ecological_coastal_units,
+    properties_of_ecological_marine_units,
+    properties_of_world_terrestrial_ecosystems,
 ):
     scenarios = [
         {  # WTE Success (Envelop on land)
@@ -43,8 +43,8 @@ def scenarios(
             "geometry": load_geometry("polygon_on_land"),
             "unique_environment": 1,
             "has_environment": True,
-            "raw_attributes": raw_attributes_of_world_terrestrial_ecosystems,
-            "attributes": attributes_of_world_terrestrial_ecosystems,
+            "raw_properties": raw_properties_of_world_terrestrial_ecosystems,
+            "properties": properties_of_world_terrestrial_ecosystems,
             "identifier": "https://doi.org/10.5066/P9DO61LP",
         },
         {  # WTE Fail (A point over the ocean)
@@ -53,8 +53,8 @@ def scenarios(
             "geometry": load_geometry("point_on_ocean"),
             "unique_environment": 0,
             "has_environment": False,
-            "raw_attributes": raw_attributes_of_world_terrestrial_ecosystems,
-            "attributes": attributes_of_world_terrestrial_ecosystems,
+            "raw_properties": raw_properties_of_world_terrestrial_ecosystems,
+            "properties": properties_of_world_terrestrial_ecosystems,
             "identifier": "https://doi.org/10.5066/P9DO61LP",
         },
         {  # ECU Success (Envelop spanning coastal area)
@@ -63,8 +63,8 @@ def scenarios(
             "geometry": load_geometry("polygon_on_land_and_ocean"),
             "unique_environment": 34,
             "has_environment": True,
-            "raw_attributes": raw_attributes_of_ecological_coastal_units,
-            "attributes": attributes_of_ecological_coastal_units,
+            "raw_properties": raw_properties_of_ecological_coastal_units,
+            "properties": properties_of_ecological_coastal_units,
             "identifier": "https://doi.org/10.5066/P9HWHSPU",
         },
         {  # ECU Fail (Envelope on land)
@@ -73,8 +73,8 @@ def scenarios(
             "geometry": load_geometry("polygon_on_land"),
             "unique_environment": 0,
             "has_environment": False,
-            "raw_attributes": raw_attributes_of_ecological_coastal_units,
-            "attributes": attributes_of_ecological_coastal_units,
+            "raw_properties": raw_properties_of_ecological_coastal_units,
+            "properties": properties_of_ecological_coastal_units,
             "identifier": "https://doi.org/10.5066/P9HWHSPU",
         },
         {  # EMU Success (Envelope over ocean)
@@ -83,8 +83,8 @@ def scenarios(
             "geometry": load_geometry("polygon_on_ocean"),
             "unique_environment": 7,
             "has_environment": True,
-            "raw_attributes": raw_attributes_of_ecological_marine_units,
-            "attributes": attributes_of_ecological_marine_units,
+            "raw_properties": raw_properties_of_ecological_marine_units,
+            "properties": properties_of_ecological_marine_units,
             "identifier": "https://doi.org/10.5066/P9Q6ZSGN",
         },
         {  # EMU Fail (Envelope on land)
@@ -93,8 +93,8 @@ def scenarios(
             "geometry": load_geometry("polygon_on_land"),
             "unique_environment": 0,
             "has_environment": False,
-            "raw_attributes": raw_attributes_of_ecological_marine_units,
-            "attributes": attributes_of_ecological_marine_units,
+            "raw_properties": raw_properties_of_ecological_marine_units,
+            "properties": properties_of_ecological_marine_units,
             "identifier": "https://doi.org/10.5066/P9Q6ZSGN",
         },
     ]
@@ -102,7 +102,7 @@ def scenarios(
 
 
 @pytest.fixture
-def raw_attributes_of_ecological_coastal_units():
+def raw_properties_of_ecological_coastal_units():
     return {
         "Slope",
         "Sinuosity",
@@ -119,7 +119,7 @@ def raw_attributes_of_ecological_coastal_units():
 
 
 @pytest.fixture
-def attributes_of_ecological_coastal_units():
+def properties_of_ecological_coastal_units():
     return {
         "slope",
         "sinuosity",
@@ -136,7 +136,7 @@ def attributes_of_ecological_coastal_units():
 
 
 @pytest.fixture
-def raw_attributes_of_ecological_marine_units():
+def raw_properties_of_ecological_marine_units():
     return {
         "OceanName",
         "Depth",
@@ -151,7 +151,7 @@ def raw_attributes_of_ecological_marine_units():
 
 
 @pytest.fixture
-def attributes_of_ecological_marine_units():
+def properties_of_ecological_marine_units():
     return {
         "oceanName",
         "depth",
@@ -166,7 +166,7 @@ def attributes_of_ecological_marine_units():
 
 
 @pytest.fixture
-def raw_attributes_of_world_terrestrial_ecosystems():
+def raw_properties_of_world_terrestrial_ecosystems():
     return {
         "Raster.Temp_Class",
         "Raster.Moisture_C",
@@ -178,7 +178,7 @@ def raw_attributes_of_world_terrestrial_ecosystems():
 
 
 @pytest.fixture
-def attributes_of_world_terrestrial_ecosystems():
+def properties_of_world_terrestrial_ecosystems():
     return {"temperature", "moisture", "landCover", "landForm", "climate", "ecosystem"}
 
 
@@ -247,8 +247,8 @@ class Response:
 
 @pytest.fixture
 def assert_identify():  # FIXME: success/fail is not the best description
-    """Assert properties of a successful (or unsuccessful) response from the
-    identify operation."""
+    """Assert properties and values of a successful (or unsuccessful) response
+    from the identify operation."""
 
     def _assert_identify(result: list):
         assert isinstance(result, Data)
@@ -290,7 +290,8 @@ def assert_identify():  # FIXME: success/fail is not the best description
 
 @pytest.fixture
 def assert_data_model():
-    """Assert properties of the data model returned by the convert_data method."""
+    """Assert properties of the data model returned by the convert_data
+    method."""
 
     def _assert_data_model(result: Data):
         assert isinstance(result, Data)

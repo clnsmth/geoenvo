@@ -16,7 +16,7 @@ from tests.conftest import load_response, load_geometry
 def test_set_identifier():
     """Test the set_identifier adds the identifier to the data model"""
 
-    # No attributes to start
+    # No identifier to start
     environment = EnvironmentDataModel()
     assert environment.data["dataSource"]["identifier"] is None
 
@@ -29,7 +29,7 @@ def test_set_identifier():
 def test_set_resolver():
     """Test the set_resolver adds the resolver to the data model"""
 
-    # No attributes to start
+    # No resolver to start
     environment = EnvironmentDataModel()
     assert environment.data["dataSource"]["resolver"] is None
 
@@ -42,11 +42,11 @@ def test_set_resolver():
 def test_set_date_created():
     """Test the set_date_created adds the date_created to the data model"""
 
-    # No attributes to start
+    # No dateCreated to start
     environment = EnvironmentDataModel()
     assert environment.data["dateCreated"] is None
 
-    # Date_created is present after running the method
+    # dateCreated is present after running the method
     environment.set_date_created()
     assert environment.data["dateCreated"] is not None
 
@@ -54,7 +54,7 @@ def test_set_date_created():
 def test_set_properties():
     """Test the set_properties adds the properties to the data model"""
 
-    # No attributes to start
+    # No properties to start
     environment = EnvironmentDataModel()
     assert len(environment.data["properties"]) == 0
 
@@ -78,12 +78,12 @@ def test_get_attributes():
     # The get_attributes function should return a dictionary of attributes
     # from the response object. The dictionary should contain the requested
     # attributes.
-    attributes = ["Raster.LF_ClassNa", "Raster.LC_ClassNa", "Raster.Temp_Class"]
-    result = get_attributes(response.data, attributes)
+    properties = ["Raster.LF_ClassNa", "Raster.LC_ClassNa", "Raster.Temp_Class"]
+    result = get_attributes(response.data, properties)
     assert isinstance(result, dict)
-    for a in attributes:
-        assert a in result
-        assert len(result[a]) > 0
+    for p in properties:
+        assert p in result
+        assert len(result[p]) > 0
 
     # An empty list is returned for attributes that are not present.
     result = get_attributes(response.data, ["Not a valid attribute"])
@@ -159,17 +159,17 @@ def test_data_methods_of_data_class():
     assert data.data == d
 
 
-def test_attributes_methods_of_data_class():
+def test_properties_methods_of_data_class():
     # Getter
     data = Data({"type": "Feature"})
-    assert data.attributes is not None
-    assert isinstance(data.attributes, dict)
+    assert data.properties is not None
+    assert isinstance(data.properties, dict)
 
     # Setter
-    value = {"Some attribute": "Some value"}
-    assert data.attributes != value
-    data.attributes = value
-    assert data.attributes == value
+    value = {"Some property": "Some value"}
+    assert data.properties != value
+    data.properties = value
+    assert data.properties == value
 
 
 def test_data_methods_of_environment_data_model_class():

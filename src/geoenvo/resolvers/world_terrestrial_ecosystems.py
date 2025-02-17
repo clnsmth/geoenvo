@@ -15,7 +15,7 @@ class WorldTerrestrialEcosystems(Resolver):
         super().__init__()
         self._geometry = None
         self._data = None
-        self._env_attributes = {  # TODO is this used anywhere?
+        self._env_properties = {  # TODO is this used anywhere?
             "Raster.Temp_Class": None,
             "Raster.Moisture_C": None,
             "Raster.LC_ClassNa": None,
@@ -42,12 +42,12 @@ class WorldTerrestrialEcosystems(Resolver):
         self._data = data
 
     @property
-    def env_attributes(self):
-        return self._env_attributes
+    def env_properties(self):
+        return self._env_properties
 
-    @env_attributes.setter
-    def env_attributes(self, env_attributes: dict):
-        self._env_attributes = env_attributes
+    @env_properties.setter
+    def env_properties(self, env_properties: dict):
+        self._env_properties = env_properties
 
     @property
     def grid_size(self):
@@ -116,25 +116,25 @@ class WorldTerrestrialEcosystems(Resolver):
         return result
 
     def unique_environment(self):
-        # Parse the attributes of the environment(s) in the data to a form
+        # Parse the properties of the environment(s) in the data to a form
         # that can be compared for uniqueness.
         if not self.has_environment():
             return list()
         descriptors = []
-        attributes = self.env_attributes.keys()
+        properties = self.env_properties.keys()
         results = self.data.get("results")
         for result in results:
             if not self.has_environment(result):
                 continue
             res = dict()
-            for attribute in attributes:
-                res[attribute] = result["attributes"].get(attribute)
+            for property in properties:
+                res[property] = result["attributes"].get(property)
             res = dumps(res)
             descriptors.append(res)
         descriptors = set(descriptors)
         descriptors = [loads(d) for d in descriptors]
 
-        # Convert property keys into a more readable format
+        # Convert properties into a more readable format
         new_descriptors = []
         for descriptor in descriptors:
             new_descriptor = {

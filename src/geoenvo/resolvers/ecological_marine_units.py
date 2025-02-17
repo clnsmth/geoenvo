@@ -16,7 +16,7 @@ class EcologicalMarineUnits(Resolver):
         super().__init__()
         self._geometry = None
         self._data = None
-        self._env_attributes = {
+        self._env_properties = {
             "OceanName": None,
             "Depth": None,
             "Temperature": None,
@@ -45,12 +45,12 @@ class EcologicalMarineUnits(Resolver):
         self._data = data
 
     @property
-    def env_attributes(self):
-        return self._env_attributes
+    def env_properties(self):
+        return self._env_properties
 
-    @env_attributes.setter
-    def env_attributes(self, env_attributes: dict):
-        self._env_attributes = env_attributes
+    @env_properties.setter
+    def env_properties(self, env_properties: dict):
+        self._env_properties = env_properties
 
     def resolve(self, geometry: Geometry):
         self.geometry = geometry.data  # required for filtering on depth
@@ -102,10 +102,10 @@ class EcologicalMarineUnits(Resolver):
             environment.set_identifier("https://doi.org/10.5066/P9Q6ZSGN")
             environment.set_resolver(self.__class__.__name__)
             environment.set_date_created()
-            attributes = self.set_attributes(  # TODO: Move this processing to self.unique_environment() to match WTE implmementation
-                unique_environment_attributes=unique_emu_environment
+            properties = self.set_properties(  # TODO: Move this processing to self.unique_environment() to match WTE implmementation
+                unique_environment_properties=unique_emu_environment
             )
-            environment.set_properties(attributes)
+            environment.set_properties(properties)
             result.append(Environment(data=environment.data))
         return result
 
@@ -139,45 +139,45 @@ class EcologicalMarineUnits(Resolver):
         if res > 0:
             return True
 
-    def set_attributes(self, unique_environment_attributes):
-        if len(unique_environment_attributes) == 0:
+    def set_properties(self, unique_environment_properties):
+        if len(unique_environment_properties) == 0:
             return None
-        # There are two attributes for EMU, OceanName and Name_2018, the latter
-        # of which is composed of 7 atomic attributes.
-        attributes = loads(unique_environment_attributes)["attributes"]
+        # There are two properties for EMU, OceanName and Name_2018, the latter
+        # of which is composed of 7 atomic properties.
+        properties = loads(unique_environment_properties)["attributes"]
         # Get OceanName
-        ocean_name = attributes.get("OceanName")
+        ocean_name = properties.get("OceanName")
         # Atomize Name_2018: Split on commas and remove whitespace
-        descriptors = attributes.get("Name_2018")
+        descriptors = properties.get("Name_2018")
         descriptors = descriptors.split(",")
         descriptors = [g.strip() for g in descriptors]
         # Add ocean name to front of descriptors list in preparation for the
         # zipping operation below
         descriptors = [ocean_name] + descriptors
-        env_attributes = self.env_attributes
-        atomic_attribute_labels = env_attributes.keys()
-        # Zip descriptors and atomic attribute labels
-        environments = [dict(zip(atomic_attribute_labels, descriptors))]
-        # Iterate over atomic attributes and set labels and annotations
+        env_properties = self.env_properties
+        atomic_property_labels = env_properties.keys()
+        # Zip descriptors and atomic property labels
+        environments = [dict(zip(atomic_property_labels, descriptors))]
+        # Iterate over atomic properties and set labels and annotations
         environment = environments[0]
-        # attributes = {}
-        # env_attributes
-        for attribute in environment.keys():
-            label = environment.get(attribute)
-            env_attributes[attribute] = label
+        # properties = {}
+        # env_properties
+        for property in environment.keys():
+            label = environment.get(property)
+            env_properties[property] = label
         # Add composite EMU_Description class and annotation.
         # Get environments values and join with commas
-        # TODO Fix issue where an attribute from the initialized list returned
+        # TODO Fix issue where an property from the initialized list returned
         #  by  Attributes() was missing for some reason and thus an annotation
         #  couldn't  be found for it. If arbitrary joining of empties to the
         #  annotation string  is done, then the annotation may be wrong. Best
         #  to just leave it out.
-        EMU_Descriptor = [f for f in env_attributes.values()]
+        EMU_Descriptor = [f for f in env_properties.values()]
         # Knock of the last one, which is EMU_Descriptor
         EMU_Descriptor = EMU_Descriptor[:-1]
 
         # FIXME: This is a hack to deal with the fact that some of the
-        #  attributes are None. This is a problem with the data, not the
+        #  properties are None. This is a problem with the data, not the
         #  code. The code should be fixed to deal with this. This is related
         #  to the FIXMEs in convert_codes_to_values. The issue can be
         #  reproduced by running on the geographic coverage in the file
@@ -186,21 +186,21 @@ class EcologicalMarineUnits(Resolver):
             EMU_Descriptor = ["n/a" if f is None else f for f in EMU_Descriptor]
 
         EMU_Descriptor = ", ".join(EMU_Descriptor)
-        env_attributes["EMU_Descriptor"] = EMU_Descriptor
+        env_properties["EMU_Descriptor"] = EMU_Descriptor
 
-        # Convert property keys into a more readable format
-        new_env_attributes = {
-            "oceanName": env_attributes["OceanName"],
-            "depth": env_attributes["Depth"],
-            "temperature": env_attributes["Temperature"],
-            "salinity": env_attributes["Salinity"],
-            "dissolvedOxygen": env_attributes["Dissolved Oxygen"],
-            "nitrate": env_attributes["Nitrate"],
-            "phosphate": env_attributes["Phosphate"],
-            "silicate": env_attributes["Silicate"],
-            "ecosystem": env_attributes["EMU_Descriptor"],
+        # Convert properties into a more readable format
+        new_env_properties = {
+            "oceanName": env_properties["OceanName"],
+            "depth": env_properties["Depth"],
+            "temperature": env_properties["Temperature"],
+            "salinity": env_properties["Salinity"],
+            "dissolvedOxygen": env_properties["Dissolved Oxygen"],
+            "nitrate": env_properties["Nitrate"],
+            "phosphate": env_properties["Phosphate"],
+            "silicate": env_properties["Silicate"],
+            "ecosystem": env_properties["EMU_Descriptor"],
         }
-        return new_env_attributes
+        return new_env_properties
 
     @staticmethod
     def get_annotation(
@@ -210,7 +210,7 @@ class EcologicalMarineUnits(Resolver):
 
     def convert_codes_to_values(self):
         # Convert the codes listed under the Name_2018 and OceanName
-        # attributes to the descriptive string values so the EMU
+        # properties to the descriptive string values so the EMU
         # response object more closely resembles the ECU and WTE
         # response objects and can be processed in the same way. This is a
         # tradeoff between processing the response object in a way that is
@@ -262,7 +262,7 @@ class EcologicalMarineUnits(Resolver):
         return data  # TODO: why not set to self._data?
 
     def get_environments_for_geometry_z_values(self, data):
-        # - Get the z values from the geometry attribute of the response
+        # - Get the z values from the geometry property of the response
         # object
         geometry = self._geometry
         coordinates = geometry.get("coordinates")

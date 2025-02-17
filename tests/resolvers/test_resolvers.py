@@ -6,15 +6,15 @@ def test_resolver_init(resolvers):
     for resolver in resolvers:
         assert resolver._geometry is None
         assert resolver._data is None
-        assert len(resolver._env_attributes) > 0
+        assert len(resolver._env_properties) > 0
 
 
-def test_resolver_attributes(scenarios):
-    """Test that the Resolver instance classes have the expected attributes"""
+def test_resolver_properties(scenarios):
+    """Test that the Resolver instance classes have the expected properties"""
     for scenario in scenarios:
-        attributes = scenario.get("resolvers")._env_attributes
-        expected_attributes = scenario.get("raw_attributes")
-        assert all([key in expected_attributes for key in attributes.keys()])
+        properties = scenario.get("resolvers")._env_properties
+        expected_properties = scenario.get("raw_properties")
+        assert all([key in expected_properties for key in properties.keys()])
 
 
 def test_get_unique_environments(scenarios):
@@ -109,12 +109,12 @@ def test_data(scenarios):
         assert resolver.data == scenario["response"]
 
 
-def test_env_attributes(scenarios):
+def test_env_properties(scenarios):
     for scenario in scenarios:
         # Get
         resolver = scenario["resolvers"]
-        assert resolver.env_attributes is not None
+        assert resolver.env_properties is not None
         # Set
-        default_value = resolver.env_attributes
-        resolver.env_attributes = {"test": "test"}
-        assert resolver.env_attributes != default_value
+        default_value = resolver.env_properties
+        resolver.env_properties = {"test": "test"}
+        assert resolver.env_properties != default_value

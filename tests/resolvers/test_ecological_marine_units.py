@@ -47,7 +47,7 @@ def test_get_environments_for_geometry_z_values():
 
     Rather than using a set of geographic coverage fixtures, each exemplifying
     the scenarios, we reduce the number of API calls to the EMU server by
-    modifying the z values of the response objects geometry attribute.
+    modifying the z values of the response objects geometry property.
 
     The results of the assertions were determined by visual inspection of the
     EMU server map service interface at the geographic coverage represented in

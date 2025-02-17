@@ -15,7 +15,7 @@ class EcologicalCoastalUnits(Resolver):
         super().__init__()
         self._geometry = None
         self._data = None
-        self._env_attributes = {
+        self._env_properties = {
             "Slope": None,
             "Sinuosity": None,
             "Erodibility": None,
@@ -47,15 +47,15 @@ class EcologicalCoastalUnits(Resolver):
         self._data = data
 
     @property
-    def env_attributes(self):
-        return self._env_attributes
+    def env_properties(self):
+        return self._env_properties
 
-    @env_attributes.setter
-    def env_attributes(self, env_attributes: dict):
-        self._env_attributes = env_attributes
+    @env_properties.setter
+    def env_properties(self, env_properties: dict):
+        self._env_properties = env_properties
 
     @property
-    def buffer(self, buffer: float):
+    def buffer(self):
         return self._buffer
 
     @buffer.setter
@@ -113,18 +113,18 @@ class EcologicalCoastalUnits(Resolver):
             environment.set_identifier("https://doi.org/10.5066/P9HWHSPU")
             environment.set_resolver(self.__class__.__name__)
             environment.set_date_created()
-            attributes = self.set_attributes(  # TODO: Move this processing to self.unique_environment() to match WTE implmementation
-                unique_environment_attributes=unique_ecu_environment
+            properties = self.set_properties(  # TODO: Move this processing to self.unique_environment() to match WTE implmementation
+                unique_environment_properties=unique_ecu_environment
             )
-            environment.set_properties(attributes)
+            environment.set_properties(properties)
             result.append(Environment(data=environment.data))
         return result
 
     def unique_environment(self):
         if not self.has_environment():
             return list()
-        attribute = "CSU_Descriptor"
-        descriptors = get_attributes(self._data, [attribute])[attribute]
+        property = "CSU_Descriptor"
+        descriptors = get_attributes(self._data, [property])[property]
         descriptors = set(descriptors)
         descriptors = list(descriptors)
         return descriptors
@@ -138,57 +138,57 @@ class EcologicalCoastalUnits(Resolver):
         if res > 0:
             return True
 
-    def set_attributes(self, unique_environment_attributes):
-        if len(unique_environment_attributes) == 0:
+    def set_properties(self, unique_environment_properties):
+        if len(unique_environment_properties) == 0:
             return None
-        # There is only one attribute for ECU, CSU_Descriptor, which is
-        # composed of 10 atomic attributes.
-        descriptors = unique_environment_attributes
+        # There is only one property for ECU, CSU_Descriptor, which is
+        # composed of 10 atomic properties.
+        descriptors = unique_environment_properties
         # Atomize: Split on commas and remove whitespace
         descriptors = descriptors.split(",")
         descriptors = [g.strip() for g in descriptors]
-        atomic_attribute_labels = self._env_attributes.keys()
-        # Zip descriptors and atomic attribute labels
-        environments = [dict(zip(atomic_attribute_labels, descriptors))]
-        # Iterate over atomic attributes and set labels and annotations
+        atomic_property_labels = self._env_properties.keys()
+        # Zip descriptors and atomic property labels
+        environments = [dict(zip(atomic_property_labels, descriptors))]
+        # Iterate over atomic properties and set labels and annotations
         environment = environments[0]
-        # attributes = {}
-        # self._env_attributes
-        env_attributes = self._env_attributes
-        for attribute in environment.keys():
-            label = environment.get(attribute)
-            env_attributes[attribute] = label
+        # properties = {}
+        # self._env_properties
+        env_properties = self._env_properties
+        for property in environment.keys():
+            label = environment.get(property)
+            env_properties[property] = label
         # Add composite CSU_Description class and annotation.
         # Get environments values and join with commas
-        # TODO Fix issue where an attribute from the initialized list returned
+        # TODO Fix issue where an property from the initialized list returned
         #  by  Attributes() was missing for some reason and thus an annotation
         #  couldn't  be found for it. If arbitrary joining of empties to the
         #  annotation string is done, then the annotation may be wrong. Best to
         #  just leave it out.
-        CSU_Descriptor = [f for f in env_attributes.values()]
+        CSU_Descriptor = [f for f in env_properties.values()]
         # Knock of the last one, which is CSU_Descriptor
         CSU_Descriptor = CSU_Descriptor[:-1]
         CSU_Descriptor = ", ".join(CSU_Descriptor)
         # Knock of the last one, which is CSU_Descriptor
-        env_attributes["CSU_Descriptor"] = CSU_Descriptor
+        env_properties["CSU_Descriptor"] = CSU_Descriptor
 
-        # Convert property keys into a more readable format
-        new_env_attributes = {
-            "slope": env_attributes["Slope"],
-            "sinuosity": env_attributes["Sinuosity"],
-            "erodibility": env_attributes["Erodibility"],
-            "temperatureAndMoistureRegime": env_attributes[
+        # Convert properties into a more readable format
+        new_env_properties = {
+            "slope": env_properties["Slope"],
+            "sinuosity": env_properties["Sinuosity"],
+            "erodibility": env_properties["Erodibility"],
+            "temperatureAndMoistureRegime": env_properties[
                 "Temperature and Moisture Regime"
             ],
-            "riverDischarge": env_attributes["River Discharge"],
-            "waveHeight": env_attributes["Wave Height"],
-            "tidalRange": env_attributes["Tidal Range"],
-            "marinePhysicalEnvironment": env_attributes["Marine Physical Environment"],
-            "turbidity": env_attributes["Turbidity"],
-            "chlorophyll": env_attributes["Chlorophyll"],
-            "ecosystem": env_attributes["CSU_Descriptor"],
+            "riverDischarge": env_properties["River Discharge"],
+            "waveHeight": env_properties["Wave Height"],
+            "tidalRange": env_properties["Tidal Range"],
+            "marinePhysicalEnvironment": env_properties["Marine Physical Environment"],
+            "turbidity": env_properties["Turbidity"],
+            "chlorophyll": env_properties["Chlorophyll"],
+            "ecosystem": env_properties["CSU_Descriptor"],
         }
-        return new_env_attributes
+        return new_env_properties
 
     @staticmethod
     def get_annotation(

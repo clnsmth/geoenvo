@@ -10,13 +10,13 @@ package "geoenvo" {
     interface Resolver {
         # geometry : dictionary
         # data : dictionary
-        # env_attributes : dictionary
+        # env_properties : dictionary
         + Resolver()
         + resolve(geometry : Geometry) : Environment[0..*]
         - convert_data() : dictionary
         - unique_environment() : dictionary[*]
         - has_environment() : bool
-        - set_attributes() : Resolver
+        - set_properties() : Resolver
         - apply_vocabulary_mapping() : string
     }
 

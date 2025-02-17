@@ -83,7 +83,7 @@ class EnvironmentDataModel:  # TODO: rename to EnvironmentDataModel
 class Data:
     def __init__(self, data: dict = dict()):
         self._data = data
-        self._attributes = {
+        self._properties = {
             "type": "Feature",
             "identifier": None,
             "geometry": None,
@@ -99,12 +99,12 @@ class Data:
         self._data = data
 
     @property
-    def attributes(self):
-        return self._attributes
+    def properties(self):
+        return self._properties
 
-    @attributes.setter
-    def attributes(self, attributes: dict):
-        self._attributes = attributes
+    @properties.setter
+    def properties(self, properties: dict):
+        self._properties = properties
 
     def write(self, file_path: str) -> None:
         with open(file_path, "w") as file:
@@ -136,7 +136,7 @@ class Data:
             with open(sssom_meta_file, mode="r", encoding="utf-8") as f:
                 sssom_meta = safe_load(f)
 
-            # Map each property to an ENVO term, if possible
+            # Map each property value to an ENVO term, if possible
             envo_terms = []
             for key, value in environment["properties"].items():
                 try:
