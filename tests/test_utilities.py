@@ -3,7 +3,7 @@
 import json
 from importlib.resources import files
 from geoenvo.geometry import Geometry
-from geoenvo.resolvers import WorldTerrestrialEcosystems
+from geoenvo.data_sources import WorldTerrestrialEcosystems
 from geoenvo.utilities import (
     EnvironmentDataModel,
     get_attributes,
@@ -26,17 +26,17 @@ def test_set_identifier():
     assert environment.data["dataSource"]["identifier"] == identifier
 
 
-def test_set_resolver():
-    """Test the set_resolver adds the resolver to the data model"""
+def test_set_data_source():
+    """Test the set_data_source adds the data_source to the data model"""
 
-    # No resolver to start
+    # No data_source to start
     environment = EnvironmentDataModel()
-    assert environment.data["dataSource"]["resolver"] is None
+    assert environment.data["dataSource"]["name"] is None
 
-    # resolver is present after running the method
-    resolver = "Some arbitrary resolver"
-    environment.set_resolver(resolver)
-    assert environment.data["dataSource"]["resolver"] == resolver
+    # data_source is present after running the method
+    data_source = "Some arbitrary data source"
+    environment.set_data_source(data_source)
+    assert environment.data["dataSource"]["name"] == data_source
 
 
 def test_set_date_created():
@@ -99,8 +99,8 @@ def test_compile_response(scenarios, mocker, empty_data_model):
     environments = []
     for scenario in scenarios:
         mocker.patch("requests.get", return_value=scenario.get("response"))
-        resolver = scenario["resolvers"]
-        environment = resolver.resolve(Geometry(scenario["geometry"]))
+        data_source = scenario["data_source"]
+        environment = data_source.resolve(Geometry(scenario["geometry"]))
         environments.extend(environment)
     identifier = "Some identifier"
     geometry = scenarios[0]["geometry"]  # Any geometry will do

@@ -1,16 +1,16 @@
-"""The resolvers module"""
+"""The data_source module"""
 
 import warnings
 from json import dumps, loads
 import requests
-from geoenvo.resolver import Resolver
+from geoenvo.data_sources.data_source import DataSource
 from geoenvo.geometry import Geometry
 from geoenvo.environment import Environment
 from geoenvo.utilities import user_agent
 from geoenvo.utilities import _json_extract, EnvironmentDataModel
 
 
-class WorldTerrestrialEcosystems(Resolver):
+class WorldTerrestrialEcosystems(DataSource):
     def __init__(self):
         super().__init__()
         self._geometry = None
@@ -109,7 +109,7 @@ class WorldTerrestrialEcosystems(Resolver):
         for unique_wte_environment in unique_wte_environments:
             environment = EnvironmentDataModel()
             environment.set_identifier("https://doi.org/10.5066/P9DO61LP")
-            environment.set_resolver(self.__class__.__name__)
+            environment.set_data_source(self.__class__.__name__)
             environment.set_date_created()
             environment.set_properties(unique_wte_environment)
             result.append(Environment(data=environment.data))
@@ -151,7 +151,7 @@ class WorldTerrestrialEcosystems(Resolver):
     def has_environment(self, data=None):
         """
         The data parameter enables the method to be used with a different
-        dataset than the one stored in the resolver instance.
+        dataset than the one stored in the data source instance.
         """
         if data is None:
             data = self.data

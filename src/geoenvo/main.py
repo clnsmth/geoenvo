@@ -1,21 +1,21 @@
 """The main2 module"""
 
 from geoenvo.identifier import Identifier
-from geoenvo.resolvers import EcologicalCoastalUnits
-from geoenvo.resolvers import EcologicalMarineUnits
-from geoenvo.resolvers import WorldTerrestrialEcosystems
+from geoenvo.data_sources import EcologicalCoastalUnits
+from geoenvo.data_sources import EcologicalMarineUnits
+from geoenvo.data_sources import WorldTerrestrialEcosystems
 from geoenvo.environment import Environment
 
 if __name__ == "__main__":
 
     # Configure
     geometry = "5"  # TODO: Update this script to use a real geometry
-    resolvers = [
+    data_sources = [
         WorldTerrestrialEcosystems(),
         EcologicalCoastalUnits(),
         EcologicalMarineUnits(),
     ]
-    identifier = Identifier(resolvers)
+    identifier = Identifier(data_sources)
 
     # Resolve
     environment = identifier.identify(geometry)

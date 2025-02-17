@@ -1,10 +1,10 @@
-"""The resolvers module"""
+"""The data_source module"""
 
 from abc import ABC, abstractmethod
 from geoenvo.geometry import Geometry
 
 
-class Resolver(ABC):
+class DataSource(ABC):
     def __init__(self):
         self._geometry = None  # TODO: should be dict?
         self._data = None  # TODO: should be dict?

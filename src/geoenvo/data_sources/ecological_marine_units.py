@@ -1,17 +1,17 @@
-"""The resolvers module"""
+"""The data_source module"""
 
 from datetime import datetime
 from json import dumps, loads
 import pandas as pd
 import requests
-from geoenvo.resolver import Resolver
+from geoenvo.data_sources.data_source import DataSource
 from geoenvo.geometry import Geometry
 from geoenvo.environment import Environment
 from geoenvo.utilities import user_agent
 from geoenvo.utilities import EnvironmentDataModel
 
 
-class EcologicalMarineUnits(Resolver):
+class EcologicalMarineUnits(DataSource):
     def __init__(self):
         super().__init__()
         self._geometry = None
@@ -100,7 +100,7 @@ class EcologicalMarineUnits(Resolver):
         for unique_emu_environment in unique_emu_environments:
             environment = EnvironmentDataModel()
             environment.set_identifier("https://doi.org/10.5066/P9Q6ZSGN")
-            environment.set_resolver(self.__class__.__name__)
+            environment.set_data_source(self.__class__.__name__)
             environment.set_date_created()
             properties = self.set_properties(  # TODO: Move this processing to self.unique_environment() to match WTE implmementation
                 unique_environment_properties=unique_emu_environment

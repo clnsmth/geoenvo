@@ -8,9 +8,9 @@ from pytest_mock import mocker
 from requests import get
 
 from geoenvo.geometry import Geometry
-from geoenvo.resolvers import WorldTerrestrialEcosystems
-from geoenvo.resolvers import EcologicalCoastalUnits
-from geoenvo.resolvers import EcologicalMarineUnits
+from geoenvo.data_sources import WorldTerrestrialEcosystems
+from geoenvo.data_sources import EcologicalCoastalUnits
+from geoenvo.data_sources import EcologicalMarineUnits
 from geoenvo.utilities import user_agent, compile_response
 from tests.conftest import load_geometry, load_response
 
@@ -18,7 +18,7 @@ from tests.conftest import load_geometry, load_response
 def create_mock_response_content(
     output_directory: Path = files("tests.data.response"),
 ) -> None:
-    """Get response content for each resolver, and for both success and fail
+    """Get response content for each data_source, and for both success and fail
     scenarios, then write to file in tests/data. Success scenarios are when the
     input geometry returns results. Fail scenarios are when the input geometry
     returns no results.
@@ -26,56 +26,56 @@ def create_mock_response_content(
 
     # WTE Success
     geometry = Geometry(load_geometry("polygon_on_land"))
-    resolver = WorldTerrestrialEcosystems()
-    response = resolver._request(geometry)
+    data_source = WorldTerrestrialEcosystems()
+    response = data_source._request(geometry)
     json = dumps(response, indent=4)
     with open(output_directory.joinpath("wte_success.json"), "w") as f:
         f.write(json)
 
     # WTE Fail
     geometry = Geometry(load_geometry("point_on_ocean"))
-    resolver = WorldTerrestrialEcosystems()
-    response = resolver._request(geometry)
+    data_source = WorldTerrestrialEcosystems()
+    response = data_source._request(geometry)
     json = dumps(response, indent=4)
     with open(output_directory.joinpath("wte_fail.json"), "w") as f:
         f.write(json)
 
     # ECU Success
     geometry = Geometry(load_geometry("polygon_on_ocean_2"))
-    resolver = EcologicalCoastalUnits()
-    response = resolver._request(geometry)
+    data_source = EcologicalCoastalUnits()
+    response = data_source._request(geometry)
     json = dumps(response, indent=4)
     with open(output_directory.joinpath("ecu_success.json"), "w") as f:
         f.write(json)
 
     # ECU Fail
     geometry = Geometry(load_geometry("polygon_on_land"))
-    resolver = EcologicalCoastalUnits()
-    response = resolver._request(geometry)
+    data_source = EcologicalCoastalUnits()
+    response = data_source._request(geometry)
     json = dumps(response, indent=4)
     with open(output_directory.joinpath("ecu_fail.json"), "w") as f:
         f.write(json)
 
     # EMU Success
     geometry = Geometry(load_geometry("polygon_on_ocean"))
-    resolver = EcologicalMarineUnits()
-    response = resolver._request(geometry)
+    data_source = EcologicalMarineUnits()
+    response = data_source._request(geometry)
     json = dumps(response, indent=4)
     with open(output_directory.joinpath("emu_success.json"), "w") as f:
         f.write(json)
 
     # EMU Fail
     geometry = Geometry(load_geometry("polygon_on_land"))
-    resolver = EcologicalMarineUnits()
-    response = resolver._request(geometry)
+    data_source = EcologicalMarineUnits()
+    response = data_source._request(geometry)
     json = dumps(response, indent=4)
     with open(output_directory.joinpath("emu_fail.json"), "w") as f:
         f.write(json)
 
     # EMU Success (another one, for testing depth inputs)
     geometry = Geometry(load_geometry("point_on_ocean_with_depth"))
-    resolver = EcologicalMarineUnits()
-    response = resolver._request(geometry)
+    data_source = EcologicalMarineUnits()
+    response = data_source._request(geometry)
     json = dumps(response, indent=4)
     with open(
         output_directory.joinpath("emu_success_point_on_ocean_with_depth.json"), "w"
@@ -89,9 +89,9 @@ def create_schema_org_fixture(
     # This code should match that of the data_model fixture for purposes of
     # comparison.
 
-    resolver = WorldTerrestrialEcosystems()
+    data_source = WorldTerrestrialEcosystems()
     geometry = Geometry(load_geometry("polygon_on_land"))
-    environment = resolver.resolve(geometry)
+    environment = data_source.resolve(geometry)
     data = compile_response(
         geometry,
         environment,

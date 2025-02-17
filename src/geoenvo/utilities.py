@@ -48,7 +48,7 @@ class EnvironmentDataModel:  # TODO: rename to EnvironmentDataModel
     def __init__(self):
         self._data = {
             "type": "Environment",
-            "dataSource": {"identifier": None, "resolver": None},
+            "dataSource": {"identifier": None, "name": None},
             "dateCreated": None,
             "properties": {},
             "mappedProperties": [],
@@ -67,8 +67,8 @@ class EnvironmentDataModel:  # TODO: rename to EnvironmentDataModel
         self.data["dataSource"]["identifier"] = identifier
 
     # TODO convert to getter/setter pair
-    def set_resolver(self, resolver):
-        self.data["dataSource"]["resolver"] = resolver
+    def set_data_source(self, data_source):
+        self.data["dataSource"]["name"] = data_source
 
     # TODO convert to getter/setter pair
     def set_date_created(self):
@@ -120,14 +120,14 @@ class Data:
         for environment in self.data["properties"]["environment"]:
 
             # Load SSSOM of environment for term mapping
-            resolver = environment["dataSource"]["resolver"]
+            data_source = environment["dataSource"]["name"]
             sssom_file = importlib.resources.files("geoenvo.data.sssom").joinpath(
-                f"{resolver}-{vocabulary.lower()}.sssom.tsv"
+                f"{data_source}-{vocabulary.lower()}.sssom.tsv"
             )
             if not sssom_file.exists():
                 return []
             sssom_meta_file = importlib.resources.files("geoenvo.data.sssom").joinpath(
-                f"{resolver}-{vocabulary.lower()}.sssom.yml"
+                f"{data_source}-{vocabulary.lower()}.sssom.yml"
             )
             if not sssom_meta_file.exists():
                 return []

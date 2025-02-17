@@ -1,9 +1,9 @@
-"""Test the EcologicalMarineUnits resolver"""
+"""Test the EcologicalMarineUnits data source"""
 
 from json import loads
 
 from tests.conftest import load_response, load_geometry
-from geoenvo.resolvers import EcologicalMarineUnits
+from geoenvo.data_sources import EcologicalMarineUnits
 
 
 def test_convert_codes_to_values():
@@ -12,25 +12,25 @@ def test_convert_codes_to_values():
     Codes listed in the response object should be converted to their string
     value equivalents."""
 
-    # Successful response from the EMU resolver
-    resolver = EcologicalMarineUnits()
-    resolver._data = load_response("emu_success").json()
+    # Successful response from the EMU data source
+    data_source = EcologicalMarineUnits()
+    data_source._data = load_response("emu_success").json()
     # Codes are numeric values initially
-    for feature in resolver._data.get("features"):
+    for feature in data_source._data.get("features"):
         assert isinstance(feature.get("attributes").get("Name_2018"), int)
         assert isinstance(feature.get("attributes").get("OceanName"), int)
     # Codes are strings after conversion
-    resolver.convert_codes_to_values()
-    for feature in resolver._data.get("features"):
+    data_source.convert_codes_to_values()
+    for feature in data_source._data.get("features"):
         assert isinstance(feature.get("attributes").get("Name_2018"), str)
         assert isinstance(feature.get("attributes").get("OceanName"), str)
 
-    # Unsuccessful response from the EMU resolver
-    resolver = EcologicalMarineUnits()
-    resolver._data = load_response("emu_fail").json()
+    # Unsuccessful response from the EMU data source
+    data_source = EcologicalMarineUnits()
+    data_source._data = load_response("emu_fail").json()
     # The response is an empty list
-    assert isinstance(resolver._data.get("features"), list)
-    assert len(resolver._data.get("features")) == 0
+    assert isinstance(data_source._data.get("features"), list)
+    assert len(data_source._data.get("features")) == 0
 
 
 def test_get_environments_for_geometry_z_values():
@@ -56,12 +56,12 @@ def test_get_environments_for_geometry_z_values():
     """
 
     # A set of tests on a point location with z values
-    resolver = EcologicalMarineUnits()
-    resolver._data = load_response("emu_success_point_on_ocean_with_depth").json()
-    resolver._geometry = load_geometry("point_on_ocean_with_depth")
+    data_source = EcologicalMarineUnits()
+    data_source._data = load_response("emu_success_point_on_ocean_with_depth").json()
+    data_source._geometry = load_geometry("point_on_ocean_with_depth")
 
     # Single z value within EMU returns one EMU
-    environments = resolver.get_environments_for_geometry_z_values(resolver._data)
+    environments = data_source.get_environments_for_geometry_z_values(data_source._data)
     expected_environments = {18}
     assert isinstance(environments, list)
     for environment in environments:
@@ -70,8 +70,8 @@ def test_get_environments_for_geometry_z_values():
     assert len(environments) == 1
 
     # Single z value on the border between two EMUs returns two EMUs
-    resolver._geometry["coordinates"][2] = -30
-    environments = resolver.get_environments_for_geometry_z_values(resolver._data)
+    data_source._geometry["coordinates"][2] = -30
+    environments = data_source.get_environments_for_geometry_z_values(data_source._data)
     expected_environments = {18, 24}
     assert isinstance(environments, list)
     for environment in environments:
@@ -80,8 +80,8 @@ def test_get_environments_for_geometry_z_values():
     assert len(environments) == 2
 
     # No z values returns all EMUs.
-    resolver._geometry["coordinates"][2] = None
-    environments = resolver.get_environments_for_geometry_z_values(resolver._data)
+    data_source._geometry["coordinates"][2] = None
+    environments = data_source.get_environments_for_geometry_z_values(data_source._data)
     expected_environments = {18, 24, 11, 26, 8, 19}
     assert isinstance(environments, list)
     for environment in environments:

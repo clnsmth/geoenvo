@@ -6,9 +6,9 @@ import pytest
 from importlib.resources import files
 
 from geoenvo.geometry import Geometry
-from geoenvo.resolvers import EcologicalCoastalUnits
-from geoenvo.resolvers import EcologicalMarineUnits
-from geoenvo.resolvers import WorldTerrestrialEcosystems
+from geoenvo.data_sources import EcologicalCoastalUnits
+from geoenvo.data_sources import EcologicalMarineUnits
+from geoenvo.data_sources import WorldTerrestrialEcosystems
 from geoenvo.utilities import Data, compile_response
 
 
@@ -18,13 +18,13 @@ def use_mock():
 
 
 @pytest.fixture
-def resolvers():
-    resolvers = [  # List of resolver instances
+def data_sources():
+    data_sources = [  # List of DataSource instances
         EcologicalCoastalUnits(),
         EcologicalMarineUnits(),
         WorldTerrestrialEcosystems(),
     ]
-    return resolvers
+    return data_sources
 
 
 @pytest.fixture
@@ -38,7 +38,7 @@ def scenarios(
 ):
     scenarios = [
         {  # WTE Success (Envelop on land)
-            "resolvers": WorldTerrestrialEcosystems(),
+            "data_source": WorldTerrestrialEcosystems(),
             "response": load_response("wte_success"),
             "geometry": load_geometry("polygon_on_land"),
             "unique_environment": 1,
@@ -48,7 +48,7 @@ def scenarios(
             "identifier": "https://doi.org/10.5066/P9DO61LP",
         },
         {  # WTE Fail (A point over the ocean)
-            "resolvers": WorldTerrestrialEcosystems(),
+            "data_source": WorldTerrestrialEcosystems(),
             "response": load_response("wte_fail"),
             "geometry": load_geometry("point_on_ocean"),
             "unique_environment": 0,
@@ -58,7 +58,7 @@ def scenarios(
             "identifier": "https://doi.org/10.5066/P9DO61LP",
         },
         {  # ECU Success (Envelop spanning coastal area)
-            "resolvers": EcologicalCoastalUnits(),
+            "data_source": EcologicalCoastalUnits(),
             "response": load_response("ecu_success"),
             "geometry": load_geometry("polygon_on_land_and_ocean"),
             "unique_environment": 34,
@@ -68,7 +68,7 @@ def scenarios(
             "identifier": "https://doi.org/10.5066/P9HWHSPU",
         },
         {  # ECU Fail (Envelope on land)
-            "resolvers": EcologicalCoastalUnits(),
+            "data_source": EcologicalCoastalUnits(),
             "response": load_response("ecu_fail"),
             "geometry": load_geometry("polygon_on_land"),
             "unique_environment": 0,
@@ -78,7 +78,7 @@ def scenarios(
             "identifier": "https://doi.org/10.5066/P9HWHSPU",
         },
         {  # EMU Success (Envelope over ocean)
-            "resolvers": EcologicalMarineUnits(),
+            "data_source": EcologicalMarineUnits(),
             "response": load_response("emu_success"),
             "geometry": load_geometry("polygon_on_ocean"),
             "unique_environment": 7,
@@ -88,7 +88,7 @@ def scenarios(
             "identifier": "https://doi.org/10.5066/P9Q6ZSGN",
         },
         {  # EMU Fail (Envelope on land)
-            "resolvers": EcologicalMarineUnits(),
+            "data_source": EcologicalMarineUnits(),
             "response": load_response("emu_fail"),
             "geometry": load_geometry("polygon_on_land"),
             "unique_environment": 0,
@@ -186,7 +186,7 @@ def properties_of_world_terrestrial_ecosystems():
 def empty_environment_data_model():
     return {
         "type": "Environment",
-        "dataSource": {"identifier": None, "resolver": None},
+        "dataSource": {"identifier": None, "name": None},
         "dateCreated": None,
         "properties": {},
         "mappedProperties": [],
@@ -207,9 +207,9 @@ def empty_data_model():
 def data_model(mocker):
     mocker.patch("requests.get", return_value=load_response("wte_success"))
 
-    resolver = WorldTerrestrialEcosystems()
+    data_source = WorldTerrestrialEcosystems()
     geometry = Geometry(load_geometry("polygon_on_land"))
-    environment = resolver.resolve(geometry)
+    environment = data_source.resolve(geometry)
 
     data = compile_response(
         geometry,

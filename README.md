@@ -20,7 +20,7 @@ pip install git+https://github.com/clnsmth/geoenvo.git@main
 
 ```python
 from json import dumps
-from geoenvo.resolvers import (
+from geoenvo.data_sources import (
     WorldTerrestrialEcosystems,
 )
 from geoenvo.identifier import Identifier
@@ -40,7 +40,7 @@ polygon_on_land = {
 geometry = Geometry(polygon_on_land)
 
 # Configure the identifier with one or more data sources
-identifier = Identifier(resolver=[WorldTerrestrialEcosystems()])
+identifier = Identifier(data_source=[WorldTerrestrialEcosystems()])
 
 # Identify the environment for the geometry and map to ENVO
 result = identifier.identify(
@@ -92,7 +92,7 @@ print(dumps(result.data, indent=2))
         "type": "Environment",
         "dataSource": {
           "identifier": "https://doi.org/10.5066/P9DO61LP",
-          "resolver": "WorldTerrestrialEcosystems"
+          "name": "WorldTerrestrialEcosystems"
         },
         "dateCreated": "2025-02-14 11:51:57",
         "properties": {

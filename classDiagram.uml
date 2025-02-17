@@ -2,31 +2,31 @@
 package "geoenvo" {
 
     class Identifier {
-        # resolver : Resolver[*]
-        + Identifier(resolver : Resolver[*])
+        # data_source : DataSource[*]
+        + Identifier(data_source : DataSource[*])
         + identify(geometry : Geometry) : Data
     }
 
-    interface Resolver {
+    interface DataSource {
         # geometry : dictionary
         # data : dictionary
         # env_properties : dictionary
-        + Resolver()
+        + DataSource()
         + resolve(geometry : Geometry) : Environment[0..*]
         - convert_data() : dictionary
         - unique_environment() : dictionary[*]
         - has_environment() : bool
-        - set_properties() : Resolver
+        - set_properties() : DataSource
         - apply_vocabulary_mapping() : string
     }
 
-    class WorldTerrestrialEcosystems implements Resolver {
+    class WorldTerrestrialEcosystems implements DataSource {
     }
 
-    class EcologicalCoastalUnits implements Resolver {
+    class EcologicalCoastalUnits implements DataSource {
     }
 
-    class EcologicalMarineUnits implements Resolver {
+    class EcologicalMarineUnits implements DataSource {
     }
 
     class Geometry {
@@ -55,10 +55,10 @@ package "geoenvo" {
         + to_schema_org() : dictionary
     }
 
-    Identifier "1" -- "1..*" Resolver
+    Identifier "1" -- "1..*" DataSource
     Identifier "1" -- "1" Data
     Identifier "1" -- "1" Geometry
-    Resolver "1" -- "0..*" Environment
-    Resolver "1" -- "1" Geometry
+    DataSource "1" -- "0..*" Environment
+    DataSource "1" -- "1" Geometry
 }
 @enduml

@@ -1,18 +1,18 @@
-"""Test the resolvers modules"""
+"""Test the data_source modules"""
 
 
-def test_resolver_init(resolvers):
-    """Test the Resolver class initialization"""
-    for resolver in resolvers:
-        assert resolver._geometry is None
-        assert resolver._data is None
-        assert len(resolver._env_properties) > 0
+def test_data_source_init(data_sources):
+    """Test the DataSource class initialization"""
+    for data_source in data_sources:
+        assert data_source._geometry is None
+        assert data_source._data is None
+        assert len(data_source._env_properties) > 0
 
 
-def test_resolver_properties(scenarios):
-    """Test that the Resolver instance classes have the expected properties"""
+def test_data_source_properties(scenarios):
+    """Test that the DataSource instance classes have the expected properties"""
     for scenario in scenarios:
-        properties = scenario.get("resolvers")._env_properties
+        properties = scenario.get("data_source")._env_properties
         expected_properties = scenario.get("raw_properties")
         assert all([key in expected_properties for key in properties.keys()])
 
@@ -31,13 +31,13 @@ def test_get_unique_environments(scenarios):
     than one environment per query.
     """
     for scenario in scenarios:
-        # Configure the resolver
-        resolver = scenario["resolvers"]
-        resolver._data = scenario["response"].json()
-        resolver._geometry = scenario["geometry"]
+        # Configure the data_source
+        data_source = scenario["data_source"]
+        data_source._data = scenario["response"].json()
+        data_source._geometry = scenario["geometry"]
 
         # Run the method
-        unique_environments = resolver.unique_environment()
+        unique_environments = data_source.unique_environment()
         assert isinstance(unique_environments, list)
         assert len(unique_environments) == scenario["unique_environment"]
 
@@ -45,26 +45,26 @@ def test_get_unique_environments(scenarios):
 def test_has_environment(scenarios):
     """Test the has_environment method."""
     for scenario in scenarios:
-        resolver = scenario["resolvers"]
-        resolver._data = scenario["response"].json()
-        resolver._geometry = scenario["geometry"]
-        assert resolver.has_environment() == scenario["has_environment"]
+        data_source = scenario["data_source"]
+        data_source._data = scenario["response"].json()
+        data_source._geometry = scenario["geometry"]
+        assert data_source.has_environment() == scenario["has_environment"]
 
 
 def test_convert_data(scenarios, empty_environment_data_model):
     """Test the convert_data method.
 
-    Configure the resolver and convert the raw HTTP response into the data
+    Configure the data_source and convert the raw HTTP response into the data
     model of the Environment class. The properties of the data model are a
-    little different for each resolver.
+    little different for each data_source.
     """
     for scenario in scenarios:
 
         # Configure and run
-        resolver = scenario["resolvers"]
-        resolver._data = scenario["response"].json()
-        resolver._geometry = scenario["geometry"]
-        result = resolver.convert_data()
+        data_source = scenario["data_source"]
+        data_source._data = scenario["response"].json()
+        data_source._geometry = scenario["geometry"]
+        result = data_source.convert_data()
 
         # Test the returned data
         if len(result) > 0:
@@ -74,7 +74,7 @@ def test_convert_data(scenarios, empty_environment_data_model):
                 # dataSource keys and values
                 assert item._data["dataSource"]["identifier"] == scenario["identifier"]
                 assert (
-                    item._data["dataSource"]["resolver"] == resolver.__class__.__name__
+                    item._data["dataSource"]["name"] == data_source.__class__.__name__
                 )
                 # dateCreated key and value
                 assert item._data["dateCreated"] is not None
@@ -92,29 +92,29 @@ def test_convert_data(scenarios, empty_environment_data_model):
 def test_geometry(scenarios):
     for scenario in scenarios:
         # Get
-        resolver = scenario["resolvers"]
-        assert resolver.geometry is None
+        data_source = scenario["data_source"]
+        assert data_source.geometry is None
         # Set
-        resolver.geometry = scenario["geometry"]
-        assert resolver.geometry == scenario["geometry"]
+        data_source.geometry = scenario["geometry"]
+        assert data_source.geometry == scenario["geometry"]
 
 
 def test_data(scenarios):
     for scenario in scenarios:
         # Get
-        resolver = scenario["resolvers"]
-        assert resolver.data is None
+        data_source = scenario["data_source"]
+        assert data_source.data is None
         # Set
-        resolver.data = scenario["response"]
-        assert resolver.data == scenario["response"]
+        data_source.data = scenario["response"]
+        assert data_source.data == scenario["response"]
 
 
 def test_env_properties(scenarios):
     for scenario in scenarios:
         # Get
-        resolver = scenario["resolvers"]
-        assert resolver.env_properties is not None
+        data_source = scenario["data_source"]
+        assert data_source.env_properties is not None
         # Set
-        default_value = resolver.env_properties
-        resolver.env_properties = {"test": "test"}
-        assert resolver.env_properties != default_value
+        default_value = data_source.env_properties
+        data_source.env_properties = {"test": "test"}
+        assert data_source.env_properties != default_value

@@ -2,8 +2,8 @@
 
 from geoenvo.identifier import Identifier
 from geoenvo.geometry import Geometry
-from geoenvo.resolvers import WorldTerrestrialEcosystems
-from geoenvo.resolvers import EcologicalMarineUnits
+from geoenvo.data_sources import WorldTerrestrialEcosystems
+from geoenvo.data_sources import EcologicalMarineUnits
 
 
 def test_identify(use_mock, scenarios, assert_identify, mocker):
@@ -13,8 +13,8 @@ def test_identify(use_mock, scenarios, assert_identify, mocker):
             mocker.patch("requests.get", return_value=scenario.get("response"))
 
         # Configure
-        resolver = [scenario.get("resolvers")]
-        identifier = Identifier(resolver)
+        data_source = [scenario.get("data_source")]
+        identifier = Identifier(data_source)
         geometry = Geometry(scenario.get("geometry"))
 
         # Run
@@ -24,15 +24,15 @@ def test_identify(use_mock, scenarios, assert_identify, mocker):
         assert_identify(result)
 
 
-def test_resolver():
+def test_data_source():
     # Get
     identifier = Identifier([WorldTerrestrialEcosystems()])
-    assert identifier.resolver is not None
-    assert isinstance(identifier.resolver, list)
-    assert isinstance(identifier.resolver[0], WorldTerrestrialEcosystems)
+    assert identifier.data_source is not None
+    assert isinstance(identifier.data_source, list)
+    assert isinstance(identifier.data_source[0], WorldTerrestrialEcosystems)
 
     # Set
-    identifier.resolver = [EcologicalMarineUnits()]
-    assert identifier.resolver is not None
-    assert isinstance(identifier.resolver, list)
-    assert isinstance(identifier.resolver[0], EcologicalMarineUnits)
+    identifier.data_source = [EcologicalMarineUnits()]
+    assert identifier.data_source is not None
+    assert isinstance(identifier.data_source, list)
+    assert isinstance(identifier.data_source[0], EcologicalMarineUnits)

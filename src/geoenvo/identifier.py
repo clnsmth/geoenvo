@@ -1,23 +1,23 @@
 """The identify module"""
 
 from typing import List
-from geoenvo.resolver import Resolver
+from geoenvo.data_sources.data_source import DataSource
 from geoenvo.geometry import Geometry
 from geoenvo.utilities import compile_response, Data
 from tests.conftest import load_geometry
 
 
 class Identifier:
-    def __init__(self, resolver: List[Resolver]):
-        self._resolver = resolver
+    def __init__(self, data_source: List[DataSource]):
+        self._data_source = data_source
 
     @property
-    def resolver(self):
-        return self._resolver
+    def data_source(self):
+        return self._data_source
 
-    @resolver.setter
-    def resolver(self, resolver: List[Resolver]):
-        self._resolver = resolver
+    @data_source.setter
+    def data_source(self, data_source: List[DataSource]):
+        self._data_source = data_source
 
     def identify(
         self,
@@ -28,8 +28,8 @@ class Identifier:
     ) -> Data:
         try:
             results = []
-            for resolver in self.resolver:
-                environment = resolver.resolve(geometry)
+            for data_source in self.data_source:
+                environment = data_source.resolve(geometry)
                 results.extend(environment)
             result = compile_response(
                 geometry=geometry,
@@ -48,7 +48,7 @@ class Identifier:
 if __name__ == "__main__":
 
     from json import dumps
-    from geoenvo.resolvers import (
+    from geoenvo.data_sources import (
         WorldTerrestrialEcosystems,
     )
     from geoenvo.identifier import Identifier
@@ -70,7 +70,7 @@ if __name__ == "__main__":
     geometry = Geometry(polygon_on_land)
 
     # Configure the identifier with one or more data sources
-    identifier = Identifier(resolver=[WorldTerrestrialEcosystems()])
+    identifier = Identifier(data_source=[WorldTerrestrialEcosystems()])
 
     # Identify the environment for the geometry
     result = identifier.identify(
