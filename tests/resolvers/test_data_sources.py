@@ -73,9 +73,7 @@ def test_convert_data(scenarios, empty_environment_data_model):
                 assert item.data.keys() == empty_environment_data_model.keys()
                 # dataSource keys and values
                 assert item.data["dataSource"]["identifier"] == scenario["identifier"]
-                assert (
-                    item.data["dataSource"]["name"] == data_source.__class__.__name__
-                )
+                assert item.data["dataSource"]["name"] == data_source.__class__.__name__
                 # dateCreated key and value
                 assert item.data["dateCreated"] is not None
                 # properties keys and values
