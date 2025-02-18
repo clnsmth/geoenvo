@@ -34,7 +34,7 @@ package "geoenvo" {
         + Geometry(geometry : dictionary)
         + is_valid() : bool
         + to_esri_point() : dictionary
-        + to_esri_envelope() : dictionary
+        + to_esri_polygon() : dictionary
         + to_esri_polygon() : dictionary
         + geometry_type() : string
     }

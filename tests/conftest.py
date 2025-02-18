@@ -67,7 +67,7 @@ def scenarios(
             "properties": properties_of_ecological_coastal_units,
             "identifier": "https://doi.org/10.5066/P9HWHSPU",
         },
-        {  # ECU Fail (Envelope on land)
+        {  # ECU Fail (Polygon on land)
             "data_source": EcologicalCoastalUnits(),
             "response": load_response("ecu_fail"),
             "geometry": load_geometry("polygon_on_land"),
@@ -77,7 +77,7 @@ def scenarios(
             "properties": properties_of_ecological_coastal_units,
             "identifier": "https://doi.org/10.5066/P9HWHSPU",
         },
-        {  # EMU Success (Envelope over ocean)
+        {  # EMU Success (Polygon over ocean)
             "data_source": EcologicalMarineUnits(),
             "response": load_response("emu_success"),
             "geometry": load_geometry("polygon_on_ocean"),
@@ -87,7 +87,7 @@ def scenarios(
             "properties": properties_of_ecological_marine_units,
             "identifier": "https://doi.org/10.5066/P9Q6ZSGN",
         },
-        {  # EMU Fail (Envelope on land)
+        {  # EMU Fail (Polygon on land)
             "data_source": EcologicalMarineUnits(),
             "response": load_response("emu_fail"),
             "geometry": load_geometry("polygon_on_land"),

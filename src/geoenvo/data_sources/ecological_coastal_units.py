@@ -7,7 +7,7 @@ from geoenvo.data_sources.data_source import DataSource
 from geoenvo.geometry import Geometry
 from geoenvo.environment import Environment
 from geoenvo.utilities import user_agent
-from geoenvo.utilities import EnvironmentDataModel, get_attributes
+from geoenvo.utilities import EnvironmentDataModel, get_properties
 
 
 class EcologicalCoastalUnits(DataSource):
@@ -124,7 +124,7 @@ class EcologicalCoastalUnits(DataSource):
         if not self.has_environment():
             return list()
         property = "CSU_Descriptor"
-        descriptors = get_attributes(self._data, [property])[property]
+        descriptors = get_properties(self._data, [property])[property]
         descriptors = set(descriptors)
         descriptors = list(descriptors)
         return descriptors

@@ -266,29 +266,29 @@ def compile_response(
     return Data(result)
 
 
-def get_attributes(data, attributes):
-    """Recursively get attributes of a response from an resolve or query
+def get_properties(data, properties):
+    """Recursively get properties of a response from an resolve or query
     opperation.
 
     Parameters
     ----------
     data : dict
         A dictionary of the JSON response from the resolve operation.
-    attributes : list
-        A list of attributes to extract from the JSON response. These are
+    properties : list
+        A list of properties to extract from the JSON response. These are
         defined in the map service's layer's definition.
 
     Returns
     -------
     res : dict
-        A dictionary of the requested attributes and their values.
+        A dictionary of the requested properties and their values.
 
     """
-    # TODO Get attributes/features by source? This would simplify the
+    # TODO Get properties/features by source? This would simplify the
     #  methods calls, unless this functionality is needed elsewhere (e.g.
     #  getting other names from response dictionaries).
     res = {}
-    for a in attributes:
+    for a in properties:
         res[a] = _json_extract(data, a)
     return res
 

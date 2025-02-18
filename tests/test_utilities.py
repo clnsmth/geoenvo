@@ -6,7 +6,7 @@ from geoenvo.geometry import Geometry
 from geoenvo.data_sources import WorldTerrestrialEcosystems
 from geoenvo.utilities import (
     EnvironmentDataModel,
-    get_attributes,
+    get_properties,
     compile_response,
     Data,
 )
@@ -72,21 +72,21 @@ def test_data_model(empty_environment_data_model):
 
 
 def test_get_attributes():
-    """Test the get_attributes function."""
+    """Test the get_properties function."""
     response = load_response("wte_success")
 
-    # The get_attributes function should return a dictionary of attributes
+    # The get_properties function should return a dictionary of attributes
     # from the response object. The dictionary should contain the requested
     # attributes.
     properties = ["Raster.LF_ClassNa", "Raster.LC_ClassNa", "Raster.Temp_Class"]
-    result = get_attributes(response.data, properties)
+    result = get_properties(response.data, properties)
     assert isinstance(result, dict)
     for p in properties:
         assert p in result
         assert len(result[p]) > 0
 
     # An empty list is returned for attributes that are not present.
-    result = get_attributes(response.data, ["Not a valid attribute"])
+    result = get_properties(response.data, ["Not a valid attribute"])
     assert "Not a valid attribute" in result
     assert len(result["Not a valid attribute"]) == 0
 

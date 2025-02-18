@@ -213,7 +213,7 @@ class EcologicalMarineUnits(DataSource):
         # and processing the response object in a way that may be more
         # efficient. Profiling has not yet been conducted on this.
         # Create the code-value map for OceanName
-        data = self._data
+        data = self.data
         field_names = [field["name"] for field in data["fields"]]
         i = field_names.index("OceanName")
         ocean_name_map = pd.DataFrame(
@@ -259,7 +259,7 @@ class EcologicalMarineUnits(DataSource):
     def get_environments_for_geometry_z_values(self, data):
         # - Get the z values from the geometry property of the response
         # object
-        geometry = self._geometry
+        geometry = self.geometry
         coordinates = geometry.get("coordinates")
         if len(coordinates) == 3:
             zmin = geometry.get("coordinates")[2]
