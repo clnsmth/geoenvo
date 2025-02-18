@@ -14,8 +14,3 @@ class Environment:
     @data.setter
     def data(self, data: dict):
         self._data = data
-
-    def has_environment(self) -> bool:
-        if len(self.data) == 0:
-            return False
-        return True

@@ -45,7 +45,7 @@ class DataSource(ABC):
         pass
 
     @abstractmethod
-    def convert_data(self, data) -> list:
+    def convert_data(self) -> list:
         pass
 
     @abstractmethod

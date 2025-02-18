@@ -2,22 +2,20 @@
 package "geoenvo" {
 
     class Resolver {
-        # data_source : DataSource[*]
+        + data_source : DataSource[*]
         + Resolver(data_source : DataSource[*])
-        + resolve(geometry : Geometry) : Data
+        + resolve(geometry : Geometry, vocabulary : string) : Data
     }
 
     interface DataSource {
-        # geometry : dictionary
-        # data : dictionary
-        # env_properties : dictionary
+        + geometry : dictionary
+        + data : dictionary
+        + env_properties : dictionary
         + DataSource()
         + resolve(geometry : Geometry) : Environment[0..*]
-        - convert_data() : dictionary
-        - unique_environment() : dictionary[*]
+        - convert_data() : Environment[0..*]
         - has_environment() : bool
-        - set_properties() : DataSource
-        - apply_vocabulary_mapping() : string
+        - unique_environment() : dictionary[*]
     }
 
     class WorldTerrestrialEcosystems implements DataSource {
@@ -30,29 +28,28 @@ package "geoenvo" {
     }
 
     class Geometry {
-        # data : dictionary
+        + data : dictionary
         + Geometry(geometry : dictionary)
-        + is_valid() : bool
-        + to_esri_point() : dictionary
-        + to_esri_polygon() : dictionary
-        + to_esri_polygon() : dictionary
         + geometry_type() : string
+        + is_supported() : bool
+        + point_to_polygon(buffer : float) : dictionary
+        + polygon_to_points(grid_size : float) : geometry[0..*]
+        + to_esri() : dictionary
     }
 
     class Environment {
-        # data : dictionary
-        + Environment()
-        + has_environment() : bool
-        + data() : dictionary
+        + data : dictionary
+        + Environment(data : dictionary)
     }
 
     class Data {
-        # data : dictionary
-        + Data(geometry : Geometry, environment : Environment)
-        + apply_vocabulary_mapping(vocabulary : string) : Environment
-        + write(file_path : string)
-        + read(file_path : string) : Environment
+        + data : dictionary
+        + properties : dictionary
+        + Data(data : dictionary)
+        + apply_vocabulary_mapping(vocabulary : string) : Data
+        + read(file_path : string) : Data
         + to_schema_org() : dictionary
+        + write(file_path : string)
     }
 
     Resolver "1" -- "1..*" DataSource
