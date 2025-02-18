@@ -37,7 +37,7 @@ Install the current release from GitHub.
     from geoenvo.data_sources import (
         WorldTerrestrialEcosystems,
     )
-    from geoenvo.identifier import Identifier
+    from geoenvo.resolver import Resolver
     from geoenvo.geometry import Geometry
 
     # Create a geometry in GeoJSON format
@@ -55,11 +55,11 @@ Install the current release from GitHub.
     }
     geometry = Geometry(polygon_on_land)
 
-    # Configure the identifier with one or more data sources
-    identifier = Identifier(data_source=[WorldTerrestrialEcosystems()])
+    # Configure the resolver with one or more data sources
+    resolver = Resolver(data_source=[WorldTerrestrialEcosystems()])
 
     # Identify the environment for the geometry
-    result = identifier.identify(
+    result = resolver.resolve(
         geometry,
         identifier="5b4edec5-ea5e-471a-8a3c-2c1171d59dee",
         description="Polygon on land",

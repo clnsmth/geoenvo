@@ -1,6 +1,6 @@
 """The main2 module"""
 
-from geoenvo.identifier import Identifier
+from geoenvo.resolver import Resolver
 from geoenvo.data_sources import EcologicalCoastalUnits
 from geoenvo.data_sources import EcologicalMarineUnits
 from geoenvo.data_sources import WorldTerrestrialEcosystems
@@ -15,10 +15,10 @@ if __name__ == "__main__":
         EcologicalCoastalUnits(),
         EcologicalMarineUnits(),
     ]
-    identifier = Identifier(data_sources)
+    resolver = Resolver(data_sources)
 
     # Resolve
-    environment = identifier.identify(geometry)
+    environment = resolver.resolve(geometry)
     print(f"Identification returned: {environment.data}")
 
     # Set vocabulary terms (optional)

@@ -248,7 +248,7 @@ class Response:
 @pytest.fixture
 def assert_identify():  # FIXME: success/fail is not the best description
     """Assert properties and values of a successful (or unsuccessful) response
-    from the identify operation."""
+    from the resolve operation."""
 
     def _assert_identify(result: list, scenario: dict):
         assert isinstance(result, Data)

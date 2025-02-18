@@ -267,13 +267,13 @@ def compile_response(
 
 
 def get_attributes(data, attributes):
-    """Recursively get attributes of a response from an identify or query
+    """Recursively get attributes of a response from an resolve or query
     opperation.
 
     Parameters
     ----------
     data : dict
-        A dictionary of the JSON response from the identify operation.
+        A dictionary of the JSON response from the resolve operation.
     attributes : list
         A list of attributes to extract from the JSON response. These are
         defined in the map service's layer's definition.

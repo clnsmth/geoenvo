@@ -1,10 +1,10 @@
 @startuml
 package "geoenvo" {
 
-    class Identifier {
+    class Resolver {
         # data_source : DataSource[*]
-        + Identifier(data_source : DataSource[*])
-        + identify(geometry : Geometry) : Data
+        + Resolver(data_source : DataSource[*])
+        + resolve(geometry : Geometry) : Data
     }
 
     interface DataSource {
@@ -55,9 +55,9 @@ package "geoenvo" {
         + to_schema_org() : dictionary
     }
 
-    Identifier "1" -- "1..*" DataSource
-    Identifier "1" -- "1" Data
-    Identifier "1" -- "1" Geometry
+    Resolver "1" -- "1..*" DataSource
+    Resolver "1" -- "1" Data
+    Resolver "1" -- "1" Geometry
     DataSource "1" -- "0..*" Environment
     DataSource "1" -- "1" Geometry
 }
