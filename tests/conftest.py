@@ -14,7 +14,7 @@ from geoenvo.utilities import Data, compile_response
 
 @pytest.fixture()
 def use_mock():
-    return False  # Change this to False for real HTTP requests and data
+    return True  # Change this to False for real HTTP requests and data
 
 
 @pytest.fixture

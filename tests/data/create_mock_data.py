@@ -41,7 +41,7 @@ def create_mock_response_content(
         f.write(json)
 
     # ECU Success
-    geometry = Geometry(load_geometry("polygon_on_ocean_2"))
+    geometry = Geometry(load_geometry("polygon_on_land_and_ocean"))
     data_source = EcologicalCoastalUnits()
     response = data_source._request(geometry)
     json = dumps(response, indent=4)
@@ -107,6 +107,6 @@ def create_schema_org_fixture(
 
 
 if __name__ == "__main__":
-    # create_mock_response_content()
+    create_mock_response_content()
     # create_schema_org_fixture()
     pass
