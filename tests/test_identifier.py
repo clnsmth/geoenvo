@@ -21,7 +21,7 @@ def test_identify(use_mock, scenarios, assert_identify, mocker):
         result = identifier.identify(geometry)
 
         # Assert
-        assert_identify(result)
+        assert_identify(result, scenario)
 
 
 def test_data_source():

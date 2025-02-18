@@ -28,8 +28,8 @@ class Identifier:
     ) -> Data:
         try:
             results = []
-            for data_source in self.data_source:
-                environment = data_source.resolve(geometry)
+            for item in self.data_source:
+                environment = item.resolve(geometry)
                 results.extend(environment)
             result = compile_response(
                 geometry=geometry,

@@ -14,7 +14,7 @@ from geoenvo.utilities import Data, compile_response
 
 @pytest.fixture()
 def use_mock():
-    return True  # Change this to False for real HTTP requests and data
+    return False  # Change this to False for real HTTP requests and data
 
 
 @pytest.fixture
@@ -61,7 +61,7 @@ def scenarios(
             "data_source": EcologicalCoastalUnits(),
             "response": load_response("ecu_success"),
             "geometry": load_geometry("polygon_on_land_and_ocean"),
-            "unique_environment": 34,
+            "unique_environment": 4,
             "has_environment": True,
             "raw_properties": raw_properties_of_ecological_coastal_units,
             "properties": properties_of_ecological_coastal_units,
@@ -250,7 +250,7 @@ def assert_identify():  # FIXME: success/fail is not the best description
     """Assert properties and values of a successful (or unsuccessful) response
     from the identify operation."""
 
-    def _assert_identify(result: list):
+    def _assert_identify(result: list, scenario: dict):
         assert isinstance(result, Data)
 
         # Test the geometry object
@@ -259,6 +259,16 @@ def assert_identify():  # FIXME: success/fail is not the best description
         # Test the environment objects
         for item in result._data["properties"]["environment"]:
             assert isinstance(item, dict)
+
+        if scenario.get("has_environment"):
+            environment = result.data["properties"]["environment"]
+            assert len(environment) == scenario.get("unique_environment")
+            for item in environment:
+                for key, value in item["properties"].items():
+                    assert isinstance(key, str)
+                    assert len(key) > 0
+                    assert isinstance(value, str)
+                    assert len(value) > 0
 
         # Set vocabulary terms
         env_with_terms = result.apply_vocabulary_mapping()
