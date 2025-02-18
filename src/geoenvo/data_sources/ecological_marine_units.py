@@ -202,7 +202,6 @@ class EcologicalMarineUnits(DataSource):
         }
         return new_env_properties
 
-
     def convert_codes_to_values(self):
         # Convert the codes listed under the Name_2018 and OceanName
         # properties to the descriptive string values so the EMU
