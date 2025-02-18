@@ -27,7 +27,7 @@ def test_geometry_type():
     assert geometry.geometry_type() == "Polygon"
     # Unknown
     geometry = Geometry(load_geometry("point_on_land"))
-    del geometry._data["type"]
+    del geometry.data["type"]
     assert geometry.geometry_type() is None
 
 
@@ -65,20 +65,20 @@ def test_point_to_polygon():
     json = load_geometry("point_on_land_expands_to_coast")
     geometry = Geometry(json)
     result = geometry.point_to_polygon()
-    assert result == geometry._data
+    assert result == geometry.data
 
     # Non-point geometry inputs are unchanged
     json = load_geometry("polygon_with_exclusion_ring_on_land_and_ocean")
     geometry = Geometry(json)
     result = geometry.point_to_polygon()
     assert result["type"] == "Polygon"
-    assert result == geometry._data
+    assert result == geometry.data
 
-    # Geometry._data is not changed by point_to_polygon
+    # Geometry.data is not changed by point_to_polygon
     json = load_geometry("point_on_land")
     geometry = Geometry(json)
     result = geometry.point_to_polygon(buffer=0.5)
-    assert geometry._data != result
+    assert geometry.data != result
 
 
 def test_to_esri():

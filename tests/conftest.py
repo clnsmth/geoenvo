@@ -254,10 +254,10 @@ def assert_identify():  # FIXME: success/fail is not the best description
         assert isinstance(result, Data)
 
         # Test the geometry object
-        assert isinstance(result._data["geometry"], dict)
+        assert isinstance(result.data["geometry"], dict)
 
         # Test the environment objects
-        for item in result._data["properties"]["environment"]:
+        for item in result.data["properties"]["environment"]:
             assert isinstance(item, dict)
 
         if scenario.get("has_environment"):
@@ -273,8 +273,8 @@ def assert_identify():  # FIXME: success/fail is not the best description
         # Set vocabulary terms
         env_with_terms = result.apply_vocabulary_mapping()
         assert isinstance(env_with_terms, Data)
-        assert isinstance(env_with_terms._data, dict)
-        environment = env_with_terms._data["properties"]["environment"]
+        assert isinstance(env_with_terms.data, dict)
+        environment = env_with_terms.data["properties"]["environment"]
         if len(environment) > 0:
             assert isinstance(environment[0]["mappedProperties"], list)
             for key, value in environment[0]["mappedProperties"][0].items():
@@ -287,13 +287,13 @@ def assert_identify():  # FIXME: success/fail is not the best description
         with tempfile.TemporaryDirectory() as tmpdirname:
             file_path = f"{tmpdirname}/file.json"
             result.write(file_path)  # TODO: use Data object
-            data_snapshot = result._data  # Save for comparison with read data
+            data_snapshot = result.data  # Save for comparison with read data
 
             # Read from file
             data = Data()
             data.read(file_path)  # TODO: use Data object
-            assert data_snapshot == data._data
-            assert isinstance(data._data, dict)
+            assert data_snapshot == data.data
+            assert isinstance(data.data, dict)
 
     return _assert_identify
 
@@ -305,7 +305,7 @@ def assert_data_model():
 
     def _assert_data_model(result: Data):
         assert isinstance(result, Data)
-        assert isinstance(result._data, dict)
+        assert isinstance(result.data, dict)
 
     return _assert_data_model
 

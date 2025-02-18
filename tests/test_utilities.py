@@ -107,15 +107,15 @@ def test_compile_response(scenarios, mocker, empty_data_model):
     result = compile_response(Geometry(geometry), environments, identifier)
 
     # Top level keys are present
-    assert result._data.keys() == empty_data_model.keys()
+    assert result.data.keys() == empty_data_model.keys()
     # Identifier value matches the input
-    assert result._data["identifier"] == identifier
+    assert result.data["identifier"] == identifier
     # Geometry value matches the input
-    assert result._data["geometry"] == geometry
+    assert result.data["geometry"] == geometry
     # Environment is a list of environments, which are dictionaries
-    assert isinstance(result._data["properties"]["environment"], list)
+    assert isinstance(result.data["properties"]["environment"], list)
     # Check that the environment are a list of dictionaries
-    for env in result._data["properties"]["environment"]:
+    for env in result.data["properties"]["environment"]:
         assert isinstance(env, dict)
 
 
@@ -130,7 +130,7 @@ def test_apply_vocabulary_mapping(data_model):
 
     # Check that the vocabulary terms are set for each environment, and that
     # no "sssom:NoMapping" is present
-    for item in data._data["properties"]["environment"]:
+    for item in data.data["properties"]["environment"]:
         assert len(item["mappedProperties"]) > 0
         for term in item["mappedProperties"]:
             assert "sssom:nomapping" not in term["uri"].lower()

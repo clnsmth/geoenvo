@@ -10,7 +10,7 @@ from tests.conftest import load_geometry
 def test_init():
     """Test the DataSource class initialization"""
     data_source = EcologicalCoastalUnits()
-    assert data_source._buffer is None
+    assert data_source.buffer is None
 
 
 def test_resolve_with_buffer(use_mock):
@@ -29,7 +29,7 @@ def test_resolve_with_buffer(use_mock):
     # However, when the grid size is set, the polygon is converted to a series
     # of points that are then resolvable to the WorldTerrestrialEcosystems
     # data source.
-    data_source._buffer = 0.5
+    data_source.buffer = 0.5
     result = data_source.resolve(geometry)
     assert len(result) == 1
 

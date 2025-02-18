@@ -11,7 +11,7 @@ from geoenvo.data_sources import WorldTerrestrialEcosystems
 def test_init():
     """Test the DataSource class initialization"""
     data_source = WorldTerrestrialEcosystems()
-    assert data_source._grid_size is None
+    assert data_source.grid_size is None
 
 
 def test_resolve_with_grid_size(use_mock):
@@ -30,7 +30,7 @@ def test_resolve_with_grid_size(use_mock):
     # However, when the grid size is set, the polygon is converted to a series
     # of points that are then resolvable to the WorldTerrestrialEcosystems
     # data source.
-    data_source._grid_size = 0.5
+    data_source.grid_size = 0.5
     result = data_source.resolve(geometry)
     assert len(result) == 1
 

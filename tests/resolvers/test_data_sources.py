@@ -5,14 +5,14 @@ def test_data_source_init(data_sources):
     """Test the DataSource class initialization"""
     for data_source in data_sources:
         assert data_source._geometry is None
-        assert data_source._data is None
-        assert len(data_source._properties) > 0
+        assert data_source.data is None
+        assert len(data_source.properties) > 0
 
 
 def test_data_source_properties(scenarios):
     """Test that the DataSource instance classes have the expected properties"""
     for scenario in scenarios:
-        properties = scenario.get("data_source")._properties
+        properties = scenario.get("data_source").properties
         expected_properties = scenario.get("raw_properties")
         assert all([key in expected_properties for key in properties.keys()])
 
@@ -33,8 +33,8 @@ def test_get_unique_environments(scenarios):
     for scenario in scenarios:
         # Configure the data_source
         data_source = scenario["data_source"]
-        data_source._data = scenario["response"].json()
-        data_source._geometry = scenario["geometry"]
+        data_source.data = scenario["response"].json()
+        data_source.geometry = scenario["geometry"]
 
         # Run the method
         unique_environments = data_source.unique_environment()
@@ -46,8 +46,8 @@ def test_has_environment(scenarios):
     """Test the has_environment method."""
     for scenario in scenarios:
         data_source = scenario["data_source"]
-        data_source._data = scenario["response"].json()
-        data_source._geometry = scenario["geometry"]
+        data_source.data = scenario["response"].json()
+        data_source.geometry = scenario["geometry"]
         assert data_source.has_environment() == scenario["has_environment"]
 
 
@@ -62,29 +62,29 @@ def test_convert_data(scenarios, empty_environment_data_model):
 
         # Configure and run
         data_source = scenario["data_source"]
-        data_source._data = scenario["response"].json()
-        data_source._geometry = scenario["geometry"]
+        data_source.data = scenario["response"].json()
+        data_source.geometry = scenario["geometry"]
         result = data_source.convert_data()
 
         # Test the returned data
         if len(result) > 0:
             for item in result:
                 # Top level keys
-                assert item._data.keys() == empty_environment_data_model.keys()
+                assert item.data.keys() == empty_environment_data_model.keys()
                 # dataSource keys and values
-                assert item._data["dataSource"]["identifier"] == scenario["identifier"]
+                assert item.data["dataSource"]["identifier"] == scenario["identifier"]
                 assert (
-                    item._data["dataSource"]["name"] == data_source.__class__.__name__
+                    item.data["dataSource"]["name"] == data_source.__class__.__name__
                 )
                 # dateCreated key and value
-                assert item._data["dateCreated"] is not None
+                assert item.data["dateCreated"] is not None
                 # properties keys and values
-                for key, value in item._data["properties"].items():
-                    assert key in item._data["properties"].keys()
-                    assert item._data["properties"][key] is not None
+                for key, value in item.data["properties"].items():
+                    assert key in item.data["properties"].keys()
+                    assert item.data["properties"][key] is not None
                 # mappedProperties are not yet populated
-                assert isinstance(item._data["mappedProperties"], list)
-                assert len(item._data["mappedProperties"]) == 0
+                assert isinstance(item.data["mappedProperties"], list)
+                assert len(item.data["mappedProperties"]) == 0
         else:
             assert result == []
 

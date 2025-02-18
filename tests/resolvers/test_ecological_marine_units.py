@@ -14,23 +14,23 @@ def test_convert_codes_to_values():
 
     # Successful response from the EMU data source
     data_source = EcologicalMarineUnits()
-    data_source._data = load_response("emu_success").json()
+    data_source.data = load_response("emu_success").json()
     # Codes are numeric values initially
-    for feature in data_source._data.get("features"):
+    for feature in data_source.data.get("features"):
         assert isinstance(feature.get("attributes").get("Name_2018"), int)
         assert isinstance(feature.get("attributes").get("OceanName"), int)
     # Codes are strings after conversion
     data_source.convert_codes_to_values()
-    for feature in data_source._data.get("features"):
+    for feature in data_source.data.get("features"):
         assert isinstance(feature.get("attributes").get("Name_2018"), str)
         assert isinstance(feature.get("attributes").get("OceanName"), str)
 
     # Unsuccessful response from the EMU data source
     data_source = EcologicalMarineUnits()
-    data_source._data = load_response("emu_fail").json()
+    data_source.data = load_response("emu_fail").json()
     # The response is an empty list
-    assert isinstance(data_source._data.get("features"), list)
-    assert len(data_source._data.get("features")) == 0
+    assert isinstance(data_source.data.get("features"), list)
+    assert len(data_source.data.get("features")) == 0
 
 
 def test_get_environments_for_geometry_z_values():
@@ -57,11 +57,11 @@ def test_get_environments_for_geometry_z_values():
 
     # A set of tests on a point location with z values
     data_source = EcologicalMarineUnits()
-    data_source._data = load_response("emu_success_point_on_ocean_with_depth").json()
-    data_source._geometry = load_geometry("point_on_ocean_with_depth")
+    data_source.data = load_response("emu_success_point_on_ocean_with_depth").json()
+    data_source.geometry = load_geometry("point_on_ocean_with_depth")
 
     # Single z value within EMU returns one EMU
-    environments = data_source.get_environments_for_geometry_z_values(data_source._data)
+    environments = data_source.get_environments_for_geometry_z_values(data_source.data)
     expected_environments = {18}
     assert isinstance(environments, list)
     for environment in environments:
@@ -70,8 +70,8 @@ def test_get_environments_for_geometry_z_values():
     assert len(environments) == 1
 
     # Single z value on the border between two EMUs returns two EMUs
-    data_source._geometry["coordinates"][2] = -30
-    environments = data_source.get_environments_for_geometry_z_values(data_source._data)
+    data_source.geometry["coordinates"][2] = -30
+    environments = data_source.get_environments_for_geometry_z_values(data_source.data)
     expected_environments = {18, 24}
     assert isinstance(environments, list)
     for environment in environments:
@@ -80,8 +80,8 @@ def test_get_environments_for_geometry_z_values():
     assert len(environments) == 2
 
     # No z values returns all EMUs.
-    data_source._geometry["coordinates"][2] = None
-    environments = data_source.get_environments_for_geometry_z_values(data_source._data)
+    data_source.geometry["coordinates"][2] = None
+    environments = data_source.get_environments_for_geometry_z_values(data_source.data)
     expected_environments = {18, 24, 11, 26, 8, 19}
     assert isinstance(environments, list)
     for environment in environments:
