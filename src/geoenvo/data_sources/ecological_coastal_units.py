@@ -158,7 +158,7 @@ class EcologicalCoastalUnits(DataSource):
         for property in environment.keys():
             label = environment.get(property)
             env_properties[property] = label
-        # Add composite CSU_Description class and annotation.
+        # Add composite CSU_Description class
         # Get environments values and join with commas
         # TODO Fix issue where an property from the initialized list returned
         #  by  Attributes() was missing for some reason and thus an annotation
@@ -189,9 +189,3 @@ class EcologicalCoastalUnits(DataSource):
             "ecosystem": env_properties["CSU_Descriptor"],
         }
         return new_env_properties
-
-    @staticmethod
-    def get_annotation(
-        label: str,
-    ):  # TODO deprecate this once moved to Environment class method
-        return "Placeholder"  # TODO - add ECU sssom and parse

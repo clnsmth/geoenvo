@@ -158,14 +158,14 @@ class EcologicalMarineUnits(DataSource):
         atomic_property_labels = env_properties.keys()
         # Zip descriptors and atomic property labels
         environments = [dict(zip(atomic_property_labels, descriptors))]
-        # Iterate over atomic properties and set labels and annotations
+        # Iterate over atomic properties and set labels
         environment = environments[0]
         # properties = {}
         # env_properties
         for property in environment.keys():
             label = environment.get(property)
             env_properties[property] = label
-        # Add composite EMU_Description class and annotation.
+        # Add composite EMU_Description class
         # Get environments values and join with commas
         # TODO Fix issue where an property from the initialized list returned
         #  by  Attributes() was missing for some reason and thus an annotation
@@ -202,11 +202,6 @@ class EcologicalMarineUnits(DataSource):
         }
         return new_env_properties
 
-    @staticmethod
-    def get_annotation(
-        label: str,
-    ):  # TODO deprecate this once moved to Environment class method
-        return "Placeholder"  # TODO - add EMU sssom and parse
 
     def convert_codes_to_values(self):
         # Convert the codes listed under the Name_2018 and OceanName
