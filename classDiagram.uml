@@ -10,7 +10,7 @@ package "geoenvo" {
     interface DataSource {
         + geometry : dictionary
         + data : dictionary
-        + env_properties : dictionary
+        + properties : dictionary
         + DataSource()
         + resolve(geometry : Geometry) : Environment[0..*]
         - convert_data() : Environment[0..*]

@@ -16,7 +16,7 @@ class EcologicalMarineUnits(DataSource):
         super().__init__()
         self._geometry = None
         self._data = None
-        self._env_properties = {
+        self._properties = {
             "OceanName": None,
             "Depth": None,
             "Temperature": None,
@@ -45,12 +45,12 @@ class EcologicalMarineUnits(DataSource):
         self._data = data
 
     @property
-    def env_properties(self):
-        return self._env_properties
+    def properties(self):
+        return self._properties
 
-    @env_properties.setter
-    def env_properties(self, env_properties: dict):
-        self._env_properties = env_properties
+    @properties.setter
+    def properties(self, properties: dict):
+        self._properties = properties
 
     def resolve(self, geometry: Geometry):
         self.geometry = geometry.data  # required for filtering on depth
@@ -154,17 +154,17 @@ class EcologicalMarineUnits(DataSource):
         # Add ocean name to front of descriptors list in preparation for the
         # zipping operation below
         descriptors = [ocean_name] + descriptors
-        env_properties = self.env_properties
-        atomic_property_labels = env_properties.keys()
+        properties = self.properties
+        atomic_property_labels = properties.keys()
         # Zip descriptors and atomic property labels
         environments = [dict(zip(atomic_property_labels, descriptors))]
         # Iterate over atomic properties and set labels
         environment = environments[0]
         # properties = {}
-        # env_properties
+        # properties
         for property in environment.keys():
             label = environment.get(property)
-            env_properties[property] = label
+            properties[property] = label
         # Add composite EMU_Description class
         # Get environments values and join with commas
         # TODO Fix issue where an property from the initialized list returned
@@ -172,7 +172,7 @@ class EcologicalMarineUnits(DataSource):
         #  couldn't  be found for it. If arbitrary joining of empties to the
         #  annotation string  is done, then the annotation may be wrong. Best
         #  to just leave it out.
-        EMU_Descriptor = [f for f in env_properties.values()]
+        EMU_Descriptor = [f for f in properties.values()]
         # Knock of the last one, which is EMU_Descriptor
         EMU_Descriptor = EMU_Descriptor[:-1]
 
@@ -186,21 +186,21 @@ class EcologicalMarineUnits(DataSource):
             EMU_Descriptor = ["n/a" if f is None else f for f in EMU_Descriptor]
 
         EMU_Descriptor = ", ".join(EMU_Descriptor)
-        env_properties["EMU_Descriptor"] = EMU_Descriptor
+        properties["EMU_Descriptor"] = EMU_Descriptor
 
         # Convert properties into a more readable format
-        new_env_properties = {
-            "oceanName": env_properties["OceanName"],
-            "depth": env_properties["Depth"],
-            "temperature": env_properties["Temperature"],
-            "salinity": env_properties["Salinity"],
-            "dissolvedOxygen": env_properties["Dissolved Oxygen"],
-            "nitrate": env_properties["Nitrate"],
-            "phosphate": env_properties["Phosphate"],
-            "silicate": env_properties["Silicate"],
-            "ecosystem": env_properties["EMU_Descriptor"],
+        new_properties = {
+            "oceanName": properties["OceanName"],
+            "depth": properties["Depth"],
+            "temperature": properties["Temperature"],
+            "salinity": properties["Salinity"],
+            "dissolvedOxygen": properties["Dissolved Oxygen"],
+            "nitrate": properties["Nitrate"],
+            "phosphate": properties["Phosphate"],
+            "silicate": properties["Silicate"],
+            "ecosystem": properties["EMU_Descriptor"],
         }
-        return new_env_properties
+        return new_properties
 
     def convert_codes_to_values(self):
         # Convert the codes listed under the Name_2018 and OceanName

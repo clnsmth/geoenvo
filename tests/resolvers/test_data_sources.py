@@ -6,13 +6,13 @@ def test_data_source_init(data_sources):
     for data_source in data_sources:
         assert data_source._geometry is None
         assert data_source._data is None
-        assert len(data_source._env_properties) > 0
+        assert len(data_source._properties) > 0
 
 
 def test_data_source_properties(scenarios):
     """Test that the DataSource instance classes have the expected properties"""
     for scenario in scenarios:
-        properties = scenario.get("data_source")._env_properties
+        properties = scenario.get("data_source")._properties
         expected_properties = scenario.get("raw_properties")
         assert all([key in expected_properties for key in properties.keys()])
 
@@ -109,12 +109,12 @@ def test_data(scenarios):
         assert data_source.data == scenario["response"]
 
 
-def test_env_properties(scenarios):
+def test_properties(scenarios):
     for scenario in scenarios:
         # Get
         data_source = scenario["data_source"]
-        assert data_source.env_properties is not None
+        assert data_source.properties is not None
         # Set
-        default_value = data_source.env_properties
-        data_source.env_properties = {"test": "test"}
-        assert data_source.env_properties != default_value
+        default_value = data_source.properties
+        data_source.properties = {"test": "test"}
+        assert data_source.properties != default_value

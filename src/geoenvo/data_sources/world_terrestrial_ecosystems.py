@@ -15,7 +15,7 @@ class WorldTerrestrialEcosystems(DataSource):
         super().__init__()
         self._geometry = None
         self._data = None
-        self._env_properties = {  # TODO is this used anywhere?
+        self._properties = {  # TODO is this used anywhere?
             "Raster.Temp_Class": None,
             "Raster.Moisture_C": None,
             "Raster.LC_ClassNa": None,
@@ -42,12 +42,12 @@ class WorldTerrestrialEcosystems(DataSource):
         self._data = data
 
     @property
-    def env_properties(self):
-        return self._env_properties
+    def properties(self):
+        return self._properties
 
-    @env_properties.setter
-    def env_properties(self, env_properties: dict):
-        self._env_properties = env_properties
+    @properties.setter
+    def properties(self, properties: dict):
+        self._properties = properties
 
     @property
     def grid_size(self):
@@ -121,7 +121,7 @@ class WorldTerrestrialEcosystems(DataSource):
         if not self.has_environment():
             return list()
         descriptors = []
-        properties = self.env_properties.keys()
+        properties = self.properties.keys()
         results = self.data.get("results")
         for result in results:
             if not self.has_environment(result):

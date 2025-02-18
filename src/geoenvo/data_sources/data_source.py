@@ -8,7 +8,7 @@ class DataSource(ABC):
     def __init__(self):
         self._geometry = None  # TODO: should be dict?
         self._data = None  # TODO: should be dict?
-        self._env_properties = None  # TODO: should be dict?
+        self._properties = None  # TODO: should be dict?
 
     @property
     @abstractmethod
@@ -32,12 +32,12 @@ class DataSource(ABC):
 
     @property
     @abstractmethod
-    def env_properties(self):
+    def properties(self):
         pass
 
-    @env_properties.setter
+    @properties.setter
     @abstractmethod
-    def env_properties(self, env_properties: dict):
+    def properties(self, properties: dict):
         pass
 
     @abstractmethod

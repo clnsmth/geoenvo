@@ -15,7 +15,7 @@ class EcologicalCoastalUnits(DataSource):
         super().__init__()
         self._geometry = None
         self._data = None
-        self._env_properties = {
+        self._properties = {
             "Slope": None,
             "Sinuosity": None,
             "Erodibility": None,
@@ -47,12 +47,12 @@ class EcologicalCoastalUnits(DataSource):
         self._data = data
 
     @property
-    def env_properties(self):
-        return self._env_properties
+    def properties(self):
+        return self._properties
 
-    @env_properties.setter
-    def env_properties(self, env_properties: dict):
-        self._env_properties = env_properties
+    @properties.setter
+    def properties(self, properties: dict):
+        self._properties = properties
 
     @property
     def buffer(self):
@@ -147,17 +147,17 @@ class EcologicalCoastalUnits(DataSource):
         # Atomize: Split on commas and remove whitespace
         descriptors = descriptors.split(",")
         descriptors = [g.strip() for g in descriptors]
-        atomic_property_labels = self._env_properties.keys()
+        atomic_property_labels = self._properties.keys()
         # Zip descriptors and atomic property labels
         environments = [dict(zip(atomic_property_labels, descriptors))]
         # Iterate over atomic properties and set labels and annotations
         environment = environments[0]
         # properties = {}
-        # self._env_properties
-        env_properties = self._env_properties
+        # self._properties
+        properties = self._properties
         for property in environment.keys():
             label = environment.get(property)
-            env_properties[property] = label
+            properties[property] = label
         # Add composite CSU_Description class
         # Get environments values and join with commas
         # TODO Fix issue where an property from the initialized list returned
@@ -165,27 +165,27 @@ class EcologicalCoastalUnits(DataSource):
         #  couldn't  be found for it. If arbitrary joining of empties to the
         #  annotation string is done, then the annotation may be wrong. Best to
         #  just leave it out.
-        CSU_Descriptor = [f for f in env_properties.values()]
+        CSU_Descriptor = [f for f in properties.values()]
         # Knock of the last one, which is CSU_Descriptor
         CSU_Descriptor = CSU_Descriptor[:-1]
         CSU_Descriptor = ", ".join(CSU_Descriptor)
         # Knock of the last one, which is CSU_Descriptor
-        env_properties["CSU_Descriptor"] = CSU_Descriptor
+        properties["CSU_Descriptor"] = CSU_Descriptor
 
         # Convert properties into a more readable format
-        new_env_properties = {
-            "slope": env_properties["Slope"],
-            "sinuosity": env_properties["Sinuosity"],
-            "erodibility": env_properties["Erodibility"],
-            "temperatureAndMoistureRegime": env_properties[
+        new_properties = {
+            "slope": properties["Slope"],
+            "sinuosity": properties["Sinuosity"],
+            "erodibility": properties["Erodibility"],
+            "temperatureAndMoistureRegime": properties[
                 "Temperature and Moisture Regime"
             ],
-            "riverDischarge": env_properties["River Discharge"],
-            "waveHeight": env_properties["Wave Height"],
-            "tidalRange": env_properties["Tidal Range"],
-            "marinePhysicalEnvironment": env_properties["Marine Physical Environment"],
-            "turbidity": env_properties["Turbidity"],
-            "chlorophyll": env_properties["Chlorophyll"],
-            "ecosystem": env_properties["CSU_Descriptor"],
+            "riverDischarge": properties["River Discharge"],
+            "waveHeight": properties["Wave Height"],
+            "tidalRange": properties["Tidal Range"],
+            "marinePhysicalEnvironment": properties["Marine Physical Environment"],
+            "turbidity": properties["Turbidity"],
+            "chlorophyll": properties["Chlorophyll"],
+            "ecosystem": properties["CSU_Descriptor"],
         }
-        return new_env_properties
+        return new_properties
