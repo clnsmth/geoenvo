@@ -3,7 +3,7 @@
 from typing import List
 from geoenvo.data_sources.data_source import DataSource
 from geoenvo.geometry import Geometry
-from geoenvo.utilities import compile_response, Data
+from geoenvo.utilities import compile_response, Response
 from tests.conftest import load_geometry
 
 
@@ -25,7 +25,7 @@ class Resolver:
         vocabulary: str = "ENVO",
         identifier: str = None,
         description: str = None,
-    ) -> Data:
+    ) -> Response:
         try:
             results = []
             for item in self.data_source:

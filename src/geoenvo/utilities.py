@@ -80,7 +80,7 @@ class EnvironmentDataModel:  # TODO: rename to EnvironmentDataModel
         self.data["properties"] = properties
 
 
-class Data:
+class Response:
     def __init__(self, data: dict = dict()):
         self._data = data
         self._properties = {
@@ -250,7 +250,7 @@ def compile_response(
     environment: List[Environment],
     identifier: str = None,
     description: str = None,
-) -> Data:
+) -> Response:
 
     # Move data from Environment objects and into a list  # TODO: clean up
     environments = []
@@ -263,7 +263,7 @@ def compile_response(
         "geometry": geometry.data,
         "properties": {"description": description, "environment": environments},
     }
-    return Data(result)
+    return Response(result)
 
 
 def get_properties(data, properties):

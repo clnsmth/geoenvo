@@ -8,7 +8,7 @@ from geoenvo.utilities import (
     EnvironmentDataModel,
     get_properties,
     compile_response,
-    Data,
+    Response,
 )
 from tests.conftest import load_response, load_geometry
 
@@ -93,7 +93,7 @@ def test_get_attributes():
 
 def test_compile_response(scenarios, mocker, empty_data_model):
     # Compiles a list of Environment into the data model represented by the
-    # Data object and tests for expected properties
+    # Response object and tests for expected properties
 
     # Create a list of Environment objects, then compile
     environments = []
@@ -147,10 +147,10 @@ def test_apply_vocabulary_mapping_for_unrecognized_vocabularies(data_model):
     assert data_model.data["properties"]["environment"][0]["mappedProperties"] == []
 
 
-def test_data_methods_of_data_class():
+def test_data_methods_of_response_class():
     # Getter
     d = {"type": "Feature"}
-    data = Data({"type": "Feature"})
+    data = Response({"type": "Feature"})
     assert data.data == d
 
     # Setter
@@ -161,7 +161,7 @@ def test_data_methods_of_data_class():
 
 def test_properties_methods_of_data_class():
     # Getter
-    data = Data({"type": "Feature"})
+    data = Response({"type": "Feature"})
     assert data.properties is not None
     assert isinstance(data.properties, dict)
 
@@ -186,7 +186,7 @@ def test_data_methods_of_environment_data_model_class():
 
 
 def test_to_schema_org(data_model):
-    # Create instance of the Data object to convert to schema.org format.
+    # Create instance of the Response object to convert to schema.org format.
 
     schema_org = data_model.to_schema_org()
 

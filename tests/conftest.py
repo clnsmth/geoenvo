@@ -9,7 +9,7 @@ from geoenvo.geometry import Geometry
 from geoenvo.data_sources import EcologicalCoastalUnits
 from geoenvo.data_sources import EcologicalMarineUnits
 from geoenvo.data_sources import WorldTerrestrialEcosystems
-from geoenvo.utilities import Data, compile_response
+from geoenvo.utilities import Response, compile_response
 
 
 @pytest.fixture()
@@ -230,10 +230,10 @@ def load_geometry(filename: str):
 def load_response(filename: str):
     """Load test response in JSON format."""
     with open(files("tests.data.response").joinpath(f"{filename}.json"), "r") as f:
-        return Response(json.load(f))
+        return RequestsResponse(json.load(f))
 
 
-class Response:
+class RequestsResponse:
     """A mock object of
     https://requests.readthedocs.io/en/latest/api/#requests.Response for
     testing purposes."""
@@ -251,7 +251,7 @@ def assert_identify():  # FIXME: success/fail is not the best description
     from the resolve operation."""
 
     def _assert_identify(result: list, scenario: dict):
-        assert isinstance(result, Data)
+        assert isinstance(result, Response)
 
         # Test the geometry object
         assert isinstance(result.data["geometry"], dict)
@@ -272,7 +272,7 @@ def assert_identify():  # FIXME: success/fail is not the best description
 
         # Set vocabulary terms
         env_with_terms = result.apply_vocabulary_mapping()
-        assert isinstance(env_with_terms, Data)
+        assert isinstance(env_with_terms, Response)
         assert isinstance(env_with_terms.data, dict)
         environment = env_with_terms.data["properties"]["environment"]
         if len(environment) > 0:
@@ -286,12 +286,12 @@ def assert_identify():  # FIXME: success/fail is not the best description
         # Write to file
         with tempfile.TemporaryDirectory() as tmpdirname:
             file_path = f"{tmpdirname}/file.json"
-            result.write(file_path)  # TODO: use Data object
+            result.write(file_path)  # TODO: use Response object
             data_snapshot = result.data  # Save for comparison with read data
 
             # Read from file
-            data = Data()
-            data.read(file_path)  # TODO: use Data object
+            data = Response()
+            data.read(file_path)  # TODO: use Response object
             assert data_snapshot == data.data
             assert isinstance(data.data, dict)
 
@@ -303,11 +303,11 @@ def assert_data_model():
     """Assert properties of the data model returned by the convert_data
     method."""
 
-    def _assert_data_model(result: Data):
-        assert isinstance(result, Data)
+    def _assert_response_model(result: Response):
+        assert isinstance(result, Response)
         assert isinstance(result.data, dict)
 
-    return _assert_data_model
+    return _assert_response_model
 
 
 def _load_conversion_factors():  # TODO move to utilities?
