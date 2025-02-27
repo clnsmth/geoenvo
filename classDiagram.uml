@@ -4,7 +4,7 @@ package "geoenvo" {
     class Resolver {
         + data_source : DataSource[*]
         + Resolver(data_source : DataSource[*])
-        + resolve(geometry : Geometry, vocabulary : string) : Response
+        + resolve(geometry : Geometry, semantic_resource : string) : Response
     }
 
     interface DataSource {
@@ -46,7 +46,7 @@ package "geoenvo" {
         + data : dictionary
         + properties : dictionary
         + Response(data : dictionary)
-        + apply_vocabulary_mapping(vocabulary : string) : Response
+        + apply_term_mapping(semantic_resource : string) : Response
         + read(file_path : string) : Response
         + to_schema_org() : dictionary
         + write(file_path : string)

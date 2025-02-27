@@ -115,19 +115,19 @@ class Response:
             self.data = json.loads(file.read())
         return self
 
-    def apply_vocabulary_mapping(self, vocabulary: str = "ENVO"):
+    def apply_term_mapping(self, semantic_resource: str = "ENVO"):
         # Iterate over list of environments in data
         for environment in self.data["properties"]["environment"]:
 
             # Load SSSOM of environment for term mapping
             data_source = environment["dataSource"]["name"]
             sssom_file = importlib.resources.files("geoenvo.data.sssom").joinpath(
-                f"{data_source}-{vocabulary.lower()}.sssom.tsv"
+                f"{data_source}-{semantic_resource.lower()}.sssom.tsv"
             )
             if not sssom_file.exists():
                 return []
             sssom_meta_file = importlib.resources.files("geoenvo.data.sssom").joinpath(
-                f"{data_source}-{vocabulary.lower()}.sssom.yml"
+                f"{data_source}-{semantic_resource.lower()}.sssom.yml"
             )
             if not sssom_meta_file.exists():
                 return []

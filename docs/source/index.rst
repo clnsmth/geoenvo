@@ -15,7 +15,9 @@ Release v\ |version|. (:ref:`Installation <quickstart>`)
     :target: https://codecov.io/github/clnsmth/geoenvo
     :alt: Code coverage status
 
-`geoenvo` is a Python library that links geographic coordinates to environmental descriptions. It provides environmental descriptions in both the original format of the source data and a standardized ENVO ([Environment Ontology](https://sites.google.com/site/environmentontology/)) representation, mapping descriptions to ENVO terms for consistency and interoperability.
+`geoenvo` is a Python library that links geographic coordinates to environmental properties. These properties are described using the terminology of the source data, with options to map to other semantic resources, including controlled vocabularies and ontologies. By default, `geoenvo` maps to ENVO (`Environment Ontology`_).
+
+.. _Environment Ontology: https://sites.google.com/site/environmentontology/
 
 Motivation
 ----------
@@ -30,6 +32,8 @@ Install the current release from GitHub.
 .. code-block:: bash
 
     pip install git+https://github.com/clnsmth/geoenvo.git@main
+
+Resolve a geometry to its environment(s).
 
 .. code-block:: python
 
@@ -63,9 +67,7 @@ Install the current release from GitHub.
         description="Polygon on land",
     )
 
-    # The response is a GeoJSON feature with environmental properties
-    print(dumps(response.data, indent=2))
-
+The response is a GeoJSON Feature containing a list of environments and their associated properties. These properties map to semantic resources, ENVO by default.
 
 .. code-block:: json
 
@@ -126,9 +128,10 @@ Install the current release from GitHub.
     }
 
 
+Format the response as Schema.org.
+
 .. code-block:: python
 
-    # Format as Schema.org
     schema_org = response.to_schema_org()
 
 

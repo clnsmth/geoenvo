@@ -4,11 +4,11 @@
 ![example workflow](https://github.com/clnsmth/geoenvo/actions/workflows/ci-cd.yml/badge.svg)
 [![codecov](https://codecov.io/github/clnsmth/geoenvo/graph/badge.svg?token=2J4MNIXCTD)](https://codecov.io/github/clnsmth/geoenvo)
 
-`geoenvo` is a Python library that links geographic coordinates to environmental descriptions. It provides environmental descriptions in both the original format of the source data and a standardized ENVO ([Environment Ontology](https://sites.google.com/site/environmentontology/)) representation, mapping descriptions to ENVO terms for consistency and interoperability.
+`geoenvo` is a Python library that links geographic coordinates to environmental properties. These properties are described using the terminology of the source data, with options to map to other semantic resources, including controlled vocabularies and ontologies. By default, `geoenvo` maps to ENVO ([Environment Ontology](https://sites.google.com/site/environmentontology/)).
 
 ## Motivation
 
-There is a vast amount of data available from diverse sources, and geoenvo offers a straightforward way to expose the environmental semantics of these datasets. By doing so, it provides a mechanism to connect otherwise disparate data sources through a shared environmental context, unlocking new opportunities for integrated analysis and research. 
+There is a vast amount of data available from diverse sources, and geoenvo offers a straightforward way to expose the environmental semantics of these datasets. By doing so, it provides a mechanism to connect otherwise disparate data sources through a shared environmental context, unlocking new opportunities for integrated analysis and research.
 
 ## Quick Start
 
@@ -17,6 +17,8 @@ Install the current release from GitHub.
 ```bash
 pip install git+https://github.com/clnsmth/geoenvo.git@main
 ```
+
+Resolve a geometry to its environment(s).
 
 ```python
 from json import dumps
@@ -49,9 +51,9 @@ response = resolver.resolve(
     description="Polygon on land",
 )
 
-# The response is a GeoJSON feature with environmental properties
-print(dumps(response.data, indent=2))
 ```
+
+The response is a GeoJSON feature containing a list of environments and their associated properties. These properties map to semantic resources, ENVO by default.
 
 ```json
 {
@@ -113,9 +115,12 @@ print(dumps(response.data, indent=2))
 
 ```
 
-``` python
-# Format as Schema.org
+
+Format the response as Schema.org.
+
+```python
 schema_org = response.to_schema_org()
 ```
+
 
 

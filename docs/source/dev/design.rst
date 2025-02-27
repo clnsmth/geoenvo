@@ -10,10 +10,9 @@ We encourage you to explore this document and reach out with any questions or su
 Overview
 --------
 
-The goal of this project is to unify diverse, heterogeneous datasets
-through a shared environmental context, supporting global dataset
-integration and collaboration. To achieve this, we have established a
-set of functional and non-functional design requirements.
+The goal of this project is to resolve geographic locations, expressed as
+geometries, to environments and their descriptive properties. To achieve this,
+we have established a set of functional and non-functional design requirements.
 
 Design Requirements
 -------------------
@@ -30,7 +29,7 @@ Design Requirements
 **Interoperability Requirements**
 
 -  Implement using open and widely adopted standards.
--  Map environmental descriptions to multiple ontologies and vocabularies.
+-  Map environmental terms to multiple semantic resources.
 -  Represent response data using Schema.org conventions.
 
 **Efficiency Goals**
@@ -81,8 +80,8 @@ Data Model section for a full description [link].
 Methods of the ``Response`` class enable working with the response
 content, including:
 
--  Mapping environments and their descriptions to different
-   ontologies/vocabularies.
+-  Mapping environments and their descriptive terms to different
+   semantic resource.
 -  Transformation of the response into a Schema.org-compliant format,
    aligned with `Science-On-Schema.Org`_ conventions.
 -  Writing/reading of data for storage or further processing.
@@ -131,7 +130,7 @@ Semantic Mapping
 
 This project uses the `Simple Standard for Sharing Ontological Mappings`_
 (SSSOM) to facilitate semantic mapping between ``DataSource``
-terminologies and adopted ontologies/vocabularies. Semantic mapping is
+terminologies and adopted semantic resources. Semantic mapping is
 implemented in the ``apply_term_mapping`` method of the ``Response``
 class.
 
@@ -160,7 +159,7 @@ consistently:
    cannot be processed due to conflicts between geometries and data
    sources.
 -  ``TermMappingError``: Raised when a mapping between data source
-   terms and ontologies/vocabularies fails or an expected mapping file
+   terms and a semantic resource fails or an expected mapping file
    is missing or malformed.
 -  ``NetworkError``: Raised for network-related failures, such as
    timeouts or unreachable data sources.
@@ -205,7 +204,7 @@ The testing framework ensures coverage for key components and behaviors.
 -  **Data source**: Ensure standardized behaviors across data sources,
    with custom tests for unique cases.
 -  **Response**: Confirm correct mapping and transformation of
-   environmental descriptions to ontology/vocabulary terms, and
+   environmental terms to semantic resources, and
    Schema.org format.
 -  **Mock data tests**: Compare mock data with real HTTP responses to
    detect discrepancies.
@@ -231,7 +230,7 @@ Integrating a new data source involves the following steps:
 
 **Implement Semantic Mappings**
 
-1. Create an SSSOM mapping file for each target ontology/vocabulary.
+1. Create an SSSOM mapping file for each semantic resource.
 2. Follow standard naming conventions for file discovery.
 
 **Implement Tests**

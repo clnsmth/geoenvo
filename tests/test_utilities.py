@@ -119,31 +119,31 @@ def test_compile_response(scenarios, mocker, empty_data_model):
         assert isinstance(env, dict)
 
 
-def test_apply_vocabulary_mapping(data_model):
-    # Remove the vocabulary terms from the test data model to set the baseline
-    # for the test
+def test_apply_term_mapping(data_model):
+    # Remove the semantic resource terms from the test data model to set the
+    # baseline for the test
     data_model.data["properties"]["environment"][0]["mappedProperties"] = []
     data = data_model
 
-    # Apply vocabulary mapping for each environment
-    data.apply_vocabulary_mapping("ENVO")
+    # Apply term mapping for each environment
+    data.apply_term_mapping("ENVO")
 
-    # Check that the vocabulary terms are set for each environment, and that
-    # no "sssom:NoMapping" is present
+    # Check that the semantic resource terms are set for each environment, and
+    # that no "sssom:NoMapping" is present
     for item in data.data["properties"]["environment"]:
         assert len(item["mappedProperties"]) > 0
         for term in item["mappedProperties"]:
             assert "sssom:nomapping" not in term["uri"].lower()
 
 
-def test_apply_vocabulary_mapping_for_unrecognized_vocabularies(data_model):
-    # Remove the vocabulary terms from the test data model to set the baseline
-    # for the test
+def test_apply_term_mapping_for_unrecognized_semantic_resources(data_model):
+    # Remove the semantic resource terms from the test data model to set the
+    # baseline for the test
     data_model.data["properties"]["environment"][0]["mappedProperties"] = []
 
-    # Apply a vocabulary mapping for an unrecognized vocabulary results in no
+    # Apply a term mapping for an unrecognized semantic resource results in no
     # changes to the data model
-    data_model.apply_vocabulary_mapping("SomeUnrecognizedVocabulary")
+    data_model.apply_term_mapping("SomeUnrecognizedSemanticResource")
     assert data_model.data["properties"]["environment"][0]["mappedProperties"] == []
 
 

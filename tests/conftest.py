@@ -217,7 +217,7 @@ def data_model(mocker):
         identifier="5b4edec5-ea5e-471a-8a3c-2c1171d59dee",
         description="Polygon on land",
     )
-    data.apply_vocabulary_mapping()
+    data.apply_term_mapping()
     return data
 
 
@@ -270,8 +270,8 @@ def assert_identify():  # FIXME: success/fail is not the best description
                     assert isinstance(value, str)
                     assert len(value) > 0
 
-        # Set vocabulary terms
-        env_with_terms = result.apply_vocabulary_mapping()
+        # Set semantic resource terms
+        env_with_terms = result.apply_term_mapping()
         assert isinstance(env_with_terms, Response)
         assert isinstance(env_with_terms.data, dict)
         environment = env_with_terms.data["properties"]["environment"]

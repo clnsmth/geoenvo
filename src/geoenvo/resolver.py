@@ -22,7 +22,7 @@ class Resolver:
     def resolve(
         self,
         geometry: Geometry,
-        vocabulary: str = "ENVO",
+        semantic_resource: str = "ENVO",
         identifier: str = None,
         description: str = None,
     ) -> Response:
@@ -37,7 +37,7 @@ class Resolver:
                 identifier=identifier,
                 description=description,
             )
-            result.apply_vocabulary_mapping(vocabulary)
+            result.apply_term_mapping(semantic_resource)
             return result
         except Exception as e:
             print(f"An error occurred: {e}")

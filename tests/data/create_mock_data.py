@@ -99,7 +99,7 @@ def create_schema_org_fixture(
         description="Polygon on land",
     )
 
-    data.apply_vocabulary_mapping()
+    data.apply_term_mapping()
     schema_org = dumps(data.to_schema_org(), indent=4)
 
     with open(output_directory.joinpath("schema_org.jsonld"), "w") as f:
