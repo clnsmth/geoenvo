@@ -82,4 +82,3 @@ if __name__ == "__main__":
 
     # Format as Schema.org
     schema_org = response.to_schema_org()
-
