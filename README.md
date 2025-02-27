@@ -20,9 +20,7 @@ pip install git+https://github.com/clnsmth/geoenvo.git@main
 
 ```python
 from json import dumps
-from geoenvo.data_sources import (
-    WorldTerrestrialEcosystems,
-)
+from geoenvo.data_sources import WorldTerrestrialEcosystems
 from geoenvo.resolver import Resolver
 from geoenvo.geometry import Geometry
 
@@ -44,15 +42,15 @@ geometry = Geometry(polygon_on_land)
 # Configure the resolver with one or more data sources
 resolver = Resolver(data_source=[WorldTerrestrialEcosystems()])
 
-# Identify the environment for the geometry
-result = resolver.resolve(
+# Resolve the geometry to environmental descriptions
+response = resolver.resolve(
     geometry,
     identifier="5b4edec5-ea5e-471a-8a3c-2c1171d59dee",
     description="Polygon on land",
 )
 
-# The result is a GeoJSON Feature with description and environment properties
-print(dumps(result.data, indent=2))
+# The response is a GeoJSON feature with environmental properties
+print(dumps(response.data, indent=2))
 ```
 
 ```json
@@ -62,28 +60,13 @@ print(dumps(result.data, indent=2))
   "geometry": {
     "type": "Polygon",
     "coordinates": [
-      [
         [
-          -123.552,
-          39.804
-        ],
-        [
-          -120.83,
-          39.804
-        ],
-        [
-          -120.83,
-          40.441
-        ],
-        [
-          -123.552,
-          40.441
-        ],
-        [
-          -123.552,
-          39.804
+            [-123.552, 39.804],
+            [-120.83, 39.804],
+            [-120.83, 40.441],
+            [-123.552, 40.441],
+            [-123.552, 39.804]
         ]
-      ]
     ]
   },
   "properties": {
@@ -131,88 +114,8 @@ print(dumps(result.data, indent=2))
 ```
 
 ``` python
-# The result can be converted to Schema.org JSON-LD
-schema_org = result.to_schema_org()
-print(dumps(schema_org, indent=2))
+# Format as Schema.org
+schema_org = response.to_schema_org()
 ```
 
-```json
-{
-  "@context": "https://schema.org/",
-  "@id": "5b4edec5-ea5e-471a-8a3c-2c1171d59dee",
-  "@type": "Place",
-  "description": "Polygon on land",
-  "geo": {
-    "@type": "GeoShape",
-    "polygon": "39.804 -123.552 39.804 -120.83 40.441 -120.83 40.441 -123.552 39.804 -123.552"
-  },
-  "additionalProperty": [
-    {
-      "@type": "PropertyValue",
-      "name": "Spatial reference system",
-      "propertyID": "https://dbpedia.org/page/Spatial_reference_system",
-      "value": "https://www.w3.org/2003/01/geo/wgs84_pos"
-    },
-    {
-      "@type": "PropertyValue",
-      "name": "temperature",
-      "value": "Warm Temperate"
-    },
-    {
-      "@type": "PropertyValue",
-      "name": "moisture",
-      "value": "Dry"
-    },
-    {
-      "@type": "PropertyValue",
-      "name": "landCover",
-      "value": "Grassland"
-    },
-    {
-      "@type": "PropertyValue",
-      "name": "landForm",
-      "value": "Plains"
-    },
-    {
-      "@type": "PropertyValue",
-      "name": "climate",
-      "value": "Warm Temperate Dry"
-    },
-    {
-      "@type": "PropertyValue",
-      "name": "ecosystem",
-      "value": "Warm Temperate Dry Grassland on Plains"
-    }
-  ],
-  "keywords": [
-    {
-      "@id": "http://purl.obolibrary.org/obo/ENVO_01000206",
-      "@type": "DefinedTerm",
-      "name": "temperate",
-      "inDefinedTermSet": "https://ontobee.org/ontology/ENVO",
-      "termCode": "ENVO_01000206"
-    },
-    {
-      "@id": "http://purl.obolibrary.org/obo/ENVO_01000230",
-      "@type": "DefinedTerm",
-      "name": "arid",
-      "inDefinedTermSet": "https://ontobee.org/ontology/ENVO",
-      "termCode": "ENVO_01000230"
-    },
-    {
-      "@id": "http://purl.obolibrary.org/obo/ENVO_00000106",
-      "@type": "DefinedTerm",
-      "name": "grassland area",
-      "inDefinedTermSet": "https://ontobee.org/ontology/ENVO",
-      "termCode": "ENVO_00000106"
-    },
-    {
-      "@id": "http://purl.obolibrary.org/obo/ENVO_00000086",
-      "@type": "DefinedTerm",
-      "name": "plain",
-      "inDefinedTermSet": "https://ontobee.org/ontology/ENVO",
-      "termCode": "ENVO_00000086"
-    }
-  ]
-}
-```
+

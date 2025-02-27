@@ -48,9 +48,7 @@ class Resolver:
 if __name__ == "__main__":
 
     from json import dumps
-    from geoenvo.data_sources import (
-        WorldTerrestrialEcosystems,
-    )
+    from geoenvo.data_sources import WorldTerrestrialEcosystems
     from geoenvo.resolver import Resolver
     from geoenvo.geometry import Geometry
 
@@ -72,16 +70,16 @@ if __name__ == "__main__":
     # Configure the resolver with one or more data sources
     resolver = Resolver(data_source=[WorldTerrestrialEcosystems()])
 
-    # Identify the environment for the geometry
-    result = resolver.resolve(
+    # Resolve the geometry to environmental descriptions
+    response = resolver.resolve(
         geometry,
         identifier="5b4edec5-ea5e-471a-8a3c-2c1171d59dee",
         description="Polygon on land",
     )
 
-    # The result is a GeoJSON feature with environmental properties
-    print(dumps(result.data, indent=2))
+    # The response is a GeoJSON feature with environmental properties
+    print(dumps(response.data, indent=2))
 
-    # The result can be converted to Schema.org JSON-LD
-    schema_org = result.to_schema_org()
-    print(dumps(schema_org, indent=2))
+    # Format as Schema.org
+    schema_org = response.to_schema_org()
+
