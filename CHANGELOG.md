@@ -3,6 +3,18 @@
 
 
 
+## v0.2.0 (2025-02-14)
+
+
+### Documentation
+
+* docs: deprecate “ecosystem” for “environment” ([`994f1b3`](https://github.com/clnsmth/geoenvo/commit/994f1b305e2645684183eac5a1116167c0e75fb0)) 
+* docs: resolve build warnings ([`417a252`](https://github.com/clnsmth/geoenvo/commit/417a252f6ff1beb003a57163cc29ebb08e5f0612)) 
+
+### Features
+
+* feat: enable use of other vocabularies ([`dd10ddb`](https://github.com/clnsmth/geoenvo/commit/dd10ddb8b6396de27dda6b44ac22cc373c0f2a50)) 
+
 ## v0.1.0 (2025-02-12)
 
 

@@ -3,6 +3,43 @@
 
 
 
+## v0.2.1 (2025-02-28)
+
+
+### Bug fixes
+
+* fix: improve semantics of "vocabulary" and "environmental property" ([`d43f13e`](https://github.com/clnsmth/geoenvo/commit/d43f13eb54e4e9527417a1b1afdabe0ab2649583)) 
+
+### Documentation
+
+* docs: document the data model of returned results ([`8e2cb39`](https://github.com/clnsmth/geoenvo/commit/8e2cb3941ba56d2c4c8803f84c4fca5d2fefd785)) 
+* docs: trim the Schema.org from the basic example for brevity ([`cd3f612`](https://github.com/clnsmth/geoenvo/commit/cd3f6127900dc6f3d0642ed76b96d97497c455e6)) 
+* docs: create design documentation ([`001cca7`](https://github.com/clnsmth/geoenvo/commit/001cca7d8e2b6b604ce6b7b043c24e64c4d30f2d)) 
+* docs: declare modules for autodoc to build ([`27fd047`](https://github.com/clnsmth/geoenvo/commit/27fd04776550c8c8daa19e140323900a51510e81)) 
+* docs: add class diagram to understand architecture ([`0413bd5`](https://github.com/clnsmth/geoenvo/commit/0413bd5a5b3d1d3f9cb1a969042ba75b7c32b6c4)) 
+* docs: update class UML diagram for system understanding ([`7ad6d84`](https://github.com/clnsmth/geoenvo/commit/7ad6d843129d142831d65999dff3197808d1923f)) 
+* docs: deprecate "vocabulary annotation" for "vocabulary mapping" ([`5bb2f7c`](https://github.com/clnsmth/geoenvo/commit/5bb2f7c480d706c34db602708953bc838abc5f3a)) 
+* docs: deprecate `identify` and `query` for “resolve” ([`29c61fb`](https://github.com/clnsmth/geoenvo/commit/29c61fb0829a7e0f9945ac630002242d62492c55)) 
+* docs: deprecate “Resolver” for “DataSource” (cont.) ([`ec222f4`](https://github.com/clnsmth/geoenvo/commit/ec222f4386332b3dcec2b4090d4a96d09e557b35)) 
+* docs: deprecate “Resolver” for “DataSource” ([`9800aaf`](https://github.com/clnsmth/geoenvo/commit/9800aaf1d6d3b0042e4e941ca0e9ec3c82f7bcb5)) 
+
+### Refactoring
+
+* refactor: format for consistency ([`3ccdece`](https://github.com/clnsmth/geoenvo/commit/3ccdece1562897bb6b9313ffe352ae6b11b0280f)) 
+* refactor: change name of Data class to Response to be more descriptive ([`329b45c`](https://github.com/clnsmth/geoenvo/commit/329b45c1704fe6893a03d0cc91b5484ace4f7883)) 
+* refactor: format for consistency ([`302aa03`](https://github.com/clnsmth/geoenvo/commit/302aa035efd4a8301e8d47d8d1ceac267b5e2eb4)) 
+* refactor: replace '._' with '.' for properties (cont.) ([`d576064`](https://github.com/clnsmth/geoenvo/commit/d576064640c8ba813dc2278d292d1410a3828918)) 
+* refactor: change env_properties to properties ([`f183fe3`](https://github.com/clnsmth/geoenvo/commit/f183fe37a14b6d74282b522f59de433dee2d0421)) 
+* refactor: format for consistency ([`5894180`](https://github.com/clnsmth/geoenvo/commit/589418044b1296d4da6b476b2c50f08319fbb539)) 
+* refactor: deprecate "attributes" for "properties" (cont.) ([`0594043`](https://github.com/clnsmth/geoenvo/commit/05940431ad63115a6b5468409b84e48471b263d5)) 
+* refactor: use "property" and "attribute" consistently ([`ef64638`](https://github.com/clnsmth/geoenvo/commit/ef64638f0b3968300acc027e0eeebb76310f5685)) 
+* refactor:  import resolver classes to resolver module for intuitive client set up ([`8eab450`](https://github.com/clnsmth/geoenvo/commit/8eab45061e10329b58a670beca8111ee15d175fd)) 
+
+### Testing
+
+* test: rename tests/resolvers to tests/data_sources to align with source code ([`86a1892`](https://github.com/clnsmth/geoenvo/commit/86a1892c9cf966fd8e5b448edfbadec005ef3d36)) 
+* test: update test fixture to fix outdated call ([`999045d`](https://github.com/clnsmth/geoenvo/commit/999045d18607c96073df45303affbb3027416f44)) 
+
 ## v0.2.0 (2025-02-14)
 
 
