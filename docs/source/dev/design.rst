@@ -125,6 +125,107 @@ Currently, the ``Geometry`` class only supports GeoJSON ``Point`` and
 ``Polygon`` types, with plans to support additional types, including
 ``GeometryCollections``, in the future.
 
+
+Response Data Schema
+--------------------
+
+The response object is structured as a GeoJSON-like feature containing information about geographic coordinates and their corresponding environmental properties. Below is the schema description:
+
+**Root Level**
+
+- **type** (string): Indicates the type of GeoJSON feature. Currently set to "Feature".
+- **identifier** (string): A unique identifier for the feature, set through the ``identifier`` parameter of the ``resolve`` method.
+- **geometry** (object): Defines the spatial geometry of the feature, and is set through the ``geometry`` parameter of the ``resolve`` method.
+- **properties** (object): Contains descriptive and environmental information.
+
+**Properties**
+
+- **description** (string): A human-readable description of the geographic feature, set through the ``description`` parameter of the ``resolve`` method.
+- **environment** (array): An array of environments associated with the geographic feature.
+
+**Environment Object**
+
+- **type** (string): Describes the type of entity. Set to "Environment".
+- **dataSource** (object): Information about the source of the environmental data.
+- **dateCreated** (string): The date and time of the data source query, formatted as "YYYY-MM-DD HH:MM:SS".
+- **properties** (object): The properties that describe the environment.
+- **mappedProperties** (array): An array of mappings to controlled vocabularies and ontologies.
+
+**Data Source Object**
+
+- **identifier** (string): A persistent identifier (e.g., DOI) for the data source.
+- **name** (string): The name of the data source.
+
+**Properties Object**
+
+Key value pairs representing environmental properties.
+
+**Mapped Property Object**
+
+- **label** (string): A human-readable label for the mapped term (e.g., "temperate").
+- **uri** (string): A URI pointing to the term's definition in a controlled vocabulary or ontology (e.g., an ENVO URI).
+
+**Example**
+
+.. code-block:: json
+
+    {
+      "type": "Feature",
+      "identifier": "5b4edec5-ea5e-471a-8a3c-2c1171d59dee",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+            [
+                [-123.552, 39.804],
+                [-120.83, 39.804],
+                [-120.83, 40.441],
+                [-123.552, 40.441],
+                [-123.552, 39.804]
+            ]
+        ]
+      },
+      "properties": {
+        "description": "Polygon on land",
+        "environment": [
+          {
+            "type": "Environment",
+            "dataSource": {
+              "identifier": "https://doi.org/10.5066/P9DO61LP",
+              "name": "WorldTerrestrialEcosystems"
+            },
+            "dateCreated": "2025-02-18 08:27:46",
+            "properties": {
+              "temperature": "Warm Temperate",
+              "moisture": "Dry",
+              "landCover": "Grassland",
+              "landForm": "Plains",
+              "climate": "Warm Temperate Dry",
+              "ecosystem": "Warm Temperate Dry Grassland on Plains"
+            },
+            "mappedProperties": [
+              {
+                "label": "temperate",
+                "uri": "http://purl.obolibrary.org/obo/ENVO_01000206"
+              },
+              {
+                "label": "arid",
+                "uri": "http://purl.obolibrary.org/obo/ENVO_01000230"
+              },
+              {
+                "label": "grassland area",
+                "uri": "http://purl.obolibrary.org/obo/ENVO_00000106"
+              },
+              {
+                "label": "plain",
+                "uri": "http://purl.obolibrary.org/obo/ENVO_00000086"
+              }
+            ]
+          }
+        ]
+      }
+    }
+
+
 Semantic Mapping
 ----------------
 
