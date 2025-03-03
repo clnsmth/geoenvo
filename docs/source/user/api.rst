@@ -21,6 +21,12 @@ Geometry Module
 .. automodule:: geoenvo.geometry
    :members:
 
+Response Module
+---------------
+
+.. automodule:: geoenvo.response
+   :members:
+
 Environment Module
 ------------------
 
