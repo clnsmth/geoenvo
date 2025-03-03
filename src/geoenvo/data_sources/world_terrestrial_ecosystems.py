@@ -1,7 +1,24 @@
-"""The data_source module"""
+"""
+world_terrestrial_ecosystems.py
+================================
+
+This module defines the ``WorldTerrestrialEcosystems`` class, a concrete
+implementation of the ``DataSource`` abstract base class (ABC). This class
+interacts with the World Terrestrial Ecosystems dataset, retrieving
+environmental information based on geographic locations.
+
+Key functionalities of this module include:
+
+- Querying and resolving spatial geometries to terrestrial ecosystem
+  classifications.
+- Structuring and converting data into a standardized format.
+- Extracting unique environmental descriptions from the dataset.
+"""
 
 import warnings
 from json import dumps, loads
+from typing import List
+
 import requests
 from geoenvo.data_sources.data_source import DataSource
 from geoenvo.geometry import Geometry
@@ -11,7 +28,16 @@ from geoenvo.utilities import _json_extract, EnvironmentDataModel
 
 
 class WorldTerrestrialEcosystems(DataSource):
+    """
+    A concrete implementation of ``DataSource`` that retrieves terrestrial
+    ecosystem classifications from the World Terrestrial Ecosystems dataset.
+    """
+
     def __init__(self):
+        """
+        Initializes the WorldTerrestrialEcosystems data source with default
+        properties.
+        """
         super().__init__()
         self._geometry = None
         self._data = None
@@ -26,7 +52,7 @@ class WorldTerrestrialEcosystems(DataSource):
         self._grid_size = None
 
     @property
-    def geometry(self):
+    def geometry(self) -> dict:
         return self._geometry
 
     @geometry.setter
@@ -34,7 +60,7 @@ class WorldTerrestrialEcosystems(DataSource):
         self._geometry = geometry
 
     @property
-    def data(self):
+    def data(self) -> dict:
         return self._data
 
     @data.setter
@@ -42,7 +68,7 @@ class WorldTerrestrialEcosystems(DataSource):
         self._data = data
 
     @property
-    def properties(self):
+    def properties(self) -> dict:
         return self._properties
 
     @properties.setter
@@ -50,15 +76,24 @@ class WorldTerrestrialEcosystems(DataSource):
         self._properties = properties
 
     @property
-    def grid_size(self):
+    def grid_size(self) -> float:
+        """
+        Retrieves the grid size used for spatial resolution.
+
+        :return: The grid size as a float.
+        """
         return self._grid_size
 
     @grid_size.setter
     def grid_size(self, grid_size: float):
+        """
+        Sets the grid size used for spatial resolution.
+
+        :param grid_size: The grid size as a float.
+        """
         self._grid_size = grid_size
 
-    def resolve(self, geometry: Geometry):
-
+    def resolve(self, geometry: Geometry) -> List[Environment]:
         # Enable the grid size sampling option for polygons, which the data
         # source would otherwise convert to a centroid point.
         geometries = []
@@ -81,7 +116,15 @@ class WorldTerrestrialEcosystems(DataSource):
         return self.convert_data()
 
     @staticmethod
-    def _request(geometry: Geometry):
+    def _request(geometry: Geometry) -> dict:
+        """
+        Sends a request to the World Terrestrial Ecosystems data source and
+        retrieves raw response data.
+
+        :param geometry: The geographic location to query.
+        :return: A dictionary containing raw response data from the data
+            source.
+        """
         base = (
             "https://rmgsc.cr.usgs.gov/arcgis/rest/services/"
             + "wte"
@@ -103,7 +146,7 @@ class WorldTerrestrialEcosystems(DataSource):
         except Exception as e:
             return {}
 
-    def convert_data(self):
+    def convert_data(self) -> List[Environment]:
         result = []
         unique_wte_environments = self.unique_environment()
         for unique_wte_environment in unique_wte_environments:
@@ -115,7 +158,7 @@ class WorldTerrestrialEcosystems(DataSource):
             result.append(Environment(data=environment.data))
         return result
 
-    def unique_environment(self):
+    def unique_environment(self) -> List[dict]:
         # Parse the properties of the environment(s) in the data to a form
         # that can be compared for uniqueness.
         if not self.has_environment():
@@ -148,7 +191,7 @@ class WorldTerrestrialEcosystems(DataSource):
             new_descriptors.append(new_descriptor)
         return new_descriptors
 
-    def has_environment(self, data=None):
+    def has_environment(self, data=None) -> bool:
         """
         The data parameter enables the method to be used with a different
         dataset than the one stored in the data source instance.

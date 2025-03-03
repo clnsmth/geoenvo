@@ -1,7 +1,24 @@
-"""The data_source module"""
+"""
+ecological_marine_units.py
+===========================
+
+This module defines the ``EcologicalMarineUnits`` class, a concrete
+implementation of the ``DataSource`` abstract base class (ABC). This class
+interacts with the Ecological Marine Units dataset, retrieving environmental
+information for marine regions based on geographic locations.
+
+Key functionalities of this module include:
+
+- Querying and resolving spatial geometries to marine environmental
+  classifications.
+- Structuring and converting data into a standardized format.
+- Extracting unique environmental descriptions from the dataset.
+"""
 
 from datetime import datetime
 from json import dumps, loads
+from typing import List
+
 import pandas as pd
 import requests
 from geoenvo.data_sources.data_source import DataSource
@@ -12,7 +29,16 @@ from geoenvo.utilities import EnvironmentDataModel
 
 
 class EcologicalMarineUnits(DataSource):
+    """
+    A concrete implementation of ``DataSource`` that retrieves marine
+    environmental classifications from the Ecological Marine Units dataset.
+    """
+
     def __init__(self):
+        """
+        Initializes the EcologicalMarineUnits data source with default
+        properties.
+        """
         super().__init__()
         self._geometry = None
         self._data = None
@@ -29,7 +55,7 @@ class EcologicalMarineUnits(DataSource):
         }
 
     @property
-    def geometry(self):
+    def geometry(self) -> dict:
         return self._geometry
 
     @geometry.setter
@@ -37,7 +63,7 @@ class EcologicalMarineUnits(DataSource):
         self._geometry = geometry
 
     @property
-    def data(self):
+    def data(self) -> dict:
         return self._data
 
     @data.setter
@@ -45,20 +71,28 @@ class EcologicalMarineUnits(DataSource):
         self._data = data
 
     @property
-    def properties(self):
+    def properties(self) -> dict:
         return self._properties
 
     @properties.setter
     def properties(self, properties: dict):
         self._properties = properties
 
-    def resolve(self, geometry: Geometry):
+    def resolve(self, geometry: Geometry) -> List[Environment]:
         self.geometry = geometry.data  # required for filtering on depth
         self.data = self._request(geometry)
         return self.convert_data()
 
     @staticmethod
-    def _request(geometry: Geometry):
+    def _request(geometry: Geometry) -> dict:
+        """
+        Sends a request to the Ecological Marine Units data source and
+        retrieves raw response data.
+
+        :param geometry: The geographic location to query.
+        :return: A dictionary containing raw response data from the data
+            source.
+        """
         base = (
             "https://services.arcgis.com/P3ePLMYs2RVChkJx/ArcGIS/rest/services/"
             + "EMU_2018"
@@ -94,7 +128,7 @@ class EcologicalMarineUnits(DataSource):
         except Exception as e:
             return {}
 
-    def convert_data(self):
+    def convert_data(self) -> List[Environment]:
         result = []
         unique_emu_environments = self.unique_environment()
         for unique_emu_environment in unique_emu_environments:
@@ -109,7 +143,7 @@ class EcologicalMarineUnits(DataSource):
             result.append(Environment(data=environment.data))
         return result
 
-    def unique_environment(self):
+    def unique_environment(self) -> List[dict]:
         if not self.has_environment():
             return list()
         # FIXME? - get_environments_for_geometry_z_values does two things:
@@ -130,7 +164,7 @@ class EcologicalMarineUnits(DataSource):
         descriptors = self.get_environments_for_geometry_z_values(data=data)
         return descriptors
 
-    def has_environment(self):
+    def has_environment(self) -> bool:
         # FIXME: This produces an error when running the geographic
         #  coverage in the file knb-lter-ntl.420.2.
         res = len(self.data["features"])
@@ -139,7 +173,15 @@ class EcologicalMarineUnits(DataSource):
         if res > 0:
             return True
 
-    def set_properties(self, unique_environment_properties):
+    def set_properties(self, unique_environment_properties) -> dict:
+        """
+        Sets the properties for the data source based on unique environmental
+        descriptions.
+
+        :param unique_environment_properties: A dictionary containing
+            environmental classification attributes.
+        :return: The updated properties dictionary.
+        """
         if len(unique_environment_properties) == 0:
             return None
         # There are two properties for EMU, OceanName and Name_2018, the latter
@@ -202,7 +244,14 @@ class EcologicalMarineUnits(DataSource):
         }
         return new_properties
 
-    def convert_codes_to_values(self):
+    def convert_codes_to_values(self) -> dict:
+        """
+        Converts coded classification values (e.g., ``OceanName`` and other
+        properties) into descriptive string values. This transformation ensures
+        consistency between response objects across different datasets.
+
+        :return: A dictionary with converted classification values.
+        """
         # Convert the codes listed under the Name_2018 and OceanName
         # properties to the descriptive string values so the EMU
         # response object more closely resembles the ECU and WTE
@@ -255,7 +304,14 @@ class EcologicalMarineUnits(DataSource):
             data.get("features")[i]["attributes"]["Name_2018"] = value
         return data  # TODO: why not set to self._data?
 
-    def get_environments_for_geometry_z_values(self, data):
+    def get_environments_for_geometry_z_values(self, data) -> List[dict]:
+        """
+        Extracts the depth (Z) values from the geometry property in the
+        response object. This method is useful for analyzing environmental
+        data at different depth levels.
+
+        :param data: The response data containing geometry information.
+        """
         # - Get the z values from the geometry property of the response
         # object
         geometry = self.geometry

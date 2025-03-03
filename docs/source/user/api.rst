@@ -12,7 +12,16 @@ Resolver Module
 Data Sources Module
 -------------------
 
-.. automodule:: geoenvo.data_sources
+.. automodule:: geoenvo.data_sources.data_source
+   :members:
+
+.. automodule:: geoenvo.data_sources.world_terrestrial_ecosystems
+   :members:
+
+.. automodule:: geoenvo.data_sources.ecological_coastal_units
+   :members:
+
+.. automodule:: geoenvo.data_sources.ecological_marine_units
    :members:
 
 Geometry Module

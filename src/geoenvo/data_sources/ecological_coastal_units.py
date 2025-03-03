@@ -1,7 +1,24 @@
-"""The data_source module"""
+"""
+ecological_coastal_units.py
+===========================
+
+This module defines the ``EcologicalCoastalUnits`` class, a concrete
+implementation of the ``DataSource`` abstract base class (ABC). This class
+interacts with the Ecological Coastal Units dataset, retrieving environmental
+information for coastal regions based on geographic locations.
+
+Key functionalities of this module include:
+
+- Querying and resolving spatial geometries to coastal environmental
+  classifications.
+- Structuring and converting data into a standardized format.
+- Extracting unique environmental descriptions from the dataset.
+"""
 
 from datetime import datetime
 from json import dumps
+from typing import List
+
 import requests
 from geoenvo.data_sources.data_source import DataSource
 from geoenvo.geometry import Geometry
@@ -11,7 +28,16 @@ from geoenvo.utilities import EnvironmentDataModel, get_properties
 
 
 class EcologicalCoastalUnits(DataSource):
+    """
+    A concrete implementation of ``DataSource`` that retrieves coastal
+    environmental classifications from the Ecological Coastal Units dataset.
+    """
+
     def __init__(self):
+        """
+        Initializes the EcologicalCoastalUnits data source with default
+        properties.
+        """
         super().__init__()
         self._geometry = None
         self._data = None
@@ -31,7 +57,7 @@ class EcologicalCoastalUnits(DataSource):
         self._buffer = None
 
     @property
-    def geometry(self):
+    def geometry(self) -> dict:
         return self._geometry
 
     @geometry.setter
@@ -39,7 +65,7 @@ class EcologicalCoastalUnits(DataSource):
         self._geometry = geometry
 
     @property
-    def data(self):
+    def data(self) -> dict:
         return self._data
 
     @data.setter
@@ -47,7 +73,7 @@ class EcologicalCoastalUnits(DataSource):
         self._data = data
 
     @property
-    def properties(self):
+    def properties(self) -> dict:
         return self._properties
 
     @properties.setter
@@ -55,14 +81,24 @@ class EcologicalCoastalUnits(DataSource):
         self._properties = properties
 
     @property
-    def buffer(self):
+    def buffer(self) -> float:
+        """
+        Retrieves the buffer distance used for spatial resolution.
+
+        :return: The buffer distance as a float.
+        """
         return self._buffer
 
     @buffer.setter
     def buffer(self, buffer: float):
+        """
+        Sets the buffer distance used for spatial resolution.
+
+        :param buffer: The buffer distance as a float.
+        """
         self._buffer = buffer
 
-    def resolve(self, geometry: Geometry):
+    def resolve(self, geometry: Geometry) -> List[Environment]:
 
         # Enable the buffer size sampling option for points, which the data
         # source would otherwise resolve to None, because points don't
@@ -74,7 +110,15 @@ class EcologicalCoastalUnits(DataSource):
         return self.convert_data()
 
     @staticmethod
-    def _request(geometry: Geometry):
+    def _request(geometry: Geometry) -> dict:
+        """
+        Sends a request to the Ecological Coastal Units data source and
+        retrieves raw response data.
+
+        :param geometry: The geographic location to query.
+        :return: A dictionary containing raw response data from the data
+            source.
+        """
         base = (
             "https://rmgsc.cr.usgs.gov/arcgis/rest/services/"
             + "gceVector"
@@ -105,7 +149,7 @@ class EcologicalCoastalUnits(DataSource):
         except Exception as e:
             return {}
 
-    def convert_data(self):
+    def convert_data(self) -> List[Environment]:
         result = []
         unique_ecu_environments = self.unique_environment()
         for unique_ecu_environment in unique_ecu_environments:
@@ -120,7 +164,7 @@ class EcologicalCoastalUnits(DataSource):
             result.append(Environment(data=environment.data))
         return result
 
-    def unique_environment(self):
+    def unique_environment(self) -> List[dict]:
         if not self.has_environment():
             return list()
         property = "CSU_Descriptor"
@@ -129,7 +173,7 @@ class EcologicalCoastalUnits(DataSource):
         descriptors = list(descriptors)
         return descriptors
 
-    def has_environment(self):
+    def has_environment(self) -> bool:
         # FIXME: This produces an error when running the geographic
         #  coverage in the file knb-lter-ntl.420.2.
         res = len(self._data["features"])
@@ -138,7 +182,15 @@ class EcologicalCoastalUnits(DataSource):
         if res > 0:
             return True
 
-    def set_properties(self, unique_environment_properties):
+    def set_properties(self, unique_environment_properties) -> dict:
+        """
+        Sets the properties for the data source based on unique environmental
+        descriptions.
+
+        :param unique_environment_properties: A dictionary containing
+            environmental classification attributes.
+        :return: The updated properties dictionary.
+        """
         if len(unique_environment_properties) == 0:
             return None
         # There is only one property for ECU, CSU_Descriptor, which is
