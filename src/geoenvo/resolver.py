@@ -1,22 +1,57 @@
-"""The resolve module"""
+"""
+resolver.py
+===========
+
+This module defines the ``Resolver`` class, which serves as the primary client-facing API for resolving geographic locations to environmental descriptions.
+
+The ``Resolver`` class takes one or more ``DataSource`` instances and queries them using a given ``Geometry``. The results are mapped to a specified semantic resource (default: ENVO) and returned in a structured ``Response`` object.
+
+Key functionalities of this module include:
+
+- Configuring and managing environmental data sources.
+- Resolving geographic geometries to environmental descriptions.
+- Mapping results to semantic ontologies such as ENVO.
+"""
 
 from typing import List
 from geoenvo.data_sources.data_source import DataSource
 from geoenvo.geometry import Geometry
 from geoenvo.utilities import compile_response, Response
-from tests.conftest import load_geometry
 
 
 class Resolver:
+    """
+    The Resolver class serves as the primary client-facing API for querying
+    environmental data. Clients configure an instance with one or more
+    ``DataSource`` objects and use the ``resolve`` method to retrieve
+    environment descriptions based on geographic locations.
+    """
+
     def __init__(self, data_source: List[DataSource]):
+        """
+        Initializes the Resolver with a list of ``DataSource`` instances.
+
+        :param data_source: A list of ``DataSource`` objects that provide
+            environmental data.
+        """
         self._data_source = data_source
 
     @property
-    def data_source(self):
+    def data_source(self) -> List[DataSource]:
+        """
+        Retrieves the list of configured ``DataSource`` instances.
+
+        :return: The list of data sources.
+        """
         return self._data_source
 
     @data_source.setter
     def data_source(self, data_source: List[DataSource]):
+        """
+        Updates the list of ``DataSource`` instances used by the resolver.
+
+        :param data_source: A new list of data sources.
+        """
         self._data_source = data_source
 
     def resolve(
@@ -26,6 +61,21 @@ class Resolver:
         identifier: str = None,
         description: str = None,
     ) -> Response:
+        """
+        Resolves a given ``Geometry`` to one or more environments using the
+        configured data sources. The results are mapped to a semantic resource
+        (e.g., ENVO) and returned as a ``Response`` object.
+
+        :param geometry: The spatial geometry to resolve.
+        :param semantic_resource: The semantic resource to use for mapping
+            (default: "ENVO").
+        :param identifier: An optional identifier for tracking the resolution
+            request.
+        :param description: An optional description to annotate the resolution
+            request.
+        :return: A ``Response`` object containing the resolved environmental
+            data.
+        """
         try:
             results = []
             for item in self.data_source:
