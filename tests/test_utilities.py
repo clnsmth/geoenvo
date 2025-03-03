@@ -7,9 +7,8 @@ from geoenvo.data_sources import WorldTerrestrialEcosystems
 from geoenvo.utilities import (
     EnvironmentDataModel,
     get_properties,
-    compile_response,
-    Response,
 )
+from geoenvo.response import Response, compile_response
 from tests.conftest import load_response, load_geometry
 
 

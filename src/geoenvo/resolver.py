@@ -16,7 +16,7 @@ Key functionalities of this module include:
 from typing import List
 from geoenvo.data_sources.data_source import DataSource
 from geoenvo.geometry import Geometry
-from geoenvo.utilities import compile_response, Response
+from geoenvo.response import compile_response, Response
 
 
 class Resolver:

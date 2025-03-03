@@ -9,7 +9,7 @@ from geoenvo.geometry import Geometry
 from geoenvo.data_sources import EcologicalCoastalUnits
 from geoenvo.data_sources import EcologicalMarineUnits
 from geoenvo.data_sources import WorldTerrestrialEcosystems
-from geoenvo.utilities import Response, compile_response
+from geoenvo.response import Response, compile_response
 
 
 @pytest.fixture()

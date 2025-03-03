@@ -11,7 +11,7 @@ from geoenvo.geometry import Geometry
 from geoenvo.data_sources import WorldTerrestrialEcosystems
 from geoenvo.data_sources import EcologicalCoastalUnits
 from geoenvo.data_sources import EcologicalMarineUnits
-from geoenvo.utilities import user_agent, compile_response
+from geoenvo.resolver import compile_response
 from tests.conftest import load_geometry, load_response
 
 
