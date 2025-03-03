@@ -22,6 +22,7 @@ import pandas as pd
 from geoenvo.environment import Environment
 from geoenvo.geometry import Geometry
 
+
 class Response:
     """
     The Response class structures the results returned by the ``Resolver``

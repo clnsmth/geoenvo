@@ -1,33 +1,79 @@
-"""The geometry module"""
+"""
+geometry.py
+===========
+
+This module defines the ``Geometry`` class, which manages and processes
+spatial geometries. It provides utility methods for verifying geometry types,
+transforming between representations, and performing spatial operations such
+as buffering and grid-based sampling.
+
+Key functionalities of this module include:
+
+- Managing GeoJSON geometries and their transformations.
+- Verifying geometry support for the resolver.
+- Converting between GeoJSON and Esri-compatible formats.
+- Generating representative points within polygons for spatial sampling.
+"""
 
 import json
-from io import StringIO, BytesIO
+from io import StringIO
 from json import loads, dumps
 import geopandas as gpd
+import shapely
 from shapely import Polygon, Point
 import numpy as np
 
 
 class Geometry:
+    """
+    The Geometry class manages spatial geometries in GeoJSON format and
+    provides utilities for transformation and spatial processing.
+    """
+
     def __init__(self, geometry: dict):
+        """
+        Initializes a Geometry object with the given GeoJSON geometry.
+
+        :param geometry: A dictionary representing a GeoJSON geometry.
+        """
         self._data = geometry
 
     @property
-    def data(self):
+    def data(self) -> dict:
+        """
+        Retrieves the stored geometry data.
+
+        :return: A dictionary representing the GeoJSON geometry.
+        """
         return self._data
 
     @data.setter
     def data(self, geometry: dict):
+        """
+        Updates the geometry data.
+
+        :param geometry: A dictionary representing a new GeoJSON geometry.
+        """
         self._data = geometry
 
     def is_supported(self) -> bool:
-        # If self.data is a GeoJSON object with the top level "type" property
-        # having a value of "Point" or "Polygon", then it is valid.
+        """
+        Checks if the stored geometry is supported by the resolver.
+        A valid geometry must be a GeoJSON object with a top-level ``type`` of
+        either "Point" or "Polygon".
+
+        :return: ``True`` if the geometry is supported, otherwise ``False``.
+        """
         if self.data.get("type") in ["Point", "Polygon"]:
             return True
         return False
 
     def to_esri(self) -> dict:
+        """
+        Converts the GeoJSON geometry to an Esri-compatible format.
+
+        :return: A dictionary representing the Esri-formatted geometry.
+        """
         if self.data["type"] == "Point":
             x, y, *z = self.data["coordinates"]
             geometry = {
@@ -48,11 +94,23 @@ class Geometry:
         else:
             raise ValueError("Invalid geometry type")
 
-    def geometry_type(self) -> str:  # TODO deprecate in favor of self.data.get('type')
+    def geometry_type(self) -> str:
+        """
+        Retrieves the type of the stored geometry (e.g., "Point" or "Polygon").
+
+        :return: A string representing the geometry type.
+        """
         return self.data.get("type")
 
-    def point_to_polygon(self, buffer=None):
+    def point_to_polygon(self, buffer=None) -> dict:
+        """
+        Converts a ``Point`` geometry into a ``Polygon`` by buffering it.
 
+        :param buffer: The buffer distance used to create the polygon
+            (optional).
+        :return: A dictionary representing the buffered polygon in GeoJSON
+            format.
+        """
         if self.geometry_type() != "Point" or buffer is None:
             return self.data
 
@@ -75,7 +133,15 @@ class Geometry:
         }
         return polygon
 
-    def polygon_to_points(self, grid_size):
+    def polygon_to_points(self, grid_size) -> list[dict]:
+        """
+        Converts a ``Polygon`` geometry into a set of representative points
+        using grid-based sampling.
+
+        :param grid_size: The size of the grid cells used for sampling.
+        :return: A list of dictionaries representing sampled points in GeoJSON
+            format.
+        """
         if self.data.get("type") != "Polygon":
             return self.data
 
@@ -100,16 +166,16 @@ class Geometry:
         return points
 
 
-def grid_sample_polygon(polygon, grid_size):
+def grid_sample_polygon(polygon: shapely.Polygon, grid_size: float) -> gpd.GeoSeries:
     """
-    Generates a set of representative points within a polygon using grid-based sampling.
+    Generates a set of representative points within a polygon using grid-based
+    sampling.
 
-    Args:
-        polygon: A Shapely Polygon object.
-        grid_size: The size of the grid cells in the same units as the polygon's coordinates.
-
-    Returns:
-        A GeoSeries of Shapely Point objects representing the sample points.
+    :param polygon: A Shapely Polygon object.
+    :param grid_size: The size of the grid cells in the same units as the
+        polygon's coordinates.
+    :return: A GeoSeries of Shapely Point objects representing the sample
+        points.
     """
 
     min_x, min_y, max_x, max_y = polygon.bounds
