@@ -28,6 +28,10 @@ class Geometry:
     """
     The Geometry class manages spatial geometries in GeoJSON format and
     provides utilities for transformation and spatial processing.
+
+    Currently, the ``geometry`` parameter only supports GeoJSON ``Point`` and
+    ``Polygon`` types, with plans to support additional types, including
+    ``GeometryCollection``, in the future.
     """
 
     def __init__(self, geometry: dict):

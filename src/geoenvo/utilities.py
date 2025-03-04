@@ -52,9 +52,9 @@ class EnvironmentDataModel:  # TODO: rename to EnvironmentDataModel
 
     def __init__(self):
         """
-         Initializes an ``EnvironmentDataModel`` object with default
-         attributes.
-         """
+        Initializes an ``EnvironmentDataModel`` object with default
+        attributes.
+        """
         self._data = {
             "type": "Environment",
             "dataSource": {"identifier": None, "name": None},
