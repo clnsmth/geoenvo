@@ -34,10 +34,16 @@ class EcologicalMarineUnits(DataSource):
     environmental classifications from the Ecological Marine Units dataset
     (Sayre 2023).
 
-    Note, this data source supports the resolution of geometries with ``z``
-    values (depth). To retrieve environmental data at different depths,
-    include the ``z`` component in the input geometry. No additional property
-    is required.
+
+    **Note**
+        - This data source supports the resolution of geometries with ``z``
+          values (depth). To retrieve environmental data at different depths,
+          include the ``z`` component in the input geometry. No additional
+          property is required.
+        - If no ``z`` value is specified in the geometry, all vertically
+          stacked environments will be returned. If a ``z`` value is included,
+          only the intersecting environment layers at that depth will be
+          returned.
 
     **Further Information**
         - **Spatial Resolution**: Global coverage with a resolution of
