@@ -31,6 +31,14 @@ class EcologicalCoastalUnits(DataSource):
     """
     A concrete implementation of ``DataSource`` that retrieves coastal
     environmental classifications from the Ecological Coastal Units dataset.
+
+    Note, this data source does not accept ``Point`` geometries directly.
+    Because coastal units are represented as vector polygons, input geometries
+    must overlap with them for successful resolution. However, ``Point``
+    geometries can be processed by setting the ``buffer`` property, which
+    converts them into circular polygons of a given radius (in kilometers).
+    These polygons are then resolved against the dataset, and all overlapping
+    coastal units are returned in the response.
     """
 
     def __init__(self):
@@ -85,7 +93,12 @@ class EcologicalCoastalUnits(DataSource):
         """
         Retrieves the buffer distance used for spatial resolution.
 
-        :return: The buffer distance as a float.
+        Since this data source does not accept ``Point`` geometries directly,
+        setting the ``buffer`` parameter allows points to be expanded into
+        circular polygons before resolution. All overlapping coastal units
+        within the buffered area will be included in the response.
+
+        :return: The buffer distance as a float. Units are in **kilometers**.
         """
         return self._buffer
 

@@ -32,6 +32,11 @@ class EcologicalMarineUnits(DataSource):
     """
     A concrete implementation of ``DataSource`` that retrieves marine
     environmental classifications from the Ecological Marine Units dataset.
+
+    Note, this data source supports the resolution of geometries with ``z``
+    values (depth). To retrieve environmental data at different depths,
+    include the ``z`` component in the input geometry. No additional property
+    is required.
     """
 
     def __init__(self):

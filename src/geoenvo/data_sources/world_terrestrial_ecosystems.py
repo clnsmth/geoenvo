@@ -31,6 +31,12 @@ class WorldTerrestrialEcosystems(DataSource):
     """
     A concrete implementation of ``DataSource`` that retrieves terrestrial
     ecosystem classifications from the World Terrestrial Ecosystems dataset.
+
+    Note, this data source only accepts ``Point`` geometries directly.
+    ``Polygon`` geometries are supported indirectly via the ``grid_size``
+    property, which enables subsampling of the polygon into representative
+    points. Each point is resolved individually, and the results are
+    aggregated into the final response.
     """
 
     def __init__(self):
@@ -78,7 +84,13 @@ class WorldTerrestrialEcosystems(DataSource):
     @property
     def grid_size(self) -> float:
         """
-        Retrieves the grid size used for spatial resolution.
+        Retrieves the grid size used for spatial resolution. The size of the
+        grid cells are in the same units as the geometry coordinates.
+
+        Note, if a ``Polygon`` geometry is provided, this property determines
+        the spacing of the representative points used for subsampling. Each
+        point is resolved individually, and the results are combined in the
+        final response.
 
         :return: The grid size as a float.
         """
