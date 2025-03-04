@@ -1,18 +1,5 @@
 """
-ecological_coastal_units.py
-===========================
-
-This module defines the ``EcologicalCoastalUnits`` class, a concrete
-implementation of the ``DataSource`` abstract base class (ABC). This class
-interacts with the Ecological Coastal Units dataset, retrieving environmental
-information for coastal regions based on geographic locations.
-
-Key functionalities of this module include:
-
-- Querying and resolving spatial geometries to coastal environmental
-  classifications.
-- Structuring and converting data into a standardized format.
-- Extracting unique environmental descriptions from the dataset.
+*ecological_coastal_units.py*
 """
 
 from datetime import datetime
@@ -33,13 +20,14 @@ class EcologicalCoastalUnits(DataSource):
     environmental classifications from the Ecological Coastal Units dataset
     (Sayre 2023).
 
-    Note, this data source does not accept ``Point`` geometries directly.
-    Because coastal units are represented as vector polygons, input geometries
-    must overlap with them for successful resolution. However, ``Point``
-    geometries can be processed by setting the ``buffer`` property, which
-    converts them into circular polygons of a given radius (in kilometers).
-    These polygons are then resolved against the dataset, and all overlapping
-    coastal units are returned in the response.
+    **Note**
+        - Note, this data source does not accept ``Point`` geometries directly.
+        Because coastal units are represented as vector polygons, input
+        geometries must overlap with them for successful resolution. However,
+        ``Point`` geometries can be processed by setting the ``buffer``
+        property, which converts them into circular polygons of a given radius
+        (in kilometers). These polygons are then resolved against the dataset,
+        and all overlapping coastal units are returned in the response.
 
     **Further Information**
         - **Spatial Resolution**: Global coverage with a resolution of

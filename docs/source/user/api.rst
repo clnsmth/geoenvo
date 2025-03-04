@@ -3,17 +3,14 @@
 Developer Interface
 ===================
 
-Resolver Module
----------------
+Main Interface
+--------------
 
 .. automodule:: geoenvo.resolver
    :members:
 
-Data Sources Module
--------------------
-
-.. automodule:: geoenvo.data_sources.data_source
-   :members:
+Data Sources
+------------
 
 .. automodule:: geoenvo.data_sources.world_terrestrial_ecosystems
    :members:
@@ -24,26 +21,32 @@ Data Sources Module
 .. automodule:: geoenvo.data_sources.ecological_marine_units
    :members:
 
-Geometry Module
----------------
+Geometry
+--------
 
 .. automodule:: geoenvo.geometry
    :members:
 
-Response Module
----------------
+Response
+--------
 
 .. automodule:: geoenvo.response
    :members:
 
-Environment Module
-------------------
+Environment
+-----------
 
 .. automodule:: geoenvo.environment
    :members:
 
-Utilities Module
-----------------
+Utilities
+---------
 
 .. automodule:: geoenvo.utilities
+   :members:
+
+DataSource (ABC)
+----------------
+
+.. automodule:: geoenvo.data_sources.data_source
    :members:

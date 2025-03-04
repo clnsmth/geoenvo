@@ -1,21 +1,5 @@
 """
-data_source.py
-==============
-
-This module defines the ``DataSource`` abstract base class (ABC), which serves
-as a template for implementing data sources that provide environmental
-information based on geographic queries.
-
-Concrete implementations of ``DataSource`` must adhere to the defined
-interface, ensuring standard methods and properties for interoperability with
-the resolver system.
-
-Key functionalities of this module include:
-
-- Defining an abstract interface for querying environmental data.
-- Standardizing interactions between geometry and environmental attributes.
-- Providing required methods for resolving spatial geometries into structured
-  environment descriptions.
+*data_source.py*
 """
 
 from abc import ABC, abstractmethod

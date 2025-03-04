@@ -1,16 +1,8 @@
 """
-resolver.py
-===========
+*resolver.py*
 
-This module defines the ``Resolver`` class, which serves as the primary client-facing API for resolving geographic locations to environmental descriptions.
-
-The ``Resolver`` class takes one or more ``DataSource`` instances and queries them using a given ``Geometry``. The results are mapped to a specified semantic resource (default: ENVO) and returned in a structured ``Response`` object.
-
-Key functionalities of this module include:
-
-- Configuring and managing environmental data sources.
-- Resolving geographic geometries to environmental descriptions.
-- Mapping results to semantic ontologies such as ENVO.
+The primary client-facing API for resolving spatial geometries to environmental
+descriptions.
 """
 
 from typing import List
@@ -25,6 +17,9 @@ class Resolver:
     environmental data. Clients configure an instance with one or more
     ``DataSource`` objects and use the ``resolve`` method to retrieve
     environment descriptions based on geographic locations.
+
+    The results are mapped to a specified semantic resource (default: ENVO)
+    and returned in a structured ``Response`` object.
     """
 
     def __init__(self, data_source: List[DataSource]):

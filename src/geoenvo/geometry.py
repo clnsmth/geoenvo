@@ -1,18 +1,5 @@
 """
-geometry.py
-===========
-
-This module defines the ``Geometry`` class, which manages and processes
-spatial geometries. It provides utility methods for verifying geometry types,
-transforming between representations, and performing spatial operations such
-as buffering and grid-based sampling.
-
-Key functionalities of this module include:
-
-- Managing GeoJSON geometries and their transformations.
-- Verifying geometry support for the resolver.
-- Converting between GeoJSON and Esri-compatible formats.
-- Generating representative points within polygons for spatial sampling.
+*geometry.py*
 """
 
 import json

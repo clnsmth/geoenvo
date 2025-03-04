@@ -1,17 +1,5 @@
 """
-utilities.py
-============
-
-This module provides utility functions and classes for managing environmental
-data models, extracting JSON properties, and defining HTTP request headers for
-the geoenvo package.
-
-Key functionalities of this module include:
-
-- Structuring environmental data models with standardized properties.
-- Extracting specific values from nested JSON objects.
-- Retrieving specified properties from resolve or query operation responses.
-- Defining a user agent for HTTP requests.
+*utilities.py*
 """
 
 from datetime import datetime

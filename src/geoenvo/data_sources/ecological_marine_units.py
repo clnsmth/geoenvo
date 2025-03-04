@@ -1,18 +1,5 @@
 """
-ecological_marine_units.py
-===========================
-
-This module defines the ``EcologicalMarineUnits`` class, a concrete
-implementation of the ``DataSource`` abstract base class (ABC). This class
-interacts with the Ecological Marine Units dataset, retrieving environmental
-information for marine regions based on geographic locations.
-
-Key functionalities of this module include:
-
-- Querying and resolving spatial geometries to marine environmental
-  classifications.
-- Structuring and converting data into a standardized format.
-- Extracting unique environmental descriptions from the dataset.
+*ecological_marine_units.py*
 """
 
 from datetime import datetime

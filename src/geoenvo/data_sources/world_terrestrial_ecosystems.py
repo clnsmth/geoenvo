@@ -1,18 +1,5 @@
 """
-world_terrestrial_ecosystems.py
-================================
-
-This module defines the ``WorldTerrestrialEcosystems`` class, a concrete
-implementation of the ``DataSource`` abstract base class (ABC). This class
-interacts with the World Terrestrial Ecosystems dataset, retrieving
-environmental information based on geographic locations.
-
-Key functionalities of this module include:
-
-- Querying and resolving spatial geometries to terrestrial ecosystem
-  classifications.
-- Structuring and converting data into a standardized format.
-- Extracting unique environmental descriptions from the dataset.
+*world_terrestrial_ecosystems.py*
 """
 
 import warnings
@@ -33,11 +20,12 @@ class WorldTerrestrialEcosystems(DataSource):
     ecosystem classifications from the World Terrestrial Ecosystems dataset
     (Sayre 2022).
 
-    Note, this data source only accepts ``Point`` geometries directly.
-    ``Polygon`` geometries are supported indirectly via the ``grid_size``
-    property, which enables subsampling of the polygon into representative
-    points. Each point is resolved individually, and the results are
-    aggregated into the final response.
+    **Note**
+        - This data source only accepts ``Point`` geometries directly.
+          ``Polygon`` geometries are supported indirectly via the ``grid_size``
+          property, which enables subsampling of the polygon into
+          representative points. Each point is resolved individually, and the
+          results are aggregated into the final response.
 
     **Further Information**
         - **Spatial Resolution**: Global coverage with a resolution of

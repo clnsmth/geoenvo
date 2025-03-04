@@ -1,16 +1,5 @@
 """
-environment.py
-==============
-
-This module defines the ``Environment`` class, which encapsulates environmental
-descriptions retrieved from a ``DataSource``. It provides a structured
-representation of environmental data, allowing for efficient access and
-manipulation.
-
-Key functionalities of this module include:
-
-- Storing and managing environmental data in a structured format.
-- Providing access to environmental properties through a simple interface.
+*environment.py*
 """
 
 import json

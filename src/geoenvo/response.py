@@ -1,17 +1,5 @@
 """
-response.py
-===========
-
-This module defines the ``Response`` class, which structures the results from the ``Resolver`` into a standardized format.
-The response is formatted as a GeoJSON ``Feature`` object, with resolved environments and their descriptions stored in the ``properties`` field.
-Additionally, this module provides utilities for transforming response data into Schema.org-compliant representations and managing term mappings.
-
-Key functionalities of this module include:
-
-- Structuring environmental data as a GeoJSON ``Feature``.
-- Reading and writing response data in JSON format.
-- Mapping environment descriptions to semantic resources (e.g., ENVO).
-- Converting response data to Schema.org-compliant format.
+*response.py*
 """
 
 import importlib
