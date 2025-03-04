@@ -31,12 +31,26 @@ from geoenvo.utilities import EnvironmentDataModel
 class EcologicalMarineUnits(DataSource):
     """
     A concrete implementation of ``DataSource`` that retrieves marine
-    environmental classifications from the Ecological Marine Units dataset.
+    environmental classifications from the Ecological Marine Units dataset
+    (Sayre 2023).
 
     Note, this data source supports the resolution of geometries with ``z``
     values (depth). To retrieve environmental data at different depths,
     include the ``z`` component in the input geometry. No additional property
     is required.
+
+    **Further Information**
+        - **Spatial Resolution**: Global coverage with a resolution of
+          *1/4 degree*.
+        - **Coverage**: Marine ecosystems worldwide, classified by *ocean name,
+          depth, temperature, salinity, dissolved oxygen, nitrate, phosphate,
+          and silicate*.
+        - **Explore the Dataset**:
+          `https://esri.maps.arcgis.com/home/item.html?id=58526e3af88b46a3a1d1eb1738230ee3 <https://esri.maps.arcgis.com/home/item.html?id=58526e3af88b46a3a1d1eb1738230ee3>`_.
+
+    **Citation**
+        Sayre, R., 2023, Ecological Marine Units (EMUs): U.S. Geological
+        Survey data release, `https://doi.org/10.5066/P9Q6ZSGN <https://doi.org/10.5066/P9Q6ZSGN>`_.
     """
 
     def __init__(self):

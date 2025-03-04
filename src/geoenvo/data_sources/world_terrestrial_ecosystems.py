@@ -30,13 +30,26 @@ from geoenvo.utilities import _json_extract, EnvironmentDataModel
 class WorldTerrestrialEcosystems(DataSource):
     """
     A concrete implementation of ``DataSource`` that retrieves terrestrial
-    ecosystem classifications from the World Terrestrial Ecosystems dataset.
+    ecosystem classifications from the World Terrestrial Ecosystems dataset
+    (Sayre 2022).
 
     Note, this data source only accepts ``Point`` geometries directly.
     ``Polygon`` geometries are supported indirectly via the ``grid_size``
     property, which enables subsampling of the polygon into representative
     points. Each point is resolved individually, and the results are
     aggregated into the final response.
+
+    **Further Information**
+        - **Spatial Resolution**: Global coverage with a resolution of
+          *250 meters*.
+        - **Coverage**: Terrestrial ecosystems worldwide, classified by *land
+          cover, landform, and climate*.
+        - **Explore the Dataset**:
+          `https://www.arcgis.com/home/item.html?id=926a206393ec40a590d8caf29ae9a93e <https://www.arcgis.com/home/item.html?id=926a206393ec40a590d8caf29ae9a93e>`_.
+
+    **Citation**
+        Sayre, R., 2022, *World Terrestrial Ecosystems (WTE) 2020*: U.S. Geological Survey data release,
+        `https://doi.org/10.5066/P9DO61LP <https://doi.org/10.5066/P9DO61LP>`_.
     """
 
     def __init__(self):

@@ -30,7 +30,8 @@ from geoenvo.utilities import EnvironmentDataModel, get_properties
 class EcologicalCoastalUnits(DataSource):
     """
     A concrete implementation of ``DataSource`` that retrieves coastal
-    environmental classifications from the Ecological Coastal Units dataset.
+    environmental classifications from the Ecological Coastal Units dataset
+    (Sayre 2023).
 
     Note, this data source does not accept ``Point`` geometries directly.
     Because coastal units are represented as vector polygons, input geometries
@@ -39,6 +40,21 @@ class EcologicalCoastalUnits(DataSource):
     converts them into circular polygons of a given radius (in kilometers).
     These polygons are then resolved against the dataset, and all overlapping
     coastal units are returned in the response.
+
+    **Further Information**
+        - **Spatial Resolution**: Global coverage with a resolution of
+          *1 km (or shorter)*.
+        - **Coverage**: Costal ecosystems worldwide, classified by *sinuosity,
+          erodibility, temperature and moisture regime, river discharge,
+          wave height, tidal range, marine physical environment, turbidity,
+          and chlorophyll*.
+        - **Explore the Dataset**:
+          `https://www.arcgis.com/home/item.html?id=54df078334954c5ea6d5e1c34eda2c87 <https://www.arcgis.com/home/item.html?id=54df078334954c5ea6d5e1c34eda2c87>`_.
+
+    **Citation**
+        Sayre, R., 2023, Global Ecological Classification of Coastal Segment
+        Units: U.S. Geological Survey data release, `https://doi.org/10.5066/P9HWHSPU <https://doi.org/10.5066/P9HWHSPU>`_.
+
     """
 
     def __init__(self):
