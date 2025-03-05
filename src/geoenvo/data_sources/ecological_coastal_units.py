@@ -22,12 +22,13 @@ class EcologicalCoastalUnits(DataSource):
 
     **Note**
         - Note, this data source does not accept ``Point`` geometries directly.
-        Because coastal units are represented as vector polygons, input
-        geometries must overlap with them for successful resolution. However,
-        ``Point`` geometries can be processed by setting the ``buffer``
-        property, which converts them into circular polygons of a given radius
-        (in kilometers). These polygons are then resolved against the dataset,
-        and all overlapping coastal units are returned in the response.
+          Because coastal units are represented as vector polygons, input
+          geometries must overlap with them for successful resolution. However,
+          ``Point`` geometries can be processed by setting the ``buffer``
+          property, which converts them into circular polygons of a given
+          radius (in kilometers). These polygons are then resolved against the
+          dataset, and all overlapping coastal units are returned in the
+          response.
 
     **Further Information**
         - **Spatial Resolution**: Global coverage with a resolution of
@@ -42,7 +43,6 @@ class EcologicalCoastalUnits(DataSource):
     **Citation**
         Sayre, R., 2023, Global Ecological Classification of Coastal Segment
         Units: U.S. Geological Survey data release, `https://doi.org/10.5066/P9HWHSPU <https://doi.org/10.5066/P9HWHSPU>`_.
-
     """
 
     def __init__(self):

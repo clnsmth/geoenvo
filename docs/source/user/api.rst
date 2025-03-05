@@ -12,13 +12,13 @@ Main Interface
 Data Sources
 ------------
 
-.. automodule:: geoenvo.data_sources.world_terrestrial_ecosystems
+.. autoclass:: geoenvo.data_sources.WorldTerrestrialEcosystems
    :members:
 
-.. automodule:: geoenvo.data_sources.ecological_coastal_units
+.. autoclass:: geoenvo.data_sources.EcologicalCoastalUnits
    :members:
 
-.. automodule:: geoenvo.data_sources.ecological_marine_units
+.. autoclass:: geoenvo.data_sources.EcologicalMarineUnits
    :members:
 
 Geometry
