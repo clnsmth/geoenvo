@@ -4,7 +4,10 @@
 ![example workflow](https://github.com/clnsmth/geoenvo/actions/workflows/ci-cd.yml/badge.svg)
 [![codecov](https://codecov.io/github/clnsmth/geoenvo/graph/badge.svg?token=2J4MNIXCTD)](https://codecov.io/github/clnsmth/geoenvo)
 
-`geoenvo` is a Python library that links geographic coordinates to environmental properties. These properties are described using the terminology of the source data, with options to map to other semantic resources, including controlled vocabularies and ontologies. By default, `geoenvo` maps to ENVO ([Environment Ontology](https://sites.google.com/site/environmentontology/)).
+`geoenvo` is a Python library that links geographic coordinates to environmental properties at a global scale. These properties are described using the terminology of the source data, with options to map to other semantic resources, including controlled vocabularies and ontologies. By default, `geoenvo` maps to ENVO ([Environment Ontology](https://sites.google.com/site/environmentontology/)).
+
+If you know of a **data source, vocabulary, or ontology** 
+that could enhance this effort, please share it—even if it overlaps with existing resources.
 
 ## Motivation
 
