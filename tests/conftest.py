@@ -4,7 +4,6 @@ import json
 import tempfile
 import pytest
 from importlib.resources import files
-
 from geoenvo.geometry import Geometry
 from geoenvo.data_sources import EcologicalCoastalUnits
 from geoenvo.data_sources import EcologicalMarineUnits
@@ -246,7 +245,7 @@ class RequestsResponse:
 
 
 @pytest.fixture
-def assert_identify():  # FIXME: success/fail is not the best description
+def assert_identify():
     """Assert properties and values of a successful (or unsuccessful) response
     from the resolve operation."""
 
@@ -286,12 +285,12 @@ def assert_identify():  # FIXME: success/fail is not the best description
         # Write to file
         with tempfile.TemporaryDirectory() as tmpdirname:
             file_path = f"{tmpdirname}/file.json"
-            result.write(file_path)  # TODO: use Response object
+            result.write(file_path)
             data_snapshot = result.data  # Save for comparison with read data
 
             # Read from file
             data = Response()
-            data.read(file_path)  # TODO: use Response object
+            data.read(file_path)
             assert data_snapshot == data.data
             assert isinstance(data.data, dict)
 
@@ -310,7 +309,7 @@ def assert_data_model():
     return _assert_response_model
 
 
-def _load_conversion_factors():  # TODO move to utilities?
+def _load_conversion_factors():
     """Load conversion factors
 
     Returns

@@ -4,7 +4,7 @@
 
 import json
 from io import StringIO
-from json import loads, dumps
+from json import dumps
 import geopandas as gpd
 import shapely
 from shapely import Polygon, Point

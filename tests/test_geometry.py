@@ -2,12 +2,10 @@
 
 import json
 from io import StringIO
-
 import pandas as pd
 import geopandas as gpd
 import pytest
 import shapely
-
 from geoenvo.geometry import Geometry, grid_sample_polygon
 from tests.conftest import load_geometry
 

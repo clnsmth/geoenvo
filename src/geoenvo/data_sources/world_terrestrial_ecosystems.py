@@ -2,7 +2,6 @@
 *world_terrestrial_ecosystems.py*
 """
 
-import warnings
 from json import dumps, loads
 from typing import List
 
@@ -107,8 +106,16 @@ class WorldTerrestrialEcosystems(DataSource):
         self._grid_size = grid_size
 
     def get_environment(self, geometry: Geometry) -> List[Environment]:
-        # Enable the grid size sampling option for polygons, which the data
-        # source would otherwise convert to a centroid point.
+        """
+        Resolves a given geometry to environmental descriptions using the
+        World Terrestrial Ecosystems dataset.
+
+        :param geometry: The geographic location to resolve.
+        :return: A list of ``Environment`` objects containing environmental
+            classifications.
+        """
+        # Enable grid-based sampling for polygons. Without this, the data source
+        # would default to using the centroid of the polygon instead.
         geometries = []
         if geometry.geometry_type() == "Polygon" and self.grid_size is not None:
             points = geometry.polygon_to_points(grid_size=self.grid_size)

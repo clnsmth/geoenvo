@@ -3,13 +3,12 @@
 import json
 from importlib.resources import files
 from geoenvo.geometry import Geometry
-from geoenvo.data_sources import WorldTerrestrialEcosystems
 from geoenvo.utilities import (
     EnvironmentDataModel,
     get_properties,
 )
 from geoenvo.response import Response, compile_response
-from tests.conftest import load_response, load_geometry
+from tests.conftest import load_response
 
 
 def test_set_identifier():

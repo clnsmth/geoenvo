@@ -10,7 +10,8 @@ def test_data_source_init(data_sources):
 
 
 def test_data_source_properties(scenarios):
-    """Test that the DataSource instance classes have the expected properties"""
+    """Test that the DataSource instance classes have the expected
+    properties"""
     for scenario in scenarios:
         properties = scenario.get("data_source").properties
         expected_properties = scenario.get("raw_properties")
@@ -20,15 +21,15 @@ def test_data_source_properties(scenarios):
 def test_get_unique_environments(scenarios):
     """Test the get_unique_environments method.
 
-    The get_unique_environments method should return a set of unique environments
-    contained in a given server response object. The way environments are
-    expressed by each server (in JSON format) differs, so the function should
-    be capable of recognizing the format and parsing it accordingly. The set
-    object returned by the get_unique_environments method enables iterative
-    parsing of the contents by the builder routine of the get_wte_environments
-    and get_ecu_environments methods of the Response object. Note, currently,
-    the get_environment operation used to query the WTE server does not return more
-    than one environment per query.
+    The get_unique_environments method should return a set of unique
+    environments contained in a given server response object. The way
+    environments are expressed by each server (in JSON format) differs, so the
+    function should be capable of recognizing the format and parsing it
+    accordingly. The set object returned by the get_unique_environments method
+    enables iterative parsing of the contents by the builder routine of the
+    get_wte_environments and get_ecu_environments methods of the Response
+    object. Note, currently, the get_environment operation used to query the
+    WTE server does not return more than one environment per query.
     """
     for scenario in scenarios:
         # Configure the data_source

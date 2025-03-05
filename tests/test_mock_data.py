@@ -5,7 +5,7 @@ from importlib.resources import files
 from tests.data.create_mock_data import create_mock_response_content
 
 
-def test_mock_response_content(mocker, use_mock, tmp_path):
+def test_mock_response_content(use_mock, tmp_path):
     """Test the mock response content is consistent with real response data"""
 
     if use_mock:

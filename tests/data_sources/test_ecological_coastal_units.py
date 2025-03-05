@@ -1,7 +1,6 @@
 """Test the EcologicalCoastalUnits data source"""
 
 import pytest
-
 from geoenvo.geometry import Geometry
 from geoenvo.data_sources import EcologicalCoastalUnits
 from tests.conftest import load_geometry
@@ -21,8 +20,8 @@ def test_get_environment_with_buffer(use_mock):
     data_source = EcologicalCoastalUnits()
     geometry = Geometry(load_geometry("point_on_land_expands_to_coast"))
 
-    # Normally polygon_on_land_and_ocean geometry doesn't get_environment to anything
-    # because the polygon centroid is over the ocean.
+    # Normally polygon_on_land_and_ocean geometry doesn't get_environment to
+    # anything  because the polygon centroid is over the ocean.
     result = data_source.get_environment(geometry)
     assert result == []
 

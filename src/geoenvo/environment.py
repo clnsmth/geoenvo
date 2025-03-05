@@ -2,8 +2,6 @@
 *environment.py*
 """
 
-import json
-
 
 class Environment:
     """

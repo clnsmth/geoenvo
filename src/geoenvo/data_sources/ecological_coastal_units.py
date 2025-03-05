@@ -2,10 +2,8 @@
 *ecological_coastal_units.py*
 """
 
-from datetime import datetime
 from json import dumps
 from typing import List
-
 import requests
 from geoenvo.data_sources.data_source import DataSource
 from geoenvo.geometry import Geometry
@@ -116,10 +114,18 @@ class EcologicalCoastalUnits(DataSource):
         self._buffer = buffer
 
     def get_environment(self, geometry: Geometry) -> List[Environment]:
+        """
+        Resolves a given geometry to environmental descriptions using the
+        Ecological Coastal Units dataset.
 
-        # Enable the buffer size sampling option for points, which the data
-        # source would otherwise get_environment to None, because points don't
-        # overlap the vector data of the source.
+        :param geometry: The geographic location to resolve.
+        :return: A list of ``Environment`` objects containing environmental
+            classifications.
+        """
+        # Enable buffer-based sampling for points. Without this, the data
+        # source would return None because environments are represented as
+        # line vectors, meaning point locations would not overlap with any
+        # features.
         if geometry.geometry_type() == "Point" and self.buffer is not None:
             geometry.data = geometry.point_to_polygon(buffer=self.buffer)
 
@@ -155,7 +161,6 @@ class EcologicalCoastalUnits(DataSource):
             "returnCountOnly": "false",
             "returnZ": "false",
             "returnM": "false",
-            # "returnDistinctValues": "true",
             "returnExtentOnly": "false",
         }
         try:
@@ -191,8 +196,6 @@ class EcologicalCoastalUnits(DataSource):
         return descriptors
 
     def has_environment(self) -> bool:
-        # FIXME: This produces an error when running the geographic
-        #  coverage in the file knb-lter-ntl.420.2.
         res = len(self._data["features"])
         if res == 0:
             return False
@@ -210,38 +213,33 @@ class EcologicalCoastalUnits(DataSource):
         """
         if len(unique_environment_properties) == 0:
             return None
-        # There is only one property for ECU, CSU_Descriptor, which is
-        # composed of 10 atomic properties.
+
+        # There is only one property returned by this data source
+        # (CSU_Descriptor), which is composed of 10 atomic properties. Split
+        # the CSU_Descriptor into atomic properties and then zip the
+        # descriptors and atomic property labels to create a dictionary of
+        # environment properties.
         descriptors = unique_environment_properties
-        # Atomize: Split on commas and remove whitespace
         descriptors = descriptors.split(",")
         descriptors = [g.strip() for g in descriptors]
         atomic_property_labels = self._properties.keys()
-        # Zip descriptors and atomic property labels
         environments = [dict(zip(atomic_property_labels, descriptors))]
-        # Iterate over atomic properties and set labels and annotations
+
+        # Iterate over atomic properties and set labels
         environment = environments[0]
-        # properties = {}
-        # self._properties
         properties = self._properties
         for property in environment.keys():
             label = environment.get(property)
             properties[property] = label
-        # Add composite CSU_Description class
-        # Get environments values and join with commas
-        # TODO Fix issue where an property from the initialized list returned
-        #  by  Attributes() was missing for some reason and thus an annotation
-        #  couldn't  be found for it. If arbitrary joining of empties to the
-        #  annotation string is done, then the annotation may be wrong. Best to
-        #  just leave it out.
+
+        # Compose a readable CSU_Descriptor class by joining atomic properties
+        # into a single string.
         CSU_Descriptor = [f for f in properties.values()]
-        # Knock of the last one, which is CSU_Descriptor
-        CSU_Descriptor = CSU_Descriptor[:-1]
+        CSU_Descriptor = CSU_Descriptor[:-1]  # last one is the CSU_Description
         CSU_Descriptor = ", ".join(CSU_Descriptor)
-        # Knock of the last one, which is CSU_Descriptor
         properties["CSU_Descriptor"] = CSU_Descriptor
 
-        # Convert properties into a more readable format
+        # Convert property labels into a more readable format
         new_properties = {
             "slope": properties["Slope"],
             "sinuosity": properties["Sinuosity"],

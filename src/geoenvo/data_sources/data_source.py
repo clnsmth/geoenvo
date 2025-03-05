@@ -4,10 +4,8 @@
 
 from abc import ABC, abstractmethod
 from typing import List
-
 from geoenvo.geometry import Geometry
 from geoenvo.environment import Environment
-from geoenvo.response import Response
 
 
 class DataSource(ABC):

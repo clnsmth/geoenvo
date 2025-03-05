@@ -1,7 +1,6 @@
 """Test the EcologicalMarineUnits data source"""
 
 from json import loads
-
 from tests.conftest import load_response, load_geometry
 from geoenvo.data_sources import EcologicalMarineUnits
 

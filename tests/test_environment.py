@@ -2,8 +2,6 @@
 
 from geoenvo.environment import Environment
 
-from tests.conftest import load_response
-
 
 def test_environment_init():
     """Test Environment class initialization has the expected attributes."""

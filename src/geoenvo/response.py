@@ -119,7 +119,7 @@ class Response:
             with open(sssom_meta_file, mode="r", encoding="utf-8") as f:
                 sssom_meta = safe_load(f)
 
-            # Map each property value to an ENVO term, if possible
+            # Map each property value to semantic resource term, if possible
             envo_terms = []
             for key, value in environment["properties"].items():
                 try:
@@ -142,7 +142,8 @@ class Response:
                     if curie.lower() != "sssom:nomapping":
                         envo_terms.append({"label": label, "uri": uri})
 
-            # Add list of ENVO terms back to the environment object
+            # Add list of semantic resource terms back to the environment
+            # object
             environment["mappedProperties"] = envo_terms
 
         return self
@@ -182,7 +183,7 @@ class Response:
             information.
         """
         if self.data["geometry"]["type"] == "Polygon":
-            polygon = " ".join(  # TODO: can have z?
+            polygon = " ".join(
                 [
                     f"{coord[1]} {coord[0]}"
                     for coord in self.data["geometry"]["coordinates"][0]
@@ -210,6 +211,7 @@ class Response:
         environments = self.data["properties"]["environment"]
         if len(environments) == 0:
             return None
+
         # Flatten the list of environment properties into a single list
         additional_properties = []
         for environment in environments:
@@ -217,6 +219,7 @@ class Response:
                 additional_properties.append(
                     {"@type": "PropertyValue", "name": key, "value": value}
                 )
+
         # Remove duplicates
         additional_properties = list(
             {v["name"]: v for v in additional_properties}.values()
@@ -247,6 +250,7 @@ class Response:
                         "termCode": term["uri"].split("/")[-1],
                     }
                 )
+
         # Remove duplicates
         keywords = list({v["name"]: v for v in keywords}.values())
         return keywords
@@ -270,12 +274,12 @@ def compile_response(
     :return: A ``Response`` object containing the compiled environmental data.
     """
 
-    # Move data from Environment objects and into a list  # TODO: clean up
+    # Move data from Environment objects and into a list
     environments = []
     for env in environment:
         environments.append(env.data)
 
-    result = {  # FIXME: just a rudimentary implementation
+    result = {
         "type": "Feature",
         "identifier": identifier,
         "geometry": geometry.data,

@@ -1,10 +1,8 @@
 """Test the WorldTerrestrialEcosystems data source"""
 
-from json import loads
-
 import pytest
 from geoenvo.geometry import Geometry
-from tests.conftest import load_response, load_geometry
+from tests.conftest import load_geometry
 from geoenvo.data_sources import WorldTerrestrialEcosystems
 
 
@@ -22,8 +20,8 @@ def test_get_environment_with_grid_size(use_mock):
     data_source = WorldTerrestrialEcosystems()
     geometry = Geometry(load_geometry("polygon_on_land_and_ocean"))
 
-    # Normally polygon_on_land_and_ocean geometry doesn't get_environment to anything
-    # because the polygon centroid is over the ocean.
+    # Normally polygon_on_land_and_ocean geometry doesn't get_environment to
+    # anything because the polygon centroid is over the ocean.
     result = data_source.get_environment(geometry)
     assert result == []
 

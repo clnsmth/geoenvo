@@ -3,16 +3,12 @@
 from json import dumps
 from pathlib import Path
 from importlib.resources import files
-
-from pytest_mock import mocker
-from requests import get
-
 from geoenvo.geometry import Geometry
 from geoenvo.data_sources import WorldTerrestrialEcosystems
 from geoenvo.data_sources import EcologicalCoastalUnits
 from geoenvo.data_sources import EcologicalMarineUnits
 from geoenvo.resolver import compile_response
-from tests.conftest import load_geometry, load_response
+from tests.conftest import load_geometry
 
 
 def create_mock_response_content(
