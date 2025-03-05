@@ -9,7 +9,7 @@
 ### Documentation
 
 * docs: deprecate “ecosystem” for “environment” ([`994f1b3`](https://github.com/clnsmth/geoenvo/commit/994f1b305e2645684183eac5a1116167c0e75fb0)) 
-* docs: resolve build warnings ([`417a252`](https://github.com/clnsmth/geoenvo/commit/417a252f6ff1beb003a57163cc29ebb08e5f0612)) 
+* docs: get_environment build warnings ([`417a252`](https://github.com/clnsmth/geoenvo/commit/417a252f6ff1beb003a57163cc29ebb08e5f0612)) 
 
 ### Features
 

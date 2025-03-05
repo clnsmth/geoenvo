@@ -48,7 +48,7 @@ geometry = Geometry(polygon_on_land)
 resolver = Resolver(data_source=[WorldTerrestrialEcosystems()])
 
 # Resolve the geometry to environmental descriptions
-response = resolver.resolve(
+response = resolver.get_environment(
     geometry,
     identifier="5b4edec5-ea5e-471a-8a3c-2c1171d59dee",
     description="Polygon on land",

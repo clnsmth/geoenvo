@@ -88,12 +88,12 @@ class DataSource(ABC):
         pass
 
     @abstractmethod
-    def resolve(self, geometry: Geometry) -> List[Environment]:
+    def get_environment(self, geometry: Geometry) -> List[Environment]:
         """
         Resolves a given geometry to environmental descriptions using the data
         source.
 
-        :param geometry: The geographic location to resolve.
+        :param geometry: The geographic location to get_environment.
         :return: A list of Environment containing environmental descriptions.
         """
         pass

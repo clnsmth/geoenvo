@@ -90,7 +90,7 @@ class EcologicalMarineUnits(DataSource):
     def properties(self, properties: dict):
         self._properties = properties
 
-    def resolve(self, geometry: Geometry) -> List[Environment]:
+    def get_environment(self, geometry: Geometry) -> List[Environment]:
         self.geometry = geometry.data  # required for filtering on depth
         self.data = self._request(geometry)
         return self.convert_data()

@@ -106,7 +106,7 @@ class WorldTerrestrialEcosystems(DataSource):
         """
         self._grid_size = grid_size
 
-    def resolve(self, geometry: Geometry) -> List[Environment]:
+    def get_environment(self, geometry: Geometry) -> List[Environment]:
         # Enable the grid size sampling option for polygons, which the data
         # source would otherwise convert to a centroid point.
         geometries = []

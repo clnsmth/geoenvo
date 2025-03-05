@@ -4,7 +4,7 @@ package "geoenvo" {
     class Resolver {
         + data_source : DataSource[*]
         + Resolver(data_source : DataSource[*])
-        + resolve(geometry : Geometry, semantic_resource : string) : Response
+        + get_environment(geometry : Geometry, semantic_resource : string) : Response
     }
 
     interface DataSource {
@@ -12,7 +12,7 @@ package "geoenvo" {
         + data : dictionary
         + properties : dictionary
         + DataSource()
-        + resolve(geometry : Geometry) : Environment[0..*]
+        + get_environment(geometry : Geometry) : Environment[0..*]
         - convert_data() : Environment[0..*]
         - has_environment() : bool
         - unique_environment() : dictionary[*]

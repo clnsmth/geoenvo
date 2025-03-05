@@ -99,7 +99,7 @@ def test_compile_response(scenarios, mocker, empty_data_model):
     for scenario in scenarios:
         mocker.patch("requests.get", return_value=scenario.get("response"))
         data_source = scenario["data_source"]
-        environment = data_source.resolve(Geometry(scenario["geometry"]))
+        environment = data_source.get_environment(Geometry(scenario["geometry"]))
         environments.extend(environment)
     identifier = "Some identifier"
     geometry = scenarios[0]["geometry"]  # Any geometry will do

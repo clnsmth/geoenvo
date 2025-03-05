@@ -13,7 +13,7 @@ def test_init():
     assert data_source.buffer is None
 
 
-def test_resolve_with_buffer(use_mock):
+def test_get_environment_with_buffer(use_mock):
 
     if use_mock:
         pytest.skip("Skipping test when use_mock is False")
@@ -21,16 +21,16 @@ def test_resolve_with_buffer(use_mock):
     data_source = EcologicalCoastalUnits()
     geometry = Geometry(load_geometry("point_on_land_expands_to_coast"))
 
-    # Normally polygon_on_land_and_ocean geometry doesn't resolve to anything
+    # Normally polygon_on_land_and_ocean geometry doesn't get_environment to anything
     # because the polygon centroid is over the ocean.
-    result = data_source.resolve(geometry)
+    result = data_source.get_environment(geometry)
     assert result == []
 
     # However, when the grid size is set, the polygon is converted to a series
     # of points that are then resolvable to the WorldTerrestrialEcosystems
     # data source.
     data_source.buffer = 0.5
-    result = data_source.resolve(geometry)
+    result = data_source.get_environment(geometry)
     assert len(result) == 1
 
 

@@ -91,7 +91,7 @@ def create_schema_org_fixture(
 
     data_source = WorldTerrestrialEcosystems()
     geometry = Geometry(load_geometry("polygon_on_land"))
-    environment = data_source.resolve(geometry)
+    environment = data_source.get_environment(geometry)
     data = compile_response(
         geometry,
         environment,

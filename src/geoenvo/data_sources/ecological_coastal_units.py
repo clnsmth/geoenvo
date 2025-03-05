@@ -115,10 +115,10 @@ class EcologicalCoastalUnits(DataSource):
         """
         self._buffer = buffer
 
-    def resolve(self, geometry: Geometry) -> List[Environment]:
+    def get_environment(self, geometry: Geometry) -> List[Environment]:
 
         # Enable the buffer size sampling option for points, which the data
-        # source would otherwise resolve to None, because points don't
+        # source would otherwise get_environment to None, because points don't
         # overlap the vector data of the source.
         if geometry.geometry_type() == "Point" and self.buffer is not None:
             geometry.data = geometry.point_to_polygon(buffer=self.buffer)

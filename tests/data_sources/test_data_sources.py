@@ -27,7 +27,7 @@ def test_get_unique_environments(scenarios):
     object returned by the get_unique_environments method enables iterative
     parsing of the contents by the builder routine of the get_wte_environments
     and get_ecu_environments methods of the Response object. Note, currently,
-    the resolve operation used to query the WTE server does not return more
+    the get_environment operation used to query the WTE server does not return more
     than one environment per query.
     """
     for scenario in scenarios:

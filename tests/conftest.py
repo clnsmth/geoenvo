@@ -209,7 +209,7 @@ def data_model(mocker):
 
     data_source = WorldTerrestrialEcosystems()
     geometry = Geometry(load_geometry("polygon_on_land"))
-    environment = data_source.resolve(geometry)
+    environment = data_source.get_environment(geometry)
 
     data = compile_response(
         geometry,

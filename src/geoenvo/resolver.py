@@ -74,7 +74,7 @@ class Resolver:
         try:
             results = []
             for item in self.data_source:
-                environment = item.resolve(geometry)
+                environment = item.get_environment(geometry)
                 results.extend(environment)
             result = compile_response(
                 geometry=geometry,
