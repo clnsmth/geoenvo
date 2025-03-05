@@ -96,7 +96,7 @@ class Response:
         resource.
 
         :param semantic_resource: The semantic resource for mapping (default:
-            "ENVO").
+            "ENVO"). Options include: "ENVO".
         :return: The updated Response object with mapped terms.
         """
         # Iterate over list of environments in data
