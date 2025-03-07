@@ -1,4 +1,7 @@
 """Test the data_source modules"""
+import geoenvo.data_sources
+from geoenvo.data_sources import WorldTerrestrialEcosystems
+from geoenvo.data_sources.world_terrestrial_ecosystems import map_codes
 
 
 def test_data_source_init(data_sources):

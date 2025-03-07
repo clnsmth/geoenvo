@@ -3,13 +3,16 @@
 """
 
 from json import dumps, loads
+from pathlib import Path
 from typing import List
+from importlib.resources import files
 
+import pandas as pd
 import requests
 from geoenvo.data_sources.data_source import DataSource
 from geoenvo.geometry import Geometry
 from geoenvo.environment import Environment
-from geoenvo.utilities import user_agent
+from geoenvo.utilities import user_agent, get_properties
 from geoenvo.utilities import _json_extract, EnvironmentDataModel
 
 
@@ -47,14 +50,15 @@ class WorldTerrestrialEcosystems(DataSource):
         super().__init__()
         self._geometry = None
         self._data = None
-        self._properties = {  # TODO is this used anywhere?
-            "Raster.Temp_Class": None,
-            "Raster.Moisture_C": None,
-            "Raster.LC_ClassNa": None,
-            "Raster.LF_ClassNa": None,
-            "Raster.Temp_Moist": None,
-            "Raster.ClassName": None,
+        self._properties = {
+            "Temperatur": None,
+            "Moisture": None,
+            "Landcover": None,
+            "Landforms": None,
+            "Climate_Re": None,
+            "ClassName": None,
         }
+
         self._grid_size = None
 
     @property
@@ -130,8 +134,9 @@ class WorldTerrestrialEcosystems(DataSource):
         results = []
         for geometry in geometries:
             response = self._request(geometry)
-            results.extend(response.get("results", []))
-        self.data = {"results": results}
+            results.extend(response["properties"].get("Values", []))
+        # self.data = {"results": results}  # TODO remove me?
+        self.data = {"properties": {"Values": results}}
 
         return self.convert_data()
 
@@ -145,18 +150,12 @@ class WorldTerrestrialEcosystems(DataSource):
         :return: A dictionary containing raw response data from the data
             source.
         """
-        base = (
-            "https://rmgsc.cr.usgs.gov/arcgis/rest/services/"
-            + "wte"
-            + "/MapServer/identify"
-        )
+        base = "https://landscape12.arcgis.com/arcgis/rest/services/World_Terrestrial_Ecosystems/ImageServer/identify"
         payload = {
-            "f": "json",
             "geometry": dumps(geometry.to_esri()["geometry"]),
             "geometryType": geometry.to_esri()["geometryType"],
-            "tolerance": 2,
-            "mapExtent": "-2.865, 47.628, 5.321, 50.017",
-            "imageDisplay": "600,550,96",
+            "returnGeometry": "false",
+            "f": "json"
         }
         try:
             response = requests.get(
@@ -185,13 +184,12 @@ class WorldTerrestrialEcosystems(DataSource):
             return list()
         descriptors = []
         properties = self.properties.keys()
+        self.data = map_codes(self.data)
         results = self.data.get("results")
         for result in results:
-            if not self.has_environment(result):
-                continue
             res = dict()
             for property in properties:
-                res[property] = result["attributes"].get(property)
+                res[property] = result.get(property)
             res = dumps(res)
             descriptors.append(res)
         descriptors = set(descriptors)
@@ -201,12 +199,12 @@ class WorldTerrestrialEcosystems(DataSource):
         new_descriptors = []
         for descriptor in descriptors:
             new_descriptor = {
-                "temperature": descriptor["Raster.Temp_Class"],
-                "moisture": descriptor["Raster.Moisture_C"],
-                "landCover": descriptor["Raster.LC_ClassNa"],
-                "landForm": descriptor["Raster.LF_ClassNa"],
-                "climate": descriptor["Raster.Temp_Moist"],
-                "ecosystem": descriptor["Raster.ClassName"],
+                "temperature": descriptor["Temperatur"],
+                "moisture": descriptor["Moisture"],
+                "landCover": descriptor["Landcover"],
+                "landForm": descriptor["Landforms"],
+                "climate": descriptor["Climate_Re"],
+                "ecosystem": descriptor["ClassName"],
             }
             new_descriptors.append(new_descriptor)
         return new_descriptors
@@ -218,9 +216,67 @@ class WorldTerrestrialEcosystems(DataSource):
         """
         if data is None:
             data = self.data
-        res = _json_extract(data, "UniqueValue.Pixel Value")
-        if len(res) == 0:
-            return False
-        if len(res) > 0 and res[0] == "NoData":
-            return False
-        return True
+
+        # # If codes are mapped  # TODO needed?
+        # if data.get("results"):
+        #     if len(data["results"][0]) == 0:
+        #         return False
+        #     return True
+
+        # If codes are unmapped
+        if data.get("properties"):
+            if data["properties"].get("Values"):
+                if data["properties"]["Values"][0] == "NoData":
+                    return False
+                return True
+
+
+def map_codes(json: dict) -> dict:
+
+    # Load the mapping file as a DataFrame for easy lookup
+    with open(
+            files("src.geoenvo.data.data_source_attributes").joinpath(
+                "WTE_raster_attribute_table.json"), "r") as file:
+        attribute_table = loads(file.read())
+    features = attribute_table.get("features")
+    attributes = [feature["attributes"] for feature in features]
+    df = pd.DataFrame(attributes)
+
+    mapped_results = []
+    for code in json["properties"].get("Values"):
+        # Get the row from the data frame where the attribute matches the
+        # value in the Value column. Also pair down the columns to only the
+        # ones we want to return.
+        if code == "NoData":
+            continue
+        row = df[df["Value"] == int(code)]
+        row = row[["Landforms", "Landcover", "Climate_Re", "ClassName", "Moisture", "Temperatur"]]
+        mapped_results.append(row.to_dict("records")[0])
+    return {"results": mapped_results}
+
+
+def write_raster_attribute_table(output_directory: Path = files("src.geoenvo.data.data_source_attributes")) -> None:
+    """
+    Writes the raster attribute table for the World Terrestrial Ecosystems to
+    local file for reference. The table enables the conversion of environmental
+    classification codes to human-readable descriptions.
+    """
+    base = "https://landscape12.arcgis.com/arcgis/rest/services/World_Terrestrial_Ecosystems/ImageServer/rasterAttributeTable"
+    payload = {
+        "f": "pjson"
+    }
+    try:
+        response = requests.get(
+            base, params=payload, timeout=10, headers=user_agent()
+        )
+    except Exception as e:
+        return {}
+
+    file_path = output_directory.joinpath("WTE_raster_attribute_table.json")
+    with open(file_path, "w") as file:
+        file.write(dumps(response.json(), indent=4))
+
+
+if __name__ == "__main__":
+    output_directory = files("src.geoenvo.data.data_source_attributes")
+    write_raster_attribute_table(output_directory)

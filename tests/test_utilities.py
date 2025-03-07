@@ -2,6 +2,8 @@
 
 import json
 from importlib.resources import files
+
+from geoenvo.data_sources.world_terrestrial_ecosystems import map_codes
 from geoenvo.geometry import Geometry
 from geoenvo.utilities import (
     EnvironmentDataModel,
@@ -72,11 +74,12 @@ def test_data_model(empty_environment_data_model):
 def test_get_attributes():
     """Test the get_properties function."""
     response = load_response("wte_success")
+    response.data = map_codes(response.data)  # Create properties to fetch
 
     # The get_properties function should return a dictionary of attributes
     # from the response object. The dictionary should contain the requested
     # attributes.
-    properties = ["Raster.LF_ClassNa", "Raster.LC_ClassNa", "Raster.Temp_Class"]
+    properties = ["Landforms", "Landcover", "Climate_Re"]
     result = get_properties(response.data, properties)
     assert isinstance(result, dict)
     for p in properties:
