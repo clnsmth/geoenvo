@@ -20,63 +20,63 @@ def create_mock_response_content(
     returns no results.
     """
 
-    # WTE Success
-    geometry = Geometry(load_geometry("point_on_land"))
-    data_source = WorldTerrestrialEcosystems()
-    response = data_source._request(geometry)
-    json = dumps(response, indent=4)
-    with open(output_directory.joinpath("wte_success.json"), "w") as f:
-        f.write(json)
-
-    # WTE Fail
-    geometry = Geometry(load_geometry("point_on_ocean"))
-    data_source = WorldTerrestrialEcosystems()
-    response = data_source._request(geometry)
-    json = dumps(response, indent=4)
-    with open(output_directory.joinpath("wte_fail.json"), "w") as f:
-        f.write(json)
-
-    # # ECU Success
-    # geometry = Geometry(load_geometry("polygon_on_land_and_ocean"))
-    # data_source = EcologicalCoastalUnits()
+    # # WTE Success
+    # geometry = Geometry(load_geometry("point_on_land"))
+    # data_source = WorldTerrestrialEcosystems()
     # response = data_source._request(geometry)
     # json = dumps(response, indent=4)
-    # with open(output_directory.joinpath("ecu_success.json"), "w") as f:
+    # with open(output_directory.joinpath("wte_success.json"), "w") as f:
     #     f.write(json)
     #
-    # # ECU Fail
-    # geometry = Geometry(load_geometry("polygon_on_land"))
-    # data_source = EcologicalCoastalUnits()
+    # # WTE Fail
+    # geometry = Geometry(load_geometry("point_on_ocean"))
+    # data_source = WorldTerrestrialEcosystems()
     # response = data_source._request(geometry)
     # json = dumps(response, indent=4)
-    # with open(output_directory.joinpath("ecu_fail.json"), "w") as f:
+    # with open(output_directory.joinpath("wte_fail.json"), "w") as f:
     #     f.write(json)
-    #
-    # EMU Success
-    geometry = Geometry(load_geometry("polygon_on_ocean"))
-    data_source = EcologicalMarineUnits()
+
+    # ECU Success
+    geometry = Geometry(load_geometry("polygon_on_land_and_ocean"))
+    data_source = EcologicalCoastalUnits()
     response = data_source._request(geometry)
     json = dumps(response, indent=4)
-    with open(output_directory.joinpath("emu_success.json"), "w") as f:
+    with open(output_directory.joinpath("ecu_success.json"), "w") as f:
         f.write(json)
 
-    # EMU Fail
+    # ECU Fail
     geometry = Geometry(load_geometry("polygon_on_land"))
-    data_source = EcologicalMarineUnits()
+    data_source = EcologicalCoastalUnits()
     response = data_source._request(geometry)
     json = dumps(response, indent=4)
-    with open(output_directory.joinpath("emu_fail.json"), "w") as f:
+    with open(output_directory.joinpath("ecu_fail.json"), "w") as f:
         f.write(json)
 
-    # EMU Success (another one, for testing depth inputs)
-    geometry = Geometry(load_geometry("point_on_ocean_with_depth"))
-    data_source = EcologicalMarineUnits()
-    response = data_source._request(geometry)
-    json = dumps(response, indent=4)
-    with open(
-        output_directory.joinpath("emu_success_point_on_ocean_with_depth.json"), "w"
-    ) as f:
-        f.write(json)
+    # # EMU Success
+    # geometry = Geometry(load_geometry("polygon_on_ocean"))
+    # data_source = EcologicalMarineUnits()
+    # response = data_source._request(geometry)
+    # json = dumps(response, indent=4)
+    # with open(output_directory.joinpath("emu_success.json"), "w") as f:
+    #     f.write(json)
+    #
+    # # EMU Fail
+    # geometry = Geometry(load_geometry("polygon_on_land"))
+    # data_source = EcologicalMarineUnits()
+    # response = data_source._request(geometry)
+    # json = dumps(response, indent=4)
+    # with open(output_directory.joinpath("emu_fail.json"), "w") as f:
+    #     f.write(json)
+    #
+    # # EMU Success (another one, for testing depth inputs)
+    # geometry = Geometry(load_geometry("point_on_ocean_with_depth"))
+    # data_source = EcologicalMarineUnits()
+    # response = data_source._request(geometry)
+    # json = dumps(response, indent=4)
+    # with open(
+    #     output_directory.joinpath("emu_success_point_on_ocean_with_depth.json"), "w"
+    # ) as f:
+    #     f.write(json)
 
 
 def create_schema_org_fixture(
@@ -103,6 +103,6 @@ def create_schema_org_fixture(
 
 
 if __name__ == "__main__":
-    # create_mock_response_content()
+    create_mock_response_content()
     create_schema_org_fixture()
     pass

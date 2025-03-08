@@ -142,13 +142,7 @@ class EcologicalCoastalUnits(DataSource):
         :return: A dictionary containing raw response data from the data
             source.
         """
-        base = (
-            "https://rmgsc.cr.usgs.gov/arcgis/rest/services/"
-            + "gceVector"
-            + "/MapServer/"
-            + "0"
-            + "/query"
-        )
+        base = "https://services.arcgis.com/P3ePLMYs2RVChkJx/ArcGIS/rest/services/Ecological_Coastal_Units__ECU__1km_Segments/FeatureServer/0/query"
         payload = {
             "f": "geojson",
             "geometry": dumps(geometry.to_esri()["geometry"]),
@@ -162,6 +156,7 @@ class EcologicalCoastalUnits(DataSource):
             "returnZ": "false",
             "returnM": "false",
             "returnExtentOnly": "false",
+            "returnGeometry": "false",
         }
         try:
             response = requests.get(

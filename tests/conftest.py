@@ -13,7 +13,7 @@ from geoenvo.response import Response, compile_response
 
 @pytest.fixture()
 def use_mock():
-    return True  # Change this to False for real HTTP requests and data
+    return False  # Change this to False for real HTTP requests and data
 
 
 @pytest.fixture
@@ -36,46 +36,46 @@ def scenarios(
     properties_of_world_terrestrial_ecosystems,
 ):
     scenarios = [
-        {  # WTE Success (Envelop on land)
-            "data_source": WorldTerrestrialEcosystems(),
-            "response": load_response("wte_success"),
-            "geometry": load_geometry("point_on_land"),
-            "unique_environment": 1,
-            "has_environment": True,
-            "raw_properties": raw_properties_of_world_terrestrial_ecosystems,
-            "properties": properties_of_world_terrestrial_ecosystems,
-            "identifier": "https://doi.org/10.5066/P9DO61LP",
-        },
-        {  # WTE Fail (A point over the ocean)
-            "data_source": WorldTerrestrialEcosystems(),
-            "response": load_response("wte_fail"),
-            "geometry": load_geometry("point_on_ocean"),
-            "unique_environment": 0,
-            "has_environment": False,
-            "raw_properties": raw_properties_of_world_terrestrial_ecosystems,
-            "properties": properties_of_world_terrestrial_ecosystems,
-            "identifier": "https://doi.org/10.5066/P9DO61LP",
-        },
-        # {  # ECU Success (Envelop spanning coastal area)
-        #     "data_source": EcologicalCoastalUnits(),
-        #     "response": load_response("ecu_success"),
-        #     "geometry": load_geometry("polygon_on_land_and_ocean"),
-        #     "unique_environment": 4,
+        # {  # WTE Success (Envelop on land)
+        #     "data_source": WorldTerrestrialEcosystems(),
+        #     "response": load_response("wte_success"),
+        #     "geometry": load_geometry("point_on_land"),
+        #     "unique_environment": 1,
         #     "has_environment": True,
-        #     "raw_properties": raw_properties_of_ecological_coastal_units,
-        #     "properties": properties_of_ecological_coastal_units,
-        #     "identifier": "https://doi.org/10.5066/P9HWHSPU",
+        #     "raw_properties": raw_properties_of_world_terrestrial_ecosystems,
+        #     "properties": properties_of_world_terrestrial_ecosystems,
+        #     "identifier": "https://doi.org/10.5066/P9DO61LP",
         # },
-        # {  # ECU Fail (Polygon on land)
-        #     "data_source": EcologicalCoastalUnits(),
-        #     "response": load_response("ecu_fail"),
-        #     "geometry": load_geometry("polygon_on_land"),
+        # {  # WTE Fail (A point over the ocean)
+        #     "data_source": WorldTerrestrialEcosystems(),
+        #     "response": load_response("wte_fail"),
+        #     "geometry": load_geometry("point_on_ocean"),
         #     "unique_environment": 0,
         #     "has_environment": False,
-        #     "raw_properties": raw_properties_of_ecological_coastal_units,
-        #     "properties": properties_of_ecological_coastal_units,
-        #     "identifier": "https://doi.org/10.5066/P9HWHSPU",
+        #     "raw_properties": raw_properties_of_world_terrestrial_ecosystems,
+        #     "properties": properties_of_world_terrestrial_ecosystems,
+        #     "identifier": "https://doi.org/10.5066/P9DO61LP",
         # },
+        {  # ECU Success (Envelop spanning coastal area)
+            "data_source": EcologicalCoastalUnits(),
+            "response": load_response("ecu_success"),
+            "geometry": load_geometry("polygon_on_land_and_ocean"),
+            "unique_environment": 4,
+            "has_environment": True,
+            "raw_properties": raw_properties_of_ecological_coastal_units,
+            "properties": properties_of_ecological_coastal_units,
+            "identifier": "https://doi.org/10.5066/P9HWHSPU",
+        },
+        {  # ECU Fail (Polygon on land)
+            "data_source": EcologicalCoastalUnits(),
+            "response": load_response("ecu_fail"),
+            "geometry": load_geometry("polygon_on_land"),
+            "unique_environment": 0,
+            "has_environment": False,
+            "raw_properties": raw_properties_of_ecological_coastal_units,
+            "properties": properties_of_ecological_coastal_units,
+            "identifier": "https://doi.org/10.5066/P9HWHSPU",
+        },
         # {  # EMU Success (Polygon over ocean)
         #     "data_source": EcologicalMarineUnits(),
         #     "response": load_response("emu_success"),
