@@ -3,7 +3,7 @@
 import json
 from importlib.resources import files
 
-from geoenvo.data_sources.world_terrestrial_ecosystems import map_codes
+from geoenvo.data_sources.world_terrestrial_ecosystems import apply_code_mapping
 from geoenvo.geometry import Geometry
 from geoenvo.utilities import (
     EnvironmentDataModel,
@@ -74,7 +74,7 @@ def test_data_model(empty_environment_data_model):
 def test_get_attributes():
     """Test the get_properties function."""
     response = load_response("wte_success")
-    response.data = map_codes(response.data)  # Create properties to fetch
+    response.data = apply_code_mapping(response.data)  # Create properties to fetch
 
     # The get_properties function should return a dictionary of attributes
     # from the response object. The dictionary should contain the requested
@@ -202,8 +202,10 @@ def test__to_schema_org_geo(data_model):
     # Polygon
     geo = data_model._to_schema_org_geo()
     assert geo == {
-        "@type": "GeoShape",
-        "polygon": "39.804 -123.552 39.804 -120.83 40.441 -120.83 40.441 -123.552 39.804 -123.552",
+        "@type": "GeoCoordinates",
+        "latitude": 37.905931,
+        "longitude": -122.622364,
+        "elevation": None,
     }
 
     # Point

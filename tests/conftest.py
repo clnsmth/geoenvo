@@ -39,23 +39,23 @@ def scenarios(
         {  # WTE Success (Envelop on land)
             "data_source": WorldTerrestrialEcosystems(),
             "response": load_response("wte_success"),
-            "geometry": load_geometry("polygon_on_land"),
+            "geometry": load_geometry("point_on_land"),
             "unique_environment": 1,
             "has_environment": True,
             "raw_properties": raw_properties_of_world_terrestrial_ecosystems,
             "properties": properties_of_world_terrestrial_ecosystems,
             "identifier": "https://doi.org/10.5066/P9DO61LP",
         },
-        # {  # WTE Fail (A point over the ocean)
-        #     "data_source": WorldTerrestrialEcosystems(),
-        #     "response": load_response("wte_fail"),
-        #     "geometry": load_geometry("point_on_ocean"),
-        #     "unique_environment": 0,
-        #     "has_environment": False,
-        #     "raw_properties": raw_properties_of_world_terrestrial_ecosystems,
-        #     "properties": properties_of_world_terrestrial_ecosystems,
-        #     "identifier": "https://doi.org/10.5066/P9DO61LP",
-        # },
+        {  # WTE Fail (A point over the ocean)
+            "data_source": WorldTerrestrialEcosystems(),
+            "response": load_response("wte_fail"),
+            "geometry": load_geometry("point_on_ocean"),
+            "unique_environment": 0,
+            "has_environment": False,
+            "raw_properties": raw_properties_of_world_terrestrial_ecosystems,
+            "properties": properties_of_world_terrestrial_ecosystems,
+            "identifier": "https://doi.org/10.5066/P9DO61LP",
+        },
         # {  # ECU Success (Envelop spanning coastal area)
         #     "data_source": EcologicalCoastalUnits(),
         #     "response": load_response("ecu_success"),
@@ -176,7 +176,6 @@ def raw_properties_of_world_terrestrial_ecosystems():
     }
 
 
-
 @pytest.fixture
 def properties_of_world_terrestrial_ecosystems():
     return {"temperature", "moisture", "landCover", "landForm", "climate", "ecosystem"}
@@ -208,14 +207,14 @@ def data_model(mocker):
     mocker.patch("requests.get", return_value=load_response("wte_success"))
 
     data_source = WorldTerrestrialEcosystems()
-    geometry = Geometry(load_geometry("polygon_on_land"))
+    geometry = Geometry(load_geometry("point_on_land"))
     environment = data_source.get_environment(geometry)
 
     data = compile_response(
         geometry,
         environment,
         identifier="5b4edec5-ea5e-471a-8a3c-2c1171d59dee",
-        description="Polygon on land",
+        description="Point on land",
     )
     data.apply_term_mapping()
     return data

@@ -135,7 +135,6 @@ class WorldTerrestrialEcosystems(DataSource):
         for geometry in geometries:
             response = self._request(geometry)
             results.extend(response["properties"].get("Values", []))
-        # self.data = {"results": results}  # TODO remove me?
         self.data = {"properties": {"Values": results}}
 
         return self.convert_data()
@@ -155,7 +154,7 @@ class WorldTerrestrialEcosystems(DataSource):
             "geometry": dumps(geometry.to_esri()["geometry"]),
             "geometryType": geometry.to_esri()["geometryType"],
             "returnGeometry": "false",
-            "f": "json"
+            "f": "json",
         }
         try:
             response = requests.get(
@@ -184,7 +183,7 @@ class WorldTerrestrialEcosystems(DataSource):
             return list()
         descriptors = []
         properties = self.properties.keys()
-        self.data = map_codes(self.data)
+        self.data = apply_code_mapping(self.data)
         results = self.data.get("results")
         for result in results:
             res = dict()
@@ -217,12 +216,6 @@ class WorldTerrestrialEcosystems(DataSource):
         if data is None:
             data = self.data
 
-        # # If codes are mapped  # TODO needed?
-        # if data.get("results"):
-        #     if len(data["results"][0]) == 0:
-        #         return False
-        #     return True
-
         # If codes are unmapped
         if data.get("properties"):
             if data["properties"].get("Values"):
@@ -231,12 +224,23 @@ class WorldTerrestrialEcosystems(DataSource):
                 return True
 
 
-def map_codes(json: dict) -> dict:
+def apply_code_mapping(json: dict) -> dict:
+    """
+    Maps the environmental classification codes to human-readable descriptions
+    using a pre-generated raster attribute table.
+
+    :param json: The raw response data from the World Terrestrial Ecosystems
+        data source.
+    :return: A dictionary containing the mapped environmental properties.
+    """
 
     # Load the mapping file as a DataFrame for easy lookup
     with open(
-            files("src.geoenvo.data.data_source_attributes").joinpath(
-                "WTE_raster_attribute_table.json"), "r") as file:
+        files("src.geoenvo.data.data_source_attributes").joinpath(
+            "wte_attribute_table.json"
+        ),
+        "r",
+    ) as file:
         attribute_table = loads(file.read())
     features = attribute_table.get("features")
     attributes = [feature["attributes"] for feature in features]
@@ -245,38 +249,45 @@ def map_codes(json: dict) -> dict:
     mapped_results = []
     for code in json["properties"].get("Values"):
         # Get the row from the data frame where the attribute matches the
-        # value in the Value column. Also pair down the columns to only the
+        # value in the Value column. Also trim down the columns to only the
         # ones we want to return.
         if code == "NoData":
             continue
         row = df[df["Value"] == int(code)]
-        row = row[["Landforms", "Landcover", "Climate_Re", "ClassName", "Moisture", "Temperatur"]]
+        row = row[
+            [
+                "Landforms",
+                "Landcover",
+                "Climate_Re",
+                "ClassName",
+                "Moisture",
+                "Temperatur",
+            ]
+        ]
         mapped_results.append(row.to_dict("records")[0])
     return {"results": mapped_results}
 
 
-def write_raster_attribute_table(output_directory: Path = files("src.geoenvo.data.data_source_attributes")) -> None:
+def create_attribute_table(
+    output_directory: Path = files("src.geoenvo.data.data_source_attributes"),
+) -> None:
     """
     Writes the raster attribute table for the World Terrestrial Ecosystems to
     local file for reference. The table enables the conversion of environmental
     classification codes to human-readable descriptions.
     """
     base = "https://landscape12.arcgis.com/arcgis/rest/services/World_Terrestrial_Ecosystems/ImageServer/rasterAttributeTable"
-    payload = {
-        "f": "pjson"
-    }
+    payload = {"f": "pjson"}
     try:
-        response = requests.get(
-            base, params=payload, timeout=10, headers=user_agent()
-        )
+        response = requests.get(base, params=payload, timeout=10, headers=user_agent())
     except Exception as e:
         return {}
 
-    file_path = output_directory.joinpath("WTE_raster_attribute_table.json")
+    file_path = output_directory.joinpath("wte_attribute_table.json")
     with open(file_path, "w") as file:
         file.write(dumps(response.json(), indent=4))
 
 
 if __name__ == "__main__":
     output_directory = files("src.geoenvo.data.data_source_attributes")
-    write_raster_attribute_table(output_directory)
+    create_attribute_table(output_directory)

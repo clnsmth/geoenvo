@@ -24,25 +24,19 @@ pip install git+https://github.com/clnsmth/geoenvo.git@main
 Resolve a geometry to its environment(s).
 
 ```python
-from json import dumps
 from geoenvo.data_sources import WorldTerrestrialEcosystems
 from geoenvo.resolver import Resolver
 from geoenvo.geometry import Geometry
 
 # Create a geometry in GeoJSON format
-polygon_on_land = {
-    "type": "Polygon",
+point_on_land = {
+    "type": "Point",
     "coordinates": [
-        [
-            [-123.552, 39.804],
-            [-120.83, 39.804],
-            [-120.83, 40.441],
-            [-123.552, 40.441],
-            [-123.552, 39.804],
-        ]
-    ],
+        -122.622364,
+        37.905931
+    ]
 }
-geometry = Geometry(polygon_on_land)
+geometry = Geometry(point_on_land)
 
 # Configure the resolver with one or more data sources
 resolver = Resolver(data_source=[WorldTerrestrialEcosystems()])
@@ -51,7 +45,7 @@ resolver = Resolver(data_source=[WorldTerrestrialEcosystems()])
 response = resolver.get_environment(
     geometry,
     identifier="5b4edec5-ea5e-471a-8a3c-2c1171d59dee",
-    description="Polygon on land",
+    description="Point on land",
 )
 
 ```
@@ -63,19 +57,14 @@ The response is a GeoJSON feature containing a list of environments and their as
   "type": "Feature",
   "identifier": "5b4edec5-ea5e-471a-8a3c-2c1171d59dee",
   "geometry": {
-    "type": "Polygon",
+    "type": "Point",
     "coordinates": [
-        [
-            [-123.552, 39.804],
-            [-120.83, 39.804],
-            [-120.83, 40.441],
-            [-123.552, 40.441],
-            [-123.552, 39.804]
-        ]
+      -122.622364,
+      37.905931
     ]
   },
   "properties": {
-    "description": "Polygon on land",
+    "description": "Point on land",
     "environment": [
       {
         "type": "Environment",
@@ -83,14 +72,14 @@ The response is a GeoJSON feature containing a list of environments and their as
           "identifier": "https://doi.org/10.5066/P9DO61LP",
           "name": "WorldTerrestrialEcosystems"
         },
-        "dateCreated": "2025-02-18 08:27:46",
+        "dateCreated": "2025-03-07 15:53:09",
         "properties": {
           "temperature": "Warm Temperate",
-          "moisture": "Dry",
-          "landCover": "Grassland",
-          "landForm": "Plains",
-          "climate": "Warm Temperate Dry",
-          "ecosystem": "Warm Temperate Dry Grassland on Plains"
+          "moisture": "Moist",
+          "landCover": "Cropland",
+          "landForm": "Mountains",
+          "climate": "Warm Temperate Moist",
+          "ecosystem": "Warm Temperate Moist Cropland on Mountains"
         },
         "mappedProperties": [
           {
@@ -98,16 +87,16 @@ The response is a GeoJSON feature containing a list of environments and their as
             "uri": "http://purl.obolibrary.org/obo/ENVO_01000206"
           },
           {
-            "label": "arid",
-            "uri": "http://purl.obolibrary.org/obo/ENVO_01000230"
+            "label": "humid air",
+            "uri": "http://purl.obolibrary.org/obo/ENVO_01000828"
           },
           {
-            "label": "grassland area",
-            "uri": "http://purl.obolibrary.org/obo/ENVO_00000106"
+            "label": "area of cropland",
+            "uri": "http://purl.obolibrary.org/obo/ENVO_01000892"
           },
           {
-            "label": "plain",
-            "uri": "http://purl.obolibrary.org/obo/ENVO_00000086"
+            "label": "mountain range",
+            "uri": "http://purl.obolibrary.org/obo/ENVO_00000080"
           }
         ]
       }

@@ -3,8 +3,8 @@
     "name": "Pixel",
     "value": "NoData",
     "location": {
-        "x": -122.191,
-        "y": 40.1225,
+        "x": -122.622364,
+        "y": 37.905931,
         "spatialReference": {
             "wkid": 4326,
             "latestWkid": 4326
@@ -12,7 +12,7 @@
     },
     "properties": {
         "Values": [
-            "195"
+            "175"
         ]
     },
     "catalogItems": {
