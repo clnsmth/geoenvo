@@ -98,19 +98,8 @@ if __name__ == "__main__":
     from geoenvo.geometry import Geometry
 
     # Create a geometry in GeoJSON format
-    polygon_on_land = {
-        "type": "Polygon",
-        "coordinates": [
-            [
-                [-123.552, 39.804],
-                [-120.83, 39.804],
-                [-120.83, 40.441],
-                [-123.552, 40.441],
-                [-123.552, 39.804],
-            ]
-        ],
-    }
-    geometry = Geometry(polygon_on_land)
+    point_on_land = {"type": "Point", "coordinates": [-122.622364, 37.905931]}
+    geometry = Geometry(point_on_land)
 
     # Configure the resolver with one or more data sources
     resolver = Resolver(data_source=[WorldTerrestrialEcosystems()])
@@ -119,7 +108,7 @@ if __name__ == "__main__":
     response = resolver.resolve(
         geometry,
         identifier="5b4edec5-ea5e-471a-8a3c-2c1171d59dee",
-        description="Polygon on land",
+        description="Point on land",
     )
 
     # The response is a GeoJSON feature with environmental properties

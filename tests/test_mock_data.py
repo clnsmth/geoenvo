@@ -23,10 +23,9 @@ def test_mock_response_content(use_mock, tmp_path):
             # Read the content
             content = f.read()
             # Read the corresponding mock file
-            with open(
-                files("tests.data.response").joinpath(file.name), "r", encoding="utf-8"
-            ) as mock:
+            mock_file_path = files("tests.data.response").joinpath(file.name)
+            with open(mock_file_path, "r", encoding="utf-8") as mock_file:
                 # Read the mock content
-                mock_content = mock.read()
+                mock_content = mock_file.read()
                 # Compare the content
                 assert content == mock_content

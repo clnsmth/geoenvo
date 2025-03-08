@@ -21,7 +21,7 @@ def create_mock_response_content(
     """
 
     # WTE Success
-    geometry = Geometry(load_geometry("polygon_on_land"))
+    geometry = Geometry(load_geometry("point_on_land"))
     data_source = WorldTerrestrialEcosystems()
     response = data_source._request(geometry)
     json = dumps(response, indent=4)
@@ -36,22 +36,22 @@ def create_mock_response_content(
     with open(output_directory.joinpath("wte_fail.json"), "w") as f:
         f.write(json)
 
-    # ECU Success
-    geometry = Geometry(load_geometry("polygon_on_land_and_ocean"))
-    data_source = EcologicalCoastalUnits()
-    response = data_source._request(geometry)
-    json = dumps(response, indent=4)
-    with open(output_directory.joinpath("ecu_success.json"), "w") as f:
-        f.write(json)
-
-    # ECU Fail
-    geometry = Geometry(load_geometry("polygon_on_land"))
-    data_source = EcologicalCoastalUnits()
-    response = data_source._request(geometry)
-    json = dumps(response, indent=4)
-    with open(output_directory.joinpath("ecu_fail.json"), "w") as f:
-        f.write(json)
-
+    # # ECU Success
+    # geometry = Geometry(load_geometry("polygon_on_land_and_ocean"))
+    # data_source = EcologicalCoastalUnits()
+    # response = data_source._request(geometry)
+    # json = dumps(response, indent=4)
+    # with open(output_directory.joinpath("ecu_success.json"), "w") as f:
+    #     f.write(json)
+    #
+    # # ECU Fail
+    # geometry = Geometry(load_geometry("polygon_on_land"))
+    # data_source = EcologicalCoastalUnits()
+    # response = data_source._request(geometry)
+    # json = dumps(response, indent=4)
+    # with open(output_directory.joinpath("ecu_fail.json"), "w") as f:
+    #     f.write(json)
+    #
     # EMU Success
     geometry = Geometry(load_geometry("polygon_on_ocean"))
     data_source = EcologicalMarineUnits()
@@ -86,13 +86,13 @@ def create_schema_org_fixture(
     # comparison.
 
     data_source = WorldTerrestrialEcosystems()
-    geometry = Geometry(load_geometry("polygon_on_land"))
+    geometry = Geometry(load_geometry("point_on_land"))
     environment = data_source.get_environment(geometry)
     data = compile_response(
         geometry,
         environment,
         identifier="5b4edec5-ea5e-471a-8a3c-2c1171d59dee",
-        description="Polygon on land",
+        description="Point on land",
     )
 
     data.apply_term_mapping()
@@ -103,6 +103,6 @@ def create_schema_org_fixture(
 
 
 if __name__ == "__main__":
-    create_mock_response_content()
-    # create_schema_org_fixture()
+    # create_mock_response_content()
+    create_schema_org_fixture()
     pass

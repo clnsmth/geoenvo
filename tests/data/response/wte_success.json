@@ -1,34 +1,45 @@
 {
-    "results": [
-        {
-            "layerId": 0,
-            "layerName": "World Terrestrial Ecosystems",
-            "displayFieldName": "",
-            "attributes": {
-                "UniqueValue.Pixel Value": "189",
-                "Raster.OID": "188",
-                "Raster.Count": "5831214",
-                "Raster.World_Lan1": "4",
-                "Raster.World_Mois": "2",
-                "Raster.World_Temp": "3",
-                "Raster.World_Lan2": "4",
-                "Raster.LF_ClassNa": "Plains",
-                "Raster.LC_ClassNa": "Grassland",
-                "Raster.Temp_Class": "Warm Temperate",
-                "Raster.Moisture_C": "Dry",
-                "Raster.Temp_Moist": "Warm Temperate Dry",
-                "Raster.W_Ecosystm": "Warm Temperate Dry Grassland on Plains",
-                "Raster.ClassName": "Warm Temperate Dry Grassland on Plains"
-            },
-            "geometryType": "esriGeometryPoint",
-            "geometry": {
-                "x": -122.191,
-                "y": 40.1225,
-                "spatialReference": {
-                    "wkid": 4326,
-                    "latestWkid": 4326
+    "objectId": 0,
+    "name": "Pixel",
+    "value": "NoData",
+    "location": {
+        "x": -122.622364,
+        "y": 37.905931,
+        "spatialReference": {
+            "wkid": 4326,
+            "latestWkid": 4326
+        }
+    },
+    "properties": {
+        "Values": [
+            "175"
+        ]
+    },
+    "catalogItems": {
+        "objectIdFieldName": "OBJECTID",
+        "features": [
+            {
+                "attributes": {
+                    "OBJECTID": 2,
+                    "Name": "WorldEcosystem",
+                    "MinPS": 0,
+                    "MaxPS": 0.71865568,
+                    "LowPS": 0.002245799,
+                    "HighPS": 0.071865568,
+                    "Category": 1,
+                    "Tag": "Dataset",
+                    "GroupName": "",
+                    "ProductName": "",
+                    "CenterX": -0.00033204949991727517,
+                    "CenterY": 13.81225481450005,
+                    "ZOrder": null,
+                    "Shape_Length": 999.2458070600067,
+                    "Shape_Area": 50264.39206331994
                 }
             }
-        }
+        ]
+    },
+    "catalogItemVisibilities": [
+        1
     ]
 }

@@ -84,8 +84,8 @@ def test_to_esri():
     point = Geometry(load_geometry("point_on_land"))
     result = point.to_esri()
     assert result["geometry"] == {
-        "x": -72.22,
-        "y": 42.48,
+        "x": -122.622364,
+        "y": 37.905931,
         "z": None,
         "spatialReference": {"wkid": 4326},
     }

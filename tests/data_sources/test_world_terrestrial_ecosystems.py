@@ -1,9 +1,11 @@
 """Test the WorldTerrestrialEcosystems data source"""
 
+from importlib.resources import files
 import pytest
 from geoenvo.geometry import Geometry
 from tests.conftest import load_geometry
 from geoenvo.data_sources import WorldTerrestrialEcosystems
+from geoenvo.data_sources.world_terrestrial_ecosystems import create_attribute_table
 
 
 def test_init():
@@ -43,3 +45,29 @@ def test_grid_size(scenarios):
             grid_size = 0.5
             data_source.grid_size = grid_size
             assert data_source.grid_size == grid_size
+
+
+def test_attribute_tables(use_mock, tmp_path):
+    """Test the attribute table of data sources. These need to be checked
+    against the real data source to ensure that the attribute tables are
+    up-to-date.
+    """
+    if use_mock:
+        pytest.skip("Skipping test when use_mock is False")
+
+    # Get attribute table from the data source and compare against the local
+    # copy.
+    create_attribute_table(output_directory=tmp_path)
+    for file in tmp_path.iterdir():
+        with open(file, "r", encoding="utf-8") as f:
+            print(file.name)
+            content = f.read()
+            with open(
+                files("src.geoenvo.data.data_source_attributes").joinpath(
+                    "wte_attribute_table.json"
+                ),
+                "r",
+                encoding="utf-8",
+            ) as meow:
+                fixture_content = meow.read()
+                assert content == fixture_content

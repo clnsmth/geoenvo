@@ -179,7 +179,7 @@ class EcologicalCoastalUnits(DataSource):
             environment.set_identifier("https://doi.org/10.5066/P9HWHSPU")
             environment.set_data_source(self.__class__.__name__)
             environment.set_date_created()
-            properties = self.set_properties(  # TODO: Move this processing to self.unique_environment() to match WTE implmementation
+            properties = self.set_properties(
                 unique_environment_properties=unique_ecu_environment
             )
             environment.set_properties(properties)
