@@ -4,8 +4,8 @@
 
 import importlib
 import json
+from typing import List, Union
 from yaml import safe_load
-from typing import List
 import pandas as pd
 from geoenvo.environment import Environment
 from geoenvo.geometry import Geometry
@@ -19,7 +19,7 @@ class Response:
     field.
     """
 
-    def __init__(self, data: dict = dict()):
+    def __init__(self, data: dict = None):
         """
         Initializes a Response object with optional data.
 
@@ -76,7 +76,7 @@ class Response:
 
         :param file_path: The file path where the response should be saved.
         """
-        with open(file_path, "w") as file:
+        with open(file_path, "w", encoding="utf-8") as file:
             file.write(json.dumps(self.data))
 
     def read(self, file_path: str) -> "Response":
@@ -86,10 +86,11 @@ class Response:
         :param file_path: The file path from which to read response data.
         :return: The updated Response object.
         """
-        with open(file_path, "r") as file:
+        with open(file_path, "r", encoding="utf-8") as file:
             self.data = json.loads(file.read())
         return self
 
+    # pylint: disable=too-many-locals
     def apply_term_mapping(self, semantic_resource: str = "ENVO") -> "Response":
         """
         Maps environmental terms in the response data to a specified semantic
@@ -121,7 +122,7 @@ class Response:
 
             # Map each property value to semantic resource term, if possible
             envo_terms = []
-            for key, value in environment["properties"].items():
+            for _, value in environment["properties"].items():
                 try:
                     label = sssom.loc[
                         sssom["subject_label"].str.lower() == value.lower(),
@@ -174,7 +175,7 @@ class Response:
         }
         return schema_org
 
-    def _to_schema_org_geo(self) -> dict:
+    def _to_schema_org_geo(self) -> Union[dict, None]:
         """
         Extracts and converts the geographic information to a
         Schema.org-compliant format.
@@ -190,7 +191,7 @@ class Response:
                 ]
             )
             return {"@type": "GeoShape", "polygon": polygon}
-        elif self.data["geometry"]["type"] == "Point":
+        if self.data["geometry"]["type"] == "Point":
             x, y, *z = self.data["geometry"]["coordinates"]
             return {
                 "@type": "GeoCoordinates",
@@ -198,8 +199,7 @@ class Response:
                 "longitude": x,
                 "elevation": z[0] if z else None,
             }
-        else:
-            return None
+        return None
 
     def _to_schema_org_additional_property(self) -> List[dict]:
         """

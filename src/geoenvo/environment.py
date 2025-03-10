@@ -3,6 +3,7 @@
 """
 
 
+# pylint: disable=too-few-public-methods
 class Environment:
     """
     The Environment class represents environmental descriptions retrieved from
@@ -10,7 +11,7 @@ class Environment:
     environmental data.
     """
 
-    def __init__(self, data: dict = dict()):
+    def __init__(self, data: dict = None):
         """
         Initializes an Environment object with the given data.
 

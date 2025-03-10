@@ -75,15 +75,14 @@ class Geometry:
             }
             geometry_type = "esriGeometryPoint"
             return {"geometry": geometry, "geometryType": geometry_type}
-        elif self.data["type"] == "Polygon":
+        if self.data["type"] == "Polygon":
             geometry = {
                 "rings": self.data["coordinates"],
                 "spatialReference": {"wkid": 4326},
             }
             geometry_type = "esriGeometryPolygon"
             return {"geometry": geometry, "geometryType": geometry_type}
-        else:
-            raise ValueError("Invalid geometry type")
+        raise ValueError("Invalid geometry type")
 
     def geometry_type(self) -> str:
         """

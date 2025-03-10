@@ -71,6 +71,7 @@ class Resolver:
         :return: A ``Response`` object containing the resolved environmental
             data.
         """
+        # pylint: disable=broad-exception-caught
         try:
             results = []
             for item in self.data_source:
@@ -90,29 +91,29 @@ class Resolver:
             return result
 
 
-if __name__ == "__main__":
-
-    from json import dumps
-    from geoenvo.data_sources import WorldTerrestrialEcosystems
-    from geoenvo.resolver import Resolver
-    from geoenvo.geometry import Geometry
-
-    # Create a geometry in GeoJSON format
-    point_on_land = {"type": "Point", "coordinates": [-122.622364, 37.905931]}
-    geometry = Geometry(point_on_land)
-
-    # Configure the resolver with one or more data sources
-    resolver = Resolver(data_source=[WorldTerrestrialEcosystems()])
-
-    # Resolve the geometry to environmental descriptions
-    response = resolver.resolve(
-        geometry,
-        identifier="5b4edec5-ea5e-471a-8a3c-2c1171d59dee",
-        description="Point on land",
-    )
-
-    # The response is a GeoJSON feature with environmental properties
-    print(dumps(response.data, indent=2))
-
-    # Format as Schema.org
-    schema_org = response.to_schema_org()
+# if __name__ == "__main__":
+#
+#     from json import dumps
+#     from geoenvo.data_sources import WorldTerrestrialEcosystems
+#     from geoenvo.resolver import Resolver
+#     from geoenvo.geometry import Geometry
+#
+#     # Create a geometry in GeoJSON format
+#     point_on_land = {"type": "Point", "coordinates": [-122.622364, 37.905931]}
+#     geometry = Geometry(point_on_land)
+#
+#     # Configure the resolver with one or more data sources
+#     resolver = Resolver(data_source=[WorldTerrestrialEcosystems()])
+#
+#     # Resolve the geometry to environmental descriptions
+#     response = resolver.resolve(
+#         geometry,
+#         identifier="5b4edec5-ea5e-471a-8a3c-2c1171d59dee",
+#         description="Point on land",
+#     )
+#
+#     # The response is a GeoJSON feature with environmental properties
+#     print(dumps(response.data, indent=2))
+#
+#     # Format as Schema.org
+#     schema_org = response.to_schema_org()

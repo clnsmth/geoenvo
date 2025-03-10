@@ -20,9 +20,9 @@ class DataSource(ABC):
         Initializes the DataSource with placeholders for geometry, data, and
         properties.
         """
-        self._geometry = None  # TODO: should be dict?
-        self._data = None  # TODO: should be dict?
-        self._properties = None  # TODO: should be dict?
+        self._geometry = None
+        self._data = None
+        self._properties = None
 
     @property
     @abstractmethod
@@ -32,7 +32,6 @@ class DataSource(ABC):
 
         :return: A dictionary representing the geometry.
         """
-        pass
 
     @geometry.setter
     @abstractmethod
@@ -42,7 +41,6 @@ class DataSource(ABC):
 
         :param geometry: A dictionary representing the geometry.
         """
-        pass
 
     @property
     @abstractmethod
@@ -52,7 +50,6 @@ class DataSource(ABC):
 
         :return: A dictionary containing retrieved environmental data.
         """
-        pass
 
     @data.setter
     @abstractmethod
@@ -62,7 +59,6 @@ class DataSource(ABC):
 
         :param data: A dictionary containing environmental data.
         """
-        pass
 
     @property
     @abstractmethod
@@ -72,7 +68,6 @@ class DataSource(ABC):
 
         :return: A dictionary containing metadata and additional properties.
         """
-        pass
 
     @properties.setter
     @abstractmethod
@@ -83,7 +78,6 @@ class DataSource(ABC):
         :param properties: A dictionary containing metadata and additional
             properties.
         """
-        pass
 
     @abstractmethod
     def get_environment(self, geometry: Geometry) -> List[Environment]:
@@ -94,7 +88,6 @@ class DataSource(ABC):
         :param geometry: The geographic location to get_environment.
         :return: A list of Environment containing environmental descriptions.
         """
-        pass
 
     @abstractmethod
     def convert_data(self) -> List[Environment]:
@@ -104,7 +97,6 @@ class DataSource(ABC):
         :return: A list of Environment representing converted environmental
             data.
         """
-        pass
 
     @abstractmethod
     def unique_environment(self) -> List[dict]:
@@ -114,7 +106,6 @@ class DataSource(ABC):
         :return: A list of dictionaries containing unique environmental
             descriptions.
         """
-        pass
 
     @abstractmethod
     def has_environment(self) -> bool:
@@ -125,4 +116,3 @@ class DataSource(ABC):
         :return: ``True`` if environmental data is available, otherwise
             ``False``.
         """
-        pass
