@@ -235,7 +235,7 @@ def apply_code_mapping(json: dict) -> dict:
     """
 
     # Load the mapping file as a DataFrame for easy lookup
-    mapping_file = files("src.geoenvo.data.data_source_attributes").joinpath(
+    mapping_file = files("geoenvo.data.data_source_attributes").joinpath(
             "wte_attribute_table.json"
         )
     with mapping_file.open("r", encoding="utf-8") as f:
@@ -268,7 +268,7 @@ def apply_code_mapping(json: dict) -> dict:
 
 
 def create_attribute_table(
-    output_directory: Path = files("src.geoenvo.data.data_source_attributes"),
+    output_directory: Path = files("geoenvo.data.data_source_attributes"),
 ) -> None:
     """
     Writes the raster attribute table for the World Terrestrial Ecosystems to
@@ -288,5 +288,5 @@ def create_attribute_table(
 
 
 if __name__ == "__main__":
-    output_directory = files("src.geoenvo.data.data_source_attributes")
+    output_directory = files("geoenvo.data.data_source_attributes")
     create_attribute_table(output_directory)

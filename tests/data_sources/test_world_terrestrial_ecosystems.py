@@ -63,11 +63,11 @@ def test_attribute_tables(use_mock, tmp_path):
             print(file.name)
             content = f.read()
             with open(
-                files("src.geoenvo.data.data_source_attributes").joinpath(
+                files("geoenvo.data.data_source_attributes").joinpath(
                     "wte_attribute_table.json"
                 ),
                 "r",
                 encoding="utf-8",
-            ) as meow:
-                fixture_content = meow.read()
+            ) as attribute_table:
+                fixture_content = attribute_table.read()
                 assert content == fixture_content
