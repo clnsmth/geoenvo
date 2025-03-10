@@ -235,13 +235,12 @@ def apply_code_mapping(json: dict) -> dict:
     """
 
     # Load the mapping file as a DataFrame for easy lookup
-    with open(
-        files("src.geoenvo.data.data_source_attributes").joinpath(
+    mapping_file = files("src.geoenvo.data.data_source_attributes").joinpath(
             "wte_attribute_table.json"
-        ),
-        "r",
-    ) as file:
-        attribute_table = loads(file.read())
+        )
+    with mapping_file.open("r", encoding="utf-8") as f:
+        attribute_table = loads(f.read())
+
     features = attribute_table.get("features")
     attributes = [feature["attributes"] for feature in features]
     df = pd.DataFrame(attributes)
