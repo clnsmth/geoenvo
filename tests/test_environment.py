@@ -10,6 +10,7 @@ def test_environment_init():
 
 
 def test_data():
+    """Test the data attribute of the Environment class."""
     geometry = Environment({"type": "Environment"})
     # Get
     assert geometry.data is not None

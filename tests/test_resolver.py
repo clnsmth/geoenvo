@@ -7,6 +7,7 @@ from geoenvo.data_sources import EcologicalMarineUnits
 
 
 def test_resolve(use_mock, scenarios, assert_identify, mocker):
+    """Test the resolve method"""
     for scenario in scenarios:
 
         if use_mock:
@@ -25,6 +26,7 @@ def test_resolve(use_mock, scenarios, assert_identify, mocker):
 
 
 def test_data_source():
+    """Test the data_source property"""
     # Get
     resolver = Resolver([WorldTerrestrialEcosystems()])
     assert resolver.data_source is not None

@@ -1,12 +1,9 @@
 """Test the data_source modules"""
 
-import geoenvo.data_sources
-from geoenvo.data_sources import WorldTerrestrialEcosystems
-from geoenvo.data_sources.world_terrestrial_ecosystems import apply_code_mapping
-
 
 def test_data_source_init(data_sources):
     """Test the DataSource class initialization"""
+    # pylint: disable=protected-access
     for data_source in data_sources:
         assert data_source._geometry is None
         assert data_source.data is None
@@ -19,7 +16,7 @@ def test_data_source_properties(scenarios):
     for scenario in scenarios:
         properties = scenario.get("data_source").properties
         expected_properties = scenario.get("raw_properties")
-        assert all([key in expected_properties for key in properties.keys()])
+        assert all(key in expected_properties for key in properties.keys())
 
 
 def test_get_unique_environments(scenarios):
@@ -82,7 +79,7 @@ def test_convert_data(scenarios, empty_environment_data_model):
                 # dateCreated key and value
                 assert item.data["dateCreated"] is not None
                 # properties keys and values
-                for key, value in item.data["properties"].items():
+                for key, _ in item.data["properties"].items():
                     assert key in item.data["properties"].keys()
                     assert item.data["properties"][key] is not None
                 # mappedProperties are not yet populated
@@ -93,6 +90,7 @@ def test_convert_data(scenarios, empty_environment_data_model):
 
 
 def test_geometry(scenarios):
+    """Test the geometry property."""
     for scenario in scenarios:
         # Get
         data_source = scenario["data_source"]
@@ -103,6 +101,7 @@ def test_geometry(scenarios):
 
 
 def test_data(scenarios):
+    """Test the data property."""
     for scenario in scenarios:
         # Get
         data_source = scenario["data_source"]
@@ -113,6 +112,7 @@ def test_data(scenarios):
 
 
 def test_properties(scenarios):
+    """Test the 'properties' property."""
     for scenario in scenarios:
         # Get
         data_source = scenario["data_source"]

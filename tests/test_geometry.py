@@ -17,6 +17,7 @@ def test_geometry_init():
 
 
 def test_geometry_type():
+    """Test the geometry_type() function."""
     # Point
     geometry = Geometry(load_geometry("point_on_land"))
     assert geometry.geometry_type() == "Point"
@@ -30,6 +31,7 @@ def test_geometry_type():
 
 
 def test_is_supported():
+    """Test the is_supported() function."""
     # Point geometry
     geometry = Geometry(load_geometry("point_on_land"))
     assert geometry.is_supported() is True
@@ -52,34 +54,35 @@ def test_point_to_polygon():
     within its bounds.
     """
     # With a buffer
-    json = load_geometry("point_on_land_expands_to_coast")
-    geometry = Geometry(json)
+    input_geometry = load_geometry("point_on_land_expands_to_coast")
+    geometry = Geometry(input_geometry)
     result = geometry.point_to_polygon(buffer=0.5)
     assert isinstance(result, dict)
     assert result["type"] == "Polygon"
-    assert result != json
+    assert result != input_geometry
 
     # Without a buffer
-    json = load_geometry("point_on_land_expands_to_coast")
-    geometry = Geometry(json)
+    input_geometry = load_geometry("point_on_land_expands_to_coast")
+    geometry = Geometry(input_geometry)
     result = geometry.point_to_polygon()
     assert result == geometry.data
 
     # Non-point geometry inputs are unchanged
-    json = load_geometry("polygon_with_exclusion_ring_on_land_and_ocean")
-    geometry = Geometry(json)
+    input_geometry = load_geometry("polygon_with_exclusion_ring_on_land_and_ocean")
+    geometry = Geometry(input_geometry)
     result = geometry.point_to_polygon()
     assert result["type"] == "Polygon"
     assert result == geometry.data
 
     # Geometry.data is not changed by point_to_polygon
-    json = load_geometry("point_on_land")
-    geometry = Geometry(json)
+    input_geometry = load_geometry("point_on_land")
+    geometry = Geometry(input_geometry)
     result = geometry.point_to_polygon(buffer=0.5)
     assert geometry.data != result
 
 
 def test_to_esri():
+    """Test the to_esri() function."""
     # GeoJSON point to ESRI point
     point = Geometry(load_geometry("point_on_land"))
     result = point.to_esri()
@@ -140,6 +143,7 @@ def test_to_esri():
 
 
 def test_grid_sample_polygon():
+    """Test the grid_sample_polygon() function."""
     # A simple polygon
     polygon = {
         "type": "Polygon",
@@ -166,6 +170,7 @@ def test_grid_sample_polygon():
 
 
 def test_polygon_to_points():
+    """Test the polygon_to_points() function."""
     polygon = {
         "type": "Polygon",
         "coordinates": [[[0, 0], [1, 0], [1, 1], [0, 1], [0, 0]]],
@@ -180,6 +185,7 @@ def test_polygon_to_points():
 
 
 def test_data():
+    """Test the data attribute."""
     geometry = Geometry(load_geometry("point_on_land"))
     # Get
     assert geometry.data is not None

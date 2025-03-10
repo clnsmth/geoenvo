@@ -12,8 +12,8 @@ import requests
 from geoenvo.data_sources.data_source import DataSource
 from geoenvo.geometry import Geometry
 from geoenvo.environment import Environment
-from geoenvo.utilities import user_agent, get_properties
-from geoenvo.utilities import _json_extract, EnvironmentDataModel
+from geoenvo.utilities import user_agent
+from geoenvo.utilities import EnvironmentDataModel
 
 
 class WorldTerrestrialEcosystems(DataSource):
@@ -35,11 +35,14 @@ class WorldTerrestrialEcosystems(DataSource):
         - **Coverage**: Terrestrial ecosystems worldwide, classified by *land
           cover, landform, and climate*.
         - **Explore the Dataset**:
-          `https://www.arcgis.com/home/item.html?id=926a206393ec40a590d8caf29ae9a93e <https://www.arcgis.com/home/item.html?id=926a206393ec40a590d8caf29ae9a93e>`_.
+          `https://www.arcgis.com/home/item.html?id=
+          926a206393ec40a590d8caf29ae9a93e <https://www.arcgis.com/home/
+          item.html?id=926a206393ec40a590d8caf29ae9a93e>`_.
 
     **Citation**
-        Sayre, R., 2022, *World Terrestrial Ecosystems (WTE) 2020*: U.S. Geological Survey data release,
-        `https://doi.org/10.5066/P9DO61LP <https://doi.org/10.5066/P9DO61LP>`_.
+        Sayre, R., 2022, *World Terrestrial Ecosystems (WTE) 2020*: U.S.
+        Geological Survey data release, `https://doi.org/10.5066/P9DO61LP
+        <https://doi.org/10.5066/P9DO61LP>`_.
     """
 
     def __init__(self):
@@ -62,10 +65,12 @@ class WorldTerrestrialEcosystems(DataSource):
         self._grid_size = None
 
     @property
+    # pylint: disable=duplicate-code
     def geometry(self) -> dict:
         return self._geometry
 
     @geometry.setter
+    # pylint: disable=duplicate-code
     def geometry(self, geometry: dict):
         self._geometry = geometry
 
@@ -132,8 +137,8 @@ class WorldTerrestrialEcosystems(DataSource):
         # a single response object emulating the API response format. This is
         # to maintain compatibility with the downstream code.
         results = []
-        for geometry in geometries:
-            response = self._request(geometry)
+        for item in geometries:
+            response = self._request(item)
             results.extend(response["properties"].get("Values", []))
         self.data = {"properties": {"Values": results}}
 
@@ -149,13 +154,19 @@ class WorldTerrestrialEcosystems(DataSource):
         :return: A dictionary containing raw response data from the data
             source.
         """
-        base = "https://landscape12.arcgis.com/arcgis/rest/services/World_Terrestrial_Ecosystems/ImageServer/identify"
+        base = (
+            "https://landscape12.arcgis.com/arcgis/rest/services/"
+            "World_Terrestrial_Ecosystems/ImageServer/identify"
+        )
         payload = {
             "geometry": dumps(geometry.to_esri()["geometry"]),
             "geometryType": geometry.to_esri()["geometryType"],
             "returnGeometry": "false",
             "f": "json",
         }
+        # pylint: disable=broad-exception-caught
+        # pylint: disable=unused-variable
+        # pylint: disable=duplicate-code
         try:
             response = requests.get(
                 base, params=payload, timeout=10, headers=user_agent()
@@ -180,15 +191,15 @@ class WorldTerrestrialEcosystems(DataSource):
         # Parse the properties of the environment(s) in the data to a form
         # that can be compared for uniqueness.
         if not self.has_environment():
-            return list()
+            return []
         descriptors = []
         properties = self.properties.keys()
         self.data = apply_code_mapping(self.data)
         results = self.data.get("results")
         for result in results:
-            res = dict()
-            for property in properties:
-                res[property] = result.get(property)
+            res = {}
+            for item in properties:
+                res[item] = result.get(item)
             res = dumps(res)
             descriptors.append(res)
         descriptors = set(descriptors)
@@ -222,6 +233,7 @@ class WorldTerrestrialEcosystems(DataSource):
                 if data["properties"]["Values"][0] == "NoData":
                     return False
                 return True
+        return False
 
 
 def apply_code_mapping(json: dict) -> dict:
@@ -236,8 +248,8 @@ def apply_code_mapping(json: dict) -> dict:
 
     # Load the mapping file as a DataFrame for easy lookup
     mapping_file = files("geoenvo.data.data_source_attributes").joinpath(
-            "wte_attribute_table.json"
-        )
+        "wte_attribute_table.json"
+    )
     with mapping_file.open("r", encoding="utf-8") as f:
         attribute_table = loads(f.read())
 
@@ -275,18 +287,23 @@ def create_attribute_table(
     local file for reference. The table enables the conversion of environmental
     classification codes to human-readable descriptions.
     """
-    base = "https://landscape12.arcgis.com/arcgis/rest/services/World_Terrestrial_Ecosystems/ImageServer/rasterAttributeTable"
+    base = (
+        "https://landscape12.arcgis.com/arcgis/rest/services/"
+        "World_Terrestrial_Ecosystems/ImageServer/rasterAttributeTable"
+    )
     payload = {"f": "pjson"}
+    # pylint: disable=broad-exception-caught
+    # pylint: disable=unused-variable
     try:
         response = requests.get(base, params=payload, timeout=10, headers=user_agent())
     except Exception as e:
-        return {}
+        print(f"An error occurred: {e}")
 
     file_path = output_directory.joinpath("wte_attribute_table.json")
-    with open(file_path, "w") as file:
+    with open(file_path, "w", encoding="utf-8") as file:
         file.write(dumps(response.json(), indent=4))
 
 
-if __name__ == "__main__":
-    output_directory = files("geoenvo.data.data_source_attributes")
-    create_attribute_table(output_directory)
+# if __name__ == "__main__":
+#     output_directory = files("geoenvo.data.data_source_attributes")
+#     create_attribute_table(output_directory)

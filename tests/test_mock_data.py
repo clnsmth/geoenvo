@@ -1,8 +1,8 @@
 """Test the mock_data"""
 
 from json import loads, dumps
-import pytest
 from importlib.resources import files
+import pytest
 from tests.data.create_mock_data import create_mock_response_content
 
 

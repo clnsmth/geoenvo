@@ -38,7 +38,10 @@ class EcologicalMarineUnits(DataSource):
           depth, temperature, salinity, dissolved oxygen, nitrate, phosphate,
           and silicate*.
         - **Explore the Dataset**:
-          `https://esri.maps.arcgis.com/home/item.html?id=58526e3af88b46a3a1d1eb1738230ee3 <https://esri.maps.arcgis.com/home/item.html?id=58526e3af88b46a3a1d1eb1738230ee3>`_.
+          `https://esri.maps.arcgis.com/home/item.html?
+          id=58526e3af88b46a3a1d1eb1738230ee3
+          <https://esri.maps.arcgis.com/home/item.html?id=
+          58526e3af88b46a3a1d1eb1738230ee3>`_.
 
     **Citation**
         Sayre, R., 2023, Ecological Marine Units (EMUs): U.S. Geological
@@ -139,6 +142,9 @@ class EcologicalMarineUnits(DataSource):
             "returnDistinctValues": "false",
             "returnExtentOnly": "false",
         }
+        # pylint: disable=broad-exception-caught
+        # pylint: disable=unused-variable
+        # pylint: disable=duplicate-code
         try:
             response = requests.get(
                 base, params=payload, timeout=10, headers=user_agent()
@@ -147,6 +153,7 @@ class EcologicalMarineUnits(DataSource):
         except Exception as e:
             return {}
 
+    # pylint: disable=duplicate-code
     def convert_data(self) -> List[Environment]:
         result = []
         unique_emu_environments = self.unique_environment()
@@ -164,7 +171,7 @@ class EcologicalMarineUnits(DataSource):
 
     def unique_environment(self) -> List[dict]:
         if not self.has_environment():
-            return list()
+            return []
         data = self.convert_codes_to_values()
         descriptors = self.get_environments_for_geometry_z_values(data=data)
         return descriptors
@@ -173,8 +180,7 @@ class EcologicalMarineUnits(DataSource):
         res = len(self.data["features"])
         if res == 0:
             return False
-        if res > 0:
-            return True
+        return True
 
     def set_properties(self, unique_environment_properties) -> dict:
         """
@@ -208,20 +214,20 @@ class EcologicalMarineUnits(DataSource):
 
         # Iterate over atomic properties and set labels
         environment = environments[0]
-        for property in environment.keys():
-            label = environment.get(property)
-            properties[property] = label
+        for item in environment.keys():
+            label = environment.get(item)
+            properties[item] = label
 
         # Compose a readable EMU_Description classification by joining atomic
         # properties into a single string.
-        EMU_Descriptor = [f for f in properties.values()]
-        EMU_Descriptor = EMU_Descriptor[:-1]  # last one is the EMU_Descriptor
+        emu_descriptor = list(properties.values())
+        emu_descriptor = emu_descriptor[:-1]  # last one is the EMU_Descriptor
         # Handle edge case where some of the properties are None. This is an
         # issue with the data source.
-        if None in EMU_Descriptor:
-            EMU_Descriptor = ["n/a" if f is None else f for f in EMU_Descriptor]
-        EMU_Descriptor = ", ".join(EMU_Descriptor)
-        properties["EMU_Descriptor"] = EMU_Descriptor
+        if None in emu_descriptor:
+            emu_descriptor = ["n/a" if f is None else f for f in emu_descriptor]
+        emu_descriptor = ", ".join(emu_descriptor)
+        properties["EMU_Descriptor"] = emu_descriptor
 
         # Convert properties into a more readable format
         new_properties = {
@@ -314,9 +320,7 @@ class EcologicalMarineUnits(DataSource):
                 top = item["attributes"]["UnitTop"]
                 bottom = item["attributes"]["UnitBottom"]
                 # Case where zmin and zmax are equal
-                if (zmax <= top and zmax >= bottom) and (
-                    zmin <= top and zmin >= bottom
-                ):
+                if (top >= zmax >= bottom) and (top >= zmin >= bottom):
                     parsed = {
                         "attributes": {
                             "OceanName": item["attributes"]["OceanName"],
@@ -325,7 +329,7 @@ class EcologicalMarineUnits(DataSource):
                     }
                     res.append(dumps(parsed))
                 # Case where zmin and zmax are not equal (a depth interval)
-                if (zmax <= top and zmax >= bottom) or (zmin <= top and zmin >= bottom):
+                if (top >= zmax >= bottom) or (top >= zmin >= bottom):
                     parsed = {
                         "attributes": {
                             "OceanName": item["attributes"]["OceanName"],

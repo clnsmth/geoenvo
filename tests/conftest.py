@@ -2,30 +2,35 @@
 
 import json
 import tempfile
-import pytest
 from importlib.resources import files
+import pytest
 from geoenvo.geometry import Geometry
 from geoenvo.data_sources import EcologicalCoastalUnits
 from geoenvo.data_sources import EcologicalMarineUnits
 from geoenvo.data_sources import WorldTerrestrialEcosystems
 from geoenvo.response import Response, compile_response
+from geoenvo.utilities import EnvironmentDataModel
 
 
 @pytest.fixture()
 def use_mock():
+    """Use mock data for testing purposes."""
     return True  # Change this to False for real HTTP requests and data
 
 
 @pytest.fixture
 def data_sources():
-    data_sources = [  # List of DataSource instances
+    """List of data sources to be tested."""
+    return [
         EcologicalCoastalUnits(),
         EcologicalMarineUnits(),
         WorldTerrestrialEcosystems(),
     ]
-    return data_sources
 
 
+# pylint: disable=too-many-arguments
+# pylint: disable=too-many-positional-arguments
+# pylint: disable=redefined-outer-name
 @pytest.fixture
 def scenarios(
     raw_properties_of_ecological_coastal_units,
@@ -35,6 +40,7 @@ def scenarios(
     properties_of_ecological_marine_units,
     properties_of_world_terrestrial_ecosystems,
 ):
+    """List of test scenarios for each data source."""
     scenarios = [
         {  # WTE Success (Envelop on land)
             "data_source": WorldTerrestrialEcosystems(),
@@ -102,6 +108,7 @@ def scenarios(
 
 @pytest.fixture
 def raw_properties_of_ecological_coastal_units():
+    """Raw properties of Ecological Coastal Units."""
     return {
         "Slope",
         "Sinuosity",
@@ -119,6 +126,7 @@ def raw_properties_of_ecological_coastal_units():
 
 @pytest.fixture
 def properties_of_ecological_coastal_units():
+    """Properties of Ecological Coastal Units."""
     return {
         "slope",
         "sinuosity",
@@ -136,6 +144,7 @@ def properties_of_ecological_coastal_units():
 
 @pytest.fixture
 def raw_properties_of_ecological_marine_units():
+    """Raw properties of Ecological Marine Units."""
     return {
         "OceanName",
         "Depth",
@@ -151,6 +160,7 @@ def raw_properties_of_ecological_marine_units():
 
 @pytest.fixture
 def properties_of_ecological_marine_units():
+    """Properties of Ecological Marine Units."""
     return {
         "oceanName",
         "depth",
@@ -166,6 +176,7 @@ def properties_of_ecological_marine_units():
 
 @pytest.fixture
 def raw_properties_of_world_terrestrial_ecosystems():
+    """Raw properties of World Terrestrial Ecosystems."""
     return {
         "Temperatur",
         "Moisture",
@@ -178,22 +189,19 @@ def raw_properties_of_world_terrestrial_ecosystems():
 
 @pytest.fixture
 def properties_of_world_terrestrial_ecosystems():
+    """Properties of World Terrestrial Ecosystems."""
     return {"temperature", "moisture", "landCover", "landForm", "climate", "ecosystem"}
 
 
 @pytest.fixture
 def empty_environment_data_model():
-    return {
-        "type": "Environment",
-        "dataSource": {"identifier": None, "name": None},
-        "dateCreated": None,
-        "properties": {},
-        "mappedProperties": [],
-    }
+    """Empty environment data model."""
+    return EnvironmentDataModel().data
 
 
 @pytest.fixture
 def empty_data_model():
+    """Empty data model."""
     return {
         "type": "Feature",
         "identifier": None,
@@ -204,6 +212,7 @@ def empty_data_model():
 
 @pytest.fixture
 def data_model(mocker):
+    """Data model for testing purposes."""
     mocker.patch("requests.get", return_value=load_response("wte_success"))
 
     data_source = WorldTerrestrialEcosystems()
@@ -222,16 +231,21 @@ def data_model(mocker):
 
 def load_geometry(filename: str):
     """Load test geometry in JSON format."""
-    with open(files("tests.data.geometry").joinpath(f"{filename}.json"), "r") as f:
+    with open(
+        files("tests.data.geometry").joinpath(f"{filename}.json"), "r", encoding="utf-8"
+    ) as f:
         return json.load(f)
 
 
 def load_response(filename: str):
     """Load test response in JSON format."""
-    with open(files("tests.data.response").joinpath(f"{filename}.json"), "r") as f:
+    with open(
+        files("tests.data.response").joinpath(f"{filename}.json"), "r", encoding="utf-8"
+    ) as f:
         return RequestsResponse(json.load(f))
 
 
+# pylint: disable=too-few-public-methods
 class RequestsResponse:
     """A mock object of
     https://requests.readthedocs.io/en/latest/api/#requests.Response for
@@ -241,6 +255,7 @@ class RequestsResponse:
         self.data = data
 
     def json(self):
+        """Return the response data."""
         return self.data
 
 

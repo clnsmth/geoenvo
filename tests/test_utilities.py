@@ -93,6 +93,7 @@ def test_get_properties():
 
 
 def test_compile_response(scenarios, mocker, empty_data_model):
+    """Test the compile_response function."""
     # Compiles a list of Environment into the data model represented by the
     # Response object and tests for expected properties
 
@@ -121,6 +122,7 @@ def test_compile_response(scenarios, mocker, empty_data_model):
 
 
 def test_apply_term_mapping(data_model):
+    """Test the apply_term_mapping method of the EnvironmentDataModel class."""
     # Remove the semantic resource terms from the test data model to set the
     # baseline for the test
     data_model.data["properties"]["environment"][0]["mappedProperties"] = []
@@ -138,6 +140,8 @@ def test_apply_term_mapping(data_model):
 
 
 def test_apply_term_mapping_for_unrecognized_semantic_resources(data_model):
+    """Test the apply_term_mapping method of the EnvironmentDataModel class
+    for unrecognized semantic resources."""
     # Remove the semantic resource terms from the test data model to set the
     # baseline for the test
     data_model.data["properties"]["environment"][0]["mappedProperties"] = []
@@ -149,6 +153,7 @@ def test_apply_term_mapping_for_unrecognized_semantic_resources(data_model):
 
 
 def test_data_methods_of_response_class():
+    """Test the data methods of the Response class."""
     # Getter
     d = {"type": "Feature"}
     data = Response({"type": "Feature"})
@@ -161,6 +166,7 @@ def test_data_methods_of_response_class():
 
 
 def test_properties_methods_of_data_class():
+    """Test the properties methods of the Data class."""
     # Getter
     data = Response({"type": "Feature"})
     assert data.properties is not None
@@ -174,6 +180,7 @@ def test_properties_methods_of_data_class():
 
 
 def test_data_methods_of_environment_data_model_class():
+    """Test the data methods of the EnvironmentDataModel class."""
     # Getter
     environment = EnvironmentDataModel()
     assert environment.data is not None
@@ -187,19 +194,26 @@ def test_data_methods_of_environment_data_model_class():
 
 
 def test_to_schema_org(data_model):
+    """Test the to_schema_org method of the EnvironmentDataModel class."""
     # Create instance of the Response object to convert to schema.org format.
 
     schema_org = data_model.to_schema_org()
 
     # Load from file
-    with open(files("tests.data.schema_org").joinpath(f"schema_org.jsonld"), "r") as f:
+    with open(
+        files("tests.data.schema_org").joinpath("schema_org.jsonld"),
+        "r",
+        encoding="utf-8",
+    ) as f:
         expected = json.load(f)
 
     assert schema_org == expected
 
 
 def test__to_schema_org_geo(data_model):
+    """Test the _to_schema_org_geo method of the EnvironmentDataModel class."""
     # Polygon
+    # pylint: disable=protected-access
     geo = data_model._to_schema_org_geo()
     assert geo == {
         "@type": "GeoCoordinates",
@@ -211,6 +225,7 @@ def test__to_schema_org_geo(data_model):
     # Point
     data_model.data["geometry"]["type"] = "Point"
     data_model.data["geometry"]["coordinates"] = [-123.552, 39.804, 0]
+    # pylint: disable=protected-access
     geo = data_model._to_schema_org_geo()
     assert geo == {
         "@type": "GeoCoordinates",
@@ -221,12 +236,16 @@ def test__to_schema_org_geo(data_model):
 
     # Other types
     data_model.data["geometry"]["type"] = "LineString"
+    # pylint: disable=protected-access
     geo = data_model._to_schema_org_geo()
     assert geo is None
 
 
 def test__to_schema_org_additional_property(data_model):
+    """Test the _to_schema_org_additional_property method of the
+    EnvironmentDataModel class."""
     # With properties
+    # pylint: disable=protected-access
     additional_property = data_model._to_schema_org_additional_property()
     assert isinstance(additional_property, list)
     for item in additional_property:
@@ -236,6 +255,7 @@ def test__to_schema_org_additional_property(data_model):
         assert "value" in item
 
     # With duplicates removed
+    # pylint: disable=protected-access
     data_model.data["properties"]["environment"].append(
         data_model.data["properties"]["environment"][0]
     )
@@ -244,6 +264,7 @@ def test__to_schema_org_additional_property(data_model):
         assert additional_property.count(item) == 1
 
     # Without properties
+    # pylint: disable=protected-access
     data = data_model
     data.data["properties"]["environment"] = []
     additional_property = data._to_schema_org_additional_property()
@@ -251,7 +272,10 @@ def test__to_schema_org_additional_property(data_model):
 
 
 def test__to_schema_org_keywords(data_model):
+    """Test the _to_schema_org_keywords method of the EnvironmentDataModel
+    class."""
     # With ENVO terms
+    # pylint: disable=protected-access
     keywords = data_model._to_schema_org_keywords()
     assert isinstance(keywords, list)
     for item in keywords:
@@ -262,6 +286,7 @@ def test__to_schema_org_keywords(data_model):
         assert "termCode" in item
 
     # With duplicates removed
+    # pylint: disable=protected-access
     data_model.data["properties"]["environment"].append(
         data_model.data["properties"]["environment"][0]
     )
@@ -270,6 +295,7 @@ def test__to_schema_org_keywords(data_model):
         assert keywords.count(item) == 1
 
     # Without ENVO terms
+    # pylint: disable=protected-access
     data = data_model
     data.data["properties"]["environment"] = []
     keywords = data._to_schema_org_keywords()

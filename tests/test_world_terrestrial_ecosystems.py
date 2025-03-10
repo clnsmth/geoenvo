@@ -1,7 +1,5 @@
 """Tests for the world_terrestrial_ecosystems module."""
 
-from pylint.checkers.utils import is_node_inside_try_except
-
 from tests.conftest import load_response
 from geoenvo.data_sources.world_terrestrial_ecosystems import apply_code_mapping
 

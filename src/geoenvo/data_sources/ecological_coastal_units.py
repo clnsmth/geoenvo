@@ -36,11 +36,14 @@ class EcologicalCoastalUnits(DataSource):
           wave height, tidal range, marine physical environment, turbidity,
           and chlorophyll*.
         - **Explore the Dataset**:
-          `https://www.arcgis.com/home/item.html?id=54df078334954c5ea6d5e1c34eda2c87 <https://www.arcgis.com/home/item.html?id=54df078334954c5ea6d5e1c34eda2c87>`_.
+          `https://www.arcgis.com/home/item.html?id=
+          54df078334954c5ea6d5e1c34eda2c87 <https://www.arcgis.com/home/
+          item.html?id=54df078334954c5ea6d5e1c34eda2c87>`_.
 
     **Citation**
         Sayre, R., 2023, Global Ecological Classification of Coastal Segment
-        Units: U.S. Geological Survey data release, `https://doi.org/10.5066/P9HWHSPU <https://doi.org/10.5066/P9HWHSPU>`_.
+        Units: U.S. Geological Survey data release,
+        `https://doi.org/10.5066/P9HWHSPU <https://doi.org/10.5066/P9HWHSPU>`_.
     """
 
     def __init__(self):
@@ -67,10 +70,12 @@ class EcologicalCoastalUnits(DataSource):
         self._buffer = None
 
     @property
+    # pylint: disable=duplicate-code
     def geometry(self) -> dict:
         return self._geometry
 
     @geometry.setter
+    # pylint: disable=duplicate-code
     def geometry(self, geometry: dict):
         self._geometry = geometry
 
@@ -142,7 +147,11 @@ class EcologicalCoastalUnits(DataSource):
         :return: A dictionary containing raw response data from the data
             source.
         """
-        base = "https://services.arcgis.com/P3ePLMYs2RVChkJx/ArcGIS/rest/services/Ecological_Coastal_Units__ECU__1km_Segments/FeatureServer/0/query"
+        base = (
+            "https://services.arcgis.com/P3ePLMYs2RVChkJx/ArcGIS/rest/"
+            "services/Ecological_Coastal_Units__ECU__1km_Segments/"
+            "FeatureServer/0/query"
+        )
         payload = {
             "f": "geojson",
             "geometry": dumps(geometry.to_esri()["geometry"]),
@@ -158,6 +167,9 @@ class EcologicalCoastalUnits(DataSource):
             "returnExtentOnly": "false",
             "returnGeometry": "false",
         }
+        # pylint: disable=broad-exception-caught
+        # pylint: disable=unused-variable
+        # pylint: disable=duplicate-code
         try:
             response = requests.get(
                 base, params=payload, timeout=10, headers=user_agent()
@@ -166,6 +178,7 @@ class EcologicalCoastalUnits(DataSource):
         except Exception as e:
             return {}
 
+    # pylint: disable=duplicate-code
     def convert_data(self) -> List[Environment]:
         result = []
         unique_ecu_environments = self.unique_environment()
@@ -183,9 +196,9 @@ class EcologicalCoastalUnits(DataSource):
 
     def unique_environment(self) -> List[dict]:
         if not self.has_environment():
-            return list()
-        property = "CSU_Descriptor"
-        descriptors = get_properties(self._data, [property])[property]
+            return []
+        prop = "CSU_Descriptor"
+        descriptors = get_properties(self._data, [prop])[prop]
         descriptors = set(descriptors)
         descriptors = list(descriptors)
         return descriptors
@@ -194,8 +207,7 @@ class EcologicalCoastalUnits(DataSource):
         res = len(self._data["features"])
         if res == 0:
             return False
-        if res > 0:
-            return True
+        return True
 
     def set_properties(self, unique_environment_properties) -> dict:
         """
@@ -223,16 +235,16 @@ class EcologicalCoastalUnits(DataSource):
         # Iterate over atomic properties and set labels
         environment = environments[0]
         properties = self._properties
-        for property in environment.keys():
-            label = environment.get(property)
-            properties[property] = label
+        for item in environment.keys():
+            label = environment.get(item)
+            properties[item] = label
 
         # Compose a readable CSU_Descriptor class by joining atomic properties
         # into a single string.
-        CSU_Descriptor = [f for f in properties.values()]
-        CSU_Descriptor = CSU_Descriptor[:-1]  # last one is the CSU_Description
-        CSU_Descriptor = ", ".join(CSU_Descriptor)
-        properties["CSU_Descriptor"] = CSU_Descriptor
+        csu_descriptor = list(properties.values())
+        csu_descriptor = csu_descriptor[:-1]  # last one is the CSU_Description
+        csu_descriptor = ", ".join(csu_descriptor)
+        properties["CSU_Descriptor"] = csu_descriptor
 
         # Convert property labels into a more readable format
         new_properties = {

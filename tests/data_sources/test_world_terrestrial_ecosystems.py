@@ -2,8 +2,8 @@
 
 from importlib.resources import files
 import pytest
-from geoenvo.geometry import Geometry
 from tests.conftest import load_geometry
+from geoenvo.geometry import Geometry
 from geoenvo.data_sources import WorldTerrestrialEcosystems
 from geoenvo.data_sources.world_terrestrial_ecosystems import create_attribute_table
 
@@ -15,6 +15,7 @@ def test_init():
 
 
 def test_get_environment_with_grid_size(use_mock):
+    """Test the get_environment method with grid_size set"""
 
     if use_mock:
         pytest.skip("Skipping test when use_mock is False")
@@ -25,7 +26,7 @@ def test_get_environment_with_grid_size(use_mock):
     # Normally polygon_on_land_and_ocean geometry doesn't get_environment to
     # anything because the polygon centroid is over the ocean.
     result = data_source.get_environment(geometry)
-    assert result == []
+    assert not result
 
     # However, when the grid size is set, the polygon is converted to a series
     # of points that are then resolvable to the WorldTerrestrialEcosystems
@@ -36,6 +37,8 @@ def test_get_environment_with_grid_size(use_mock):
 
 
 def test_grid_size(scenarios):
+    """Test the grid_size attribute of the WorldTerrestrialEcosystems data
+    source."""
     for scenario in scenarios:
         if scenario.get("data_source") == WorldTerrestrialEcosystems():
             # Get

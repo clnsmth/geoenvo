@@ -13,6 +13,7 @@ def test_init():
 
 
 def test_get_environment_with_buffer(use_mock):
+    """Test the get_environment method with a buffer"""
 
     if use_mock:
         pytest.skip("Skipping test when use_mock is False")
@@ -23,7 +24,7 @@ def test_get_environment_with_buffer(use_mock):
     # Normally polygon_on_land_and_ocean geometry doesn't get_environment to
     # anything  because the polygon centroid is over the ocean.
     result = data_source.get_environment(geometry)
-    assert result == []
+    assert not result
 
     # However, when the grid size is set, the polygon is converted to a series
     # of points that are then resolvable to the WorldTerrestrialEcosystems
@@ -34,6 +35,7 @@ def test_get_environment_with_buffer(use_mock):
 
 
 def test_buffer(scenarios):
+    """Test the buffer property"""
     for scenario in scenarios:
         if scenario.get("data_source") == EcologicalCoastalUnits():
             # Get
