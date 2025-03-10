@@ -6,7 +6,7 @@ from geoenvo.data_sources import WorldTerrestrialEcosystems
 from geoenvo.data_sources import EcologicalMarineUnits
 
 
-def test_identify(use_mock, scenarios, assert_identify, mocker):
+def test_resolve(use_mock, scenarios, assert_identify, mocker):
     for scenario in scenarios:
 
         if use_mock:
