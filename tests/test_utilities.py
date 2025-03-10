@@ -71,7 +71,7 @@ def test_data_model(empty_environment_data_model):
     assert data_model.data == empty_environment_data_model
 
 
-def test_get_attributes():
+def test_get_properties():
     """Test the get_properties function."""
     response = load_response("wte_success")
     response.data = apply_code_mapping(response.data)  # Create properties to fetch
