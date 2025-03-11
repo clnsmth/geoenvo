@@ -12,6 +12,7 @@ python = "^3.13"
 pandas = "^2.2.3"
 geopandas = "^1.0.1"
 requests = "^2.32.3"
+daiquiri = "^3.3.0"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^8.3.4"

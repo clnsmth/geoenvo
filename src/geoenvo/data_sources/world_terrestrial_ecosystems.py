@@ -7,6 +7,7 @@ from pathlib import Path
 from typing import List
 from importlib.resources import files
 
+import daiquiri
 import pandas as pd
 import requests
 from geoenvo.data_sources.data_source import DataSource
@@ -14,6 +15,8 @@ from geoenvo.geometry import Geometry
 from geoenvo.environment import Environment
 from geoenvo.utilities import user_agent
 from geoenvo.utilities import EnvironmentDataModel
+
+logger = daiquiri.getLogger(__name__)
 
 
 class WorldTerrestrialEcosystems(DataSource):
@@ -123,10 +126,18 @@ class WorldTerrestrialEcosystems(DataSource):
         :return: A list of ``Environment`` objects containing environmental
             classifications.
         """
+        logger.debug(
+            f"Starting environment resolution for geometry in "
+            f"{self.__class__.__name__}"
+        )
+
         # Enable grid-based sampling for polygons. Without this, the data source
         # would default to using the centroid of the polygon instead.
         geometries = []
         if geometry.geometry_type() == "Polygon" and self.grid_size is not None:
+            logger.debug(
+                f"Applying grid-based sampling with grid size " f"{self.grid_size}"
+            )
             points = geometry.polygon_to_points(grid_size=self.grid_size)
             for point in points:
                 geometries.append(Geometry(point))
@@ -139,13 +150,18 @@ class WorldTerrestrialEcosystems(DataSource):
         results = []
         for item in geometries:
             response = self._request(item)
-            results.extend(response["properties"].get("Values", []))
+            if response.get("properties"):
+                results.extend(response["properties"].get("Values", []))
         self.data = {"properties": {"Values": results}}
 
-        return self.convert_data()
+        environments = self.convert_data()
+        logger.info(
+            f"Resolved {len(environments)} environments for geometry in "
+            f"{self.__class__.__name__}"
+        )
+        return environments
 
-    @staticmethod
-    def _request(geometry: Geometry) -> dict:
+    def _request(self, geometry: Geometry) -> dict:
         """
         Sends a request to the World Terrestrial Ecosystems data source and
         retrieves raw response data.
@@ -164,6 +180,9 @@ class WorldTerrestrialEcosystems(DataSource):
             "returnGeometry": "false",
             "f": "json",
         }
+
+        logger.debug(f"Sending request to {self.__class__.__name__}")
+
         # pylint: disable=broad-exception-caught
         # pylint: disable=unused-variable
         # pylint: disable=duplicate-code
@@ -171,11 +190,20 @@ class WorldTerrestrialEcosystems(DataSource):
             response = requests.get(
                 base, params=payload, timeout=10, headers=user_agent()
             )
+            logger.info(
+                f"Received response from {self.__class__.__name__}. "
+                f"Status: {response.status_code}"
+            )
             return response.json()
         except Exception as e:
+            logger.error(
+                f"Failed to fetch data from {self.__class__.__name__}. " f"Error: {e}",
+                exc_info=True,
+            )
             return {}
 
     def convert_data(self) -> List[Environment]:
+        logger.debug(f"Starting data conversion in {self.__class__.__name__}")
         result = []
         unique_wte_environments = self.unique_environment()
         for unique_wte_environment in unique_wte_environments:
@@ -185,6 +213,11 @@ class WorldTerrestrialEcosystems(DataSource):
             environment.set_date_created()
             environment.set_properties(unique_wte_environment)
             result.append(Environment(data=environment.data))
+            logger.debug("Converted environment properties")
+        logger.info(
+            f"Successfully converted {len(result)} environments in "
+            f"{self.__class__.__name__}"
+        )
         return result
 
     def unique_environment(self) -> List[dict]:

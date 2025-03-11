@@ -4,12 +4,16 @@
 
 from json import dumps
 from typing import List
+
 import requests
+import daiquiri
 from geoenvo.data_sources.data_source import DataSource
 from geoenvo.geometry import Geometry
 from geoenvo.environment import Environment
 from geoenvo.utilities import user_agent
 from geoenvo.utilities import EnvironmentDataModel, get_properties
+
+logger = daiquiri.getLogger(__name__)
 
 
 class EcologicalCoastalUnits(DataSource):
@@ -114,10 +118,11 @@ class EcologicalCoastalUnits(DataSource):
         """
         Sets the buffer distance used for spatial resolution.
 
-        :param buffer: The buffer distance as a float.
+        :param buffer: The buffer distance in **kilometers** as a float.
         """
         self._buffer = buffer
 
+    # pylint: disable=duplicate-code
     def get_environment(self, geometry: Geometry) -> List[Environment]:
         """
         Resolves a given geometry to environmental descriptions using the
@@ -127,18 +132,30 @@ class EcologicalCoastalUnits(DataSource):
         :return: A list of ``Environment`` objects containing environmental
             classifications.
         """
+        logger.debug(
+            f"Starting environment resolution for geometry in "
+            f"{self.__class__.__name__}"
+        )
+
         # Enable buffer-based sampling for points. Without this, the data
         # source would return None because environments are represented as
         # line vectors, meaning point locations would not overlap with any
         # features.
         if geometry.geometry_type() == "Point" and self.buffer is not None:
+            logger.debug(
+                f"Applying buffer of {self.buffer} kilometers to point " f"geometry"
+            )
             geometry.data = geometry.point_to_polygon(buffer=self.buffer)
 
         self.data = self._request(geometry)
-        return self.convert_data()
+        environments = self.convert_data()
+        logger.info(
+            f"Resolved {len(environments)} environments for geometry in "
+            f"{self.__class__.__name__}"
+        )
+        return environments
 
-    @staticmethod
-    def _request(geometry: Geometry) -> dict:
+    def _request(self, geometry: Geometry) -> dict:
         """
         Sends a request to the Ecological Coastal Units data source and
         retrieves raw response data.
@@ -167,6 +184,9 @@ class EcologicalCoastalUnits(DataSource):
             "returnExtentOnly": "false",
             "returnGeometry": "false",
         }
+
+        logger.debug(f"Sending request to {self.__class__.__name__}")
+
         # pylint: disable=broad-exception-caught
         # pylint: disable=unused-variable
         # pylint: disable=duplicate-code
@@ -174,12 +194,21 @@ class EcologicalCoastalUnits(DataSource):
             response = requests.get(
                 base, params=payload, timeout=10, headers=user_agent()
             )
+            logger.info(
+                f"Received response from {self.__class__.__name__}. "
+                f"Status: {response.status_code}"
+            )
             return response.json()
         except Exception as e:
+            logger.error(
+                f"Failed to fetch data from {self.__class__.__name__}. " f"Error: {e}",
+                exc_info=True,
+            )
             return {}
 
     # pylint: disable=duplicate-code
     def convert_data(self) -> List[Environment]:
+        logger.debug(f"Starting data conversion in {self.__class__.__name__}")
         result = []
         unique_ecu_environments = self.unique_environment()
         for unique_ecu_environment in unique_ecu_environments:
@@ -192,6 +221,11 @@ class EcologicalCoastalUnits(DataSource):
             )
             environment.set_properties(properties)
             result.append(Environment(data=environment.data))
+            logger.debug(f"Converted environment: {properties}")
+        logger.info(
+            f"Successfully converted {len(result)} environments in "
+            f"{self.__class__.__name__}"
+        )
         return result
 
     def unique_environment(self) -> List[dict]:
@@ -204,7 +238,7 @@ class EcologicalCoastalUnits(DataSource):
         return descriptors
 
     def has_environment(self) -> bool:
-        res = len(self._data["features"])
+        res = len(self._data.get("features", []))
         if res == 0:
             return False
         return True

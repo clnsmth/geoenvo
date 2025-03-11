@@ -118,7 +118,7 @@ dependencies:
   - networkx=3.4.2
   - numpy=2.2.2
   - openjpeg=2.5.3
-  - openssl=3.4.0
+  - openssl=3.4.1
   - packaging=24.2
   - pandas=2.2.3
   - pathspec=0.12.1
@@ -141,6 +141,7 @@ dependencies:
   - pysocks=1.7.1
   - pytest=8.3.4
   - pytest-cov=6.0.0
+  - pytest-mock=3.14.0
   - python=3.13.1
   - python-dateutil=2.9.0.post0
   - python-gitlab=4.13.0
@@ -196,7 +197,9 @@ dependencies:
   - zstd=1.5.6
   - pip:
       - certifi==2025.1.31
-      - geoenvo==0.0.0
+      - daiquiri==3.3.0
+      - geoenvo==0.1.0
+      - python-json-logger==3.3.0
       - pytz==2025.1
       - smmap==5.0.2
       - sphinxcontrib-serializinghtml==2.0.0

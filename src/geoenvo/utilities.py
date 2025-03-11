@@ -4,6 +4,10 @@
 
 from datetime import datetime
 
+import daiquiri
+
+logger = daiquiri.getLogger(__name__)
+
 
 def _json_extract(obj, key) -> list:
     """

@@ -6,9 +6,12 @@ descriptions.
 """
 
 from typing import List
+import daiquiri
 from geoenvo.data_sources.data_source import DataSource
 from geoenvo.geometry import Geometry
 from geoenvo.response import compile_response, Response
+
+logger = daiquiri.getLogger(__name__)
 
 
 class Resolver:
@@ -71,6 +74,7 @@ class Resolver:
         :return: A ``Response`` object containing the resolved environmental
             data.
         """
+        logger.info(f"Resolving geometry: {identifier} - {description}")
         # pylint: disable=broad-exception-caught
         try:
             results = []
@@ -84,9 +88,10 @@ class Resolver:
                 description=description,
             )
             result.apply_term_mapping(semantic_resource)
+            logger.info("Resolution complete for geometry")
             return result
         except Exception as e:
-            print(f"An error occurred: {e}")
+            logger.error(f"Failed to resolve geometry: {e}", exc_info=True)
             result = compile_response(geometry=geometry, environment=[])
             return result
 

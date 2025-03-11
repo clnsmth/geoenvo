@@ -242,7 +242,12 @@ def load_response(filename: str):
     with open(
         files("tests.data.response").joinpath(f"{filename}.json"), "r", encoding="utf-8"
     ) as f:
-        return RequestsResponse(json.load(f))
+        if "success" in str(f):
+            status_code = 200
+        else:
+            status_code = 404
+        response = RequestsResponse(json.load(f), status_code)
+        return response
 
 
 # pylint: disable=too-few-public-methods
@@ -251,12 +256,17 @@ class RequestsResponse:
     https://requests.readthedocs.io/en/latest/api/#requests.Response for
     testing purposes."""
 
-    def __init__(self, data):
+    def __init__(self, data, status_code):
         self.data = data
+        self._status_code = status_code
 
     def json(self):
         """Return the response data."""
         return self.data
+
+    def status_code(self):
+        """Return the status code."""
+        return self._status_code
 
 
 @pytest.fixture

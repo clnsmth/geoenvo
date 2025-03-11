@@ -322,6 +322,24 @@ files = [
 toml = ["tomli"]
 
 [[package]]
+name = "daiquiri"
+version = "3.3.0"
+description = "Library to configure Python logging easily"
+optional = false
+python-versions = ">=3.10"
+files = [
+    {file = "daiquiri-3.3.0-py3-none-any.whl", hash = "sha256:ceb2e7923280a18be3fa6a37cb6da705bb92436607a3ee71bc79cdedae0b9aeb"},
+    {file = "daiquiri-3.3.0.tar.gz", hash = "sha256:bb26e0547300ee40c6404111cb0ead18273f697cdc5a0fe2c606723323a7eaf2"},
+]
+
+[package.dependencies]
+python-json-logger = ">=3"
+
+[package.extras]
+systemd = ["systemd-python (>=234)"]
+test = ["pytest"]
+
+[[package]]
 name = "dill"
 version = "0.3.9"
 description = "serialize all of Python"
@@ -1219,6 +1237,20 @@ graphql = ["gql[httpx] (>=3.5.0,<4)"]
 yaml = ["PyYaml (>=6.0.1)"]
 
 [[package]]
+name = "python-json-logger"
+version = "3.3.0"
+description = "JSON Log Formatter for the Python Logging Package"
+optional = false
+python-versions = ">=3.8"
+files = [
+    {file = "python_json_logger-3.3.0-py3-none-any.whl", hash = "sha256:dd980fae8cffb24c13caf6e158d3d61c0d6d22342f932cb6e9deedab3d35eec7"},
+    {file = "python_json_logger-3.3.0.tar.gz", hash = "sha256:12b7e74b17775e7d565129296105bbe3910842d9d0eb083fc83a6a617aa8df84"},
+]
+
+[package.extras]
+dev = ["backports.zoneinfo", "black", "build", "freezegun", "mdx_truly_sane_lists", "mike", "mkdocs", "mkdocs-awesome-pages-plugin", "mkdocs-gen-files", "mkdocs-literate-nav", "mkdocs-material (>=8.5)", "mkdocstrings[python]", "msgspec", "mypy", "orjson", "pylint", "pytest", "tzdata", "validate-pyproject[all]"]
+
+[[package]]
 name = "python-semantic-release"
 version = "9.18.0"
 description = "Automatic Semantic Versioning for Python projects"
@@ -1676,4 +1708,4 @@ zstd = ["zstandard (>=0.18.0)"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.13"
-content-hash = "9c4e2a7d58d0a852203326588b20aa1e39ed86e721d092c5fe922665b831a17a"
+content-hash = "aeef806b089b49d52e3539028ea140db09a8749bdb542085297cd9337a517d20"

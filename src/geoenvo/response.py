@@ -5,10 +5,14 @@
 import importlib
 import json
 from typing import List, Union
+
+import daiquiri
 from yaml import safe_load
 import pandas as pd
 from geoenvo.environment import Environment
 from geoenvo.geometry import Geometry
+
+logger = daiquiri.getLogger(__name__)
 
 
 class Response:
@@ -76,8 +80,16 @@ class Response:
 
         :param file_path: The file path where the response should be saved.
         """
-        with open(file_path, "w", encoding="utf-8") as file:
-            file.write(json.dumps(self.data))
+        logger.debug(f"Writing response data to {file_path}")
+        # pylint: disable=broad-exception-caught
+        try:
+            with open(file_path, "w", encoding="utf-8") as file:
+                file.write(json.dumps(self.data))
+                logger.info(f"Successfully saved response data to {file_path}")
+        except Exception as e:
+            logger.error(
+                f"Failed to write response data to {file_path}: {e}", exc_info=True
+            )
 
     def read(self, file_path: str) -> "Response":
         """
@@ -86,8 +98,16 @@ class Response:
         :param file_path: The file path from which to read response data.
         :return: The updated Response object.
         """
-        with open(file_path, "r", encoding="utf-8") as file:
-            self.data = json.loads(file.read())
+        logger.debug(f"Attempting to read response data from {file_path}")
+        # pylint: disable=broad-exception-caught
+        try:
+            with open(file_path, "r", encoding="utf-8") as file:
+                self.data = json.loads(file.read())
+            logger.info(f"Successfully loaded response data from {file_path}")
+        except Exception as e:
+            logger.error(
+                f"Failed to read response data from {file_path}: {e}", exc_info=True
+            )
         return self
 
     # pylint: disable=too-many-locals
@@ -100,6 +120,11 @@ class Response:
             "ENVO"). Options include: "ENVO".
         :return: The updated Response object with mapped terms.
         """
+        logger.debug(
+            f"Applying term mapping using {semantic_resource} in "
+            f"{self.__class__.__name__}"
+        )
+
         # Iterate over list of environments in data
         for environment in self.data["properties"]["environment"]:
 
@@ -109,11 +134,19 @@ class Response:
                 f"{data_source}-{semantic_resource.lower()}.sssom.tsv"
             )
             if not sssom_file.exists():
+                logger.warning(
+                    f"Mapping file {sssom_file} not found. Skipping term "
+                    f"mapping for {data_source}."
+                )
                 return []
             sssom_meta_file = importlib.resources.files("geoenvo.data.sssom").joinpath(
                 f"{data_source}-{semantic_resource.lower()}.sssom.yml"
             )
             if not sssom_meta_file.exists():
+                logger.warning(
+                    f"Metadata file {sssom_meta_file} not found. Skipping term "
+                    f"mapping for {data_source}."
+                )
                 return []
             with open(sssom_file, mode="r", encoding="utf-8") as f:
                 sssom = pd.read_csv(f, sep="\t")
@@ -133,9 +166,11 @@ class Response:
                     ].values[0]
                     curie_prefix = curie.split(":")[0]
                     uri = sssom_meta["curie_map"][curie_prefix] + curie.split(":")[1]
+                    logger.debug(f"Mapped '{value}' to '{label}' ({uri})")
                 except IndexError:
                     label = None
                     uri = None
+                    logger.debug(f"No mapping found for '{value}' in {data_source}")
 
                 # Don't add empty labels. Empty implies no mapping was found.
                 if pd.notna(label) and uri is not None:
@@ -147,6 +182,10 @@ class Response:
             # object
             environment["mappedProperties"] = envo_terms
 
+        logger.info(
+            f"Term mapping complete. Mapped terms added to "
+            f"{self.__class__.__name__}."
+        )
         return self
 
     def to_schema_org(self) -> dict:
@@ -155,6 +194,7 @@ class Response:
 
         :return: A dictionary formatted according to Schema.org conventions.
         """
+        logger.debug("Converting response data to Schema.org format")
         additional_property = [
             {
                 "@type": "PropertyValue",
@@ -173,6 +213,8 @@ class Response:
             "additionalProperty": additional_property,
             "keywords": self._to_schema_org_keywords(),
         }
+        logger.info(
+            "Successfully converted response data to Schema.org format")
         return schema_org
 
     def _to_schema_org_geo(self) -> Union[dict, None]:
@@ -273,6 +315,7 @@ def compile_response(
     :param description: An optional description associated with the response.
     :return: A ``Response`` object containing the compiled environmental data.
     """
+    logger.debug("Starting response compilation")
 
     # Move data from Environment objects and into a list
     environments = []
@@ -285,4 +328,5 @@ def compile_response(
         "geometry": geometry.data,
         "properties": {"description": description, "environment": environments},
     }
+    logger.info(f"Compiled response with {len(environments)} environments")
     return Response(result)

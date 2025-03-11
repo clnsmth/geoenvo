@@ -5,10 +5,14 @@
 import json
 from io import StringIO
 from json import dumps
+
+import daiquiri
 import geopandas as gpd
 import shapely
 from shapely import Polygon, Point
 import numpy as np
+
+logger = daiquiri.getLogger(__name__)
 
 
 class Geometry:
@@ -55,8 +59,10 @@ class Geometry:
 
         :return: ``True`` if the geometry is supported, otherwise ``False``.
         """
-        if self.data.get("type") in ["Point", "Polygon"]:
+        logger.debug(f"Checking if geometry type '{self.geometry_type()}' is supported")
+        if self.geometry_type() in ["Point", "Polygon"]:
             return True
+        logger.warning(f"Unsupported geometry type: {self.geometry_type()}")
         return False
 
     def to_esri(self) -> dict:
@@ -65,7 +71,11 @@ class Geometry:
 
         :return: A dictionary representing the Esri-formatted geometry.
         """
-        if self.data["type"] == "Point":
+        logger.debug(
+            f"Converting geometry of type '{self.geometry_type()}' to Esri " f"format"
+        )
+
+        if self.geometry_type() == "Point":
             x, y, *z = self.data["coordinates"]
             geometry = {
                 "x": x,
@@ -73,15 +83,17 @@ class Geometry:
                 "z": z[0] if z else None,
                 "spatialReference": {"wkid": 4326},
             }
-            geometry_type = "esriGeometryPoint"
-            return {"geometry": geometry, "geometryType": geometry_type}
-        if self.data["type"] == "Polygon":
+            esri_geometry_type = "esriGeometryPoint"
+            logger.info("Successfully converted Point geometry to Esri format")
+            return {"geometry": geometry, "geometryType": esri_geometry_type}
+        if self.geometry_type() == "Polygon":
             geometry = {
                 "rings": self.data["coordinates"],
                 "spatialReference": {"wkid": 4326},
             }
-            geometry_type = "esriGeometryPolygon"
-            return {"geometry": geometry, "geometryType": geometry_type}
+            esri_geometry_type = "esriGeometryPolygon"
+            logger.info("Successfully converted Polygon geometry to Esri format")
+            return {"geometry": geometry, "geometryType": esri_geometry_type}
         raise ValueError("Invalid geometry type")
 
     def geometry_type(self) -> str:
@@ -102,26 +114,41 @@ class Geometry:
             format.
         """
         if self.geometry_type() != "Point" or buffer is None:
+            logger.warning(
+                f"Skipping point-to-polygon conversion. Geometry type "
+                f"'{self.geometry_type()}' is not a Point, or no buffer "
+                f"provided."
+            )
             return self.data
 
-        point = gpd.GeoSeries.from_file(StringIO(dumps(self.data)))
-        point = point.to_crs(32634)  # A CRS in units of meters
-        expanded_point = point.geometry.buffer(buffer * 1000)  # buffer to meters
-        expanded_point = expanded_point.to_crs(4326)  # Convert back to EPSG:4326
-        bounds = expanded_point.bounds
-        polygon = {
-            "type": "Polygon",
-            "coordinates": [
-                [
-                    [bounds.minx[0], bounds.miny[0]],
-                    [bounds.maxx[0], bounds.miny[0]],
-                    [bounds.maxx[0], bounds.maxy[0]],
-                    [bounds.minx[0], bounds.maxy[0]],
-                    [bounds.minx[0], bounds.miny[0]],
-                ]
-            ],
-        }
-        return polygon
+        logger.debug(f"Converting Point to Polygon with buffer {buffer} km")
+
+        # pylint: disable=broad-exception-caught
+        try:
+            point = gpd.GeoSeries.from_file(StringIO(dumps(self.data)))
+            point = point.to_crs(32634)  # A CRS in units of meters
+            expanded_point = point.geometry.buffer(buffer * 1000)  # buffer to meters
+            expanded_point = expanded_point.to_crs(4326)  # Convert back to EPSG:4326
+            bounds = expanded_point.bounds
+            polygon = {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [bounds.minx[0], bounds.miny[0]],
+                        [bounds.maxx[0], bounds.miny[0]],
+                        [bounds.maxx[0], bounds.maxy[0]],
+                        [bounds.minx[0], bounds.maxy[0]],
+                        [bounds.minx[0], bounds.miny[0]],
+                    ]
+                ],
+            }
+            logger.info(
+                f"Successfully converted Point to Polygon with buffer " f"{buffer} km"
+            )
+            return polygon
+        except Exception as e:
+            logger.error(f"Failed to convert Point to Polygon: {e}", exc_info=True)
+            return self.data
 
     def polygon_to_points(self, grid_size) -> list[dict]:
         """
@@ -132,30 +159,47 @@ class Geometry:
         :return: A list of dictionaries representing sampled points in GeoJSON
             format.
         """
-        if self.data.get("type") != "Polygon":
+        if self.geometry_type() != "Polygon":
+            logger.warning(
+                f"Skipping polygon-to-points conversion. Geometry type "
+                f"'{self.geometry_type()}' is not a Polygon."
+            )
             return self.data
 
-        # Get points from within the polygon
-        polygon = gpd.GeoSeries.from_file(StringIO(dumps(self.data)))
-        representative_points = polygon.apply(grid_sample_polygon, args=(grid_size,))
-        points = []
-        for item in representative_points.items():
-            geojson = json.loads(gpd.GeoSeries(item[1]).to_json())
-            result = geojson["features"][0]["geometry"]
-            points.append(result)
+        # pylint: disable=broad-exception-caught
+        try:
+            # Get points from within the polygon
+            polygon = gpd.GeoSeries.from_file(StringIO(dumps(self.data)))
+            representative_points = polygon.apply(
+                grid_sample_polygon, args=(grid_size,)
+            )
+            points = []
+            for item in representative_points.items():
+                geojson = json.loads(gpd.GeoSeries(item[1]).to_json())
+                result = geojson["features"][0]["geometry"]
+                points.append(result)
+            logger.debug(
+                f"Extracted {len(points)} representative points from the " f"polygon"
+            )
 
-        # Get points from the vertices of the polygon
-        coords = list(polygon[0].exterior.coords)
-        polygon_vertices = gpd.GeoSeries([Point(x, y) for x, y in coords])
-        polygon_vertices = polygon_vertices.drop_duplicates()
-        for item in polygon_vertices.items():
-            geojson = json.loads(gpd.GeoSeries(item[1]).to_json())
-            result = geojson["features"][0]["geometry"]
-            points.append(result)
+            # Get points from the vertices of the polygon
+            coords = list(polygon[0].exterior.coords)
+            polygon_vertices = gpd.GeoSeries([Point(x, y) for x, y in coords])
+            polygon_vertices = polygon_vertices.drop_duplicates()
+            for item in polygon_vertices.items():
+                geojson = json.loads(gpd.GeoSeries(item[1]).to_json())
+                result = geojson["features"][0]["geometry"]
+                points.append(result)
 
-        return points
+            logger.info(f"Successfully converted Polygon to {len(points)} points")
+            return points
+
+        except Exception as e:
+            logger.error(f"Failed to convert Polygon to points: {e}", exc_info=True)
+            return self.data
 
 
+# pylint: disable=too-many-locals
 def grid_sample_polygon(polygon: shapely.Polygon, grid_size: float) -> gpd.GeoSeries:
     """
     Generates a set of representative points within a polygon using grid-based
@@ -167,28 +211,45 @@ def grid_sample_polygon(polygon: shapely.Polygon, grid_size: float) -> gpd.GeoSe
     :return: A GeoSeries of Shapely Point objects representing the sample
         points.
     """
+    logger.debug(f"Starting grid sampling for polygon with grid size " f"{grid_size}")
 
-    min_x, min_y, max_x, max_y = polygon.bounds
-    cols = np.arange(min_x, max_x + grid_size, grid_size)
-    rows = np.arange(min_y, max_y + grid_size, grid_size)
+    # pylint: disable=broad-exception-caught
+    try:
+        min_x, min_y, max_x, max_y = polygon.bounds
+        logger.debug(
+            f"Polygon bounds: min_x={min_x}, min_y={min_y}, "
+            f"max_x={max_x}, max_y={max_y}"
+        )
+        cols = np.arange(min_x, max_x + grid_size, grid_size)
+        rows = np.arange(min_y, max_y + grid_size, grid_size)
 
-    grid_cells = []
-    for x in cols:
-        for y in rows:
-            grid_cell = Polygon(
-                [
-                    (x, y),
-                    (x + grid_size, y),
-                    (x + grid_size, y + grid_size),
-                    (x, y + grid_size),
-                ]
-            )
-            grid_cells.append(grid_cell)
+        grid_cells = []
+        for x in cols:
+            for y in rows:
+                grid_cell = Polygon(
+                    [
+                        (x, y),
+                        (x + grid_size, y),
+                        (x + grid_size, y + grid_size),
+                        (x, y + grid_size),
+                    ]
+                )
+                grid_cells.append(grid_cell)
+        logger.debug(f"Generated {len(grid_cells)} grid cells")
 
-    grid_gdf = gpd.GeoDataFrame(geometry=grid_cells)
-    intersecting_cells = grid_gdf[grid_gdf.intersects(polygon)]
+        grid_gdf = gpd.GeoDataFrame(geometry=grid_cells)
+        intersecting_cells = grid_gdf[grid_gdf.intersects(polygon)]
+        logger.debug(
+            f"{len(intersecting_cells)} grid cells intersect with " f"the polygon"
+        )
 
-    sample_points = intersecting_cells.centroid
-    sample_points = sample_points[sample_points.within(polygon)]
+        sample_points = intersecting_cells.centroid
+        sample_points = sample_points[sample_points.within(polygon)]
+        logger.info(
+            f"Generated {len(sample_points)} sample points within the " f"polygon"
+        )
 
-    return sample_points
+        return sample_points
+    except Exception as e:
+        logger.error(f"Failed to generate sample points: {e}", exc_info=True)
+        return gpd.GeoSeries()

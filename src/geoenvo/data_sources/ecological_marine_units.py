@@ -7,11 +7,14 @@ from typing import List
 
 import pandas as pd
 import requests
+import daiquiri
 from geoenvo.data_sources.data_source import DataSource
 from geoenvo.geometry import Geometry
 from geoenvo.environment import Environment
 from geoenvo.utilities import user_agent
 from geoenvo.utilities import EnvironmentDataModel
+
+logger = daiquiri.getLogger(__name__)
 
 
 class EcologicalMarineUnits(DataSource):
@@ -92,6 +95,7 @@ class EcologicalMarineUnits(DataSource):
     def properties(self, properties: dict):
         self._properties = properties
 
+    # pylint: disable=duplicate-code
     def get_environment(self, geometry: Geometry) -> List[Environment]:
         """
         Resolves a given geometry to environmental descriptions using the
@@ -101,12 +105,22 @@ class EcologicalMarineUnits(DataSource):
         :return: A list of ``Environment`` objects containing environmental
             classifications.
         """
+        logger.debug(
+            f"Starting environment resolution for geometry in "
+            f"{self.__class__.__name__}"
+        )
+
         self.geometry = geometry.data  # access z values to filter on depth
         self.data = self._request(geometry)
-        return self.convert_data()
+        environments = self.convert_data()
 
-    @staticmethod
-    def _request(geometry: Geometry) -> dict:
+        logger.info(
+            f"Resolved {len(environments)} environments for geometry in "
+            f"{self.__class__.__name__}"
+        )
+        return environments
+
+    def _request(self, geometry: Geometry) -> dict:
         """
         Sends a request to the Ecological Marine Units data source and
         retrieves raw response data.
@@ -142,6 +156,9 @@ class EcologicalMarineUnits(DataSource):
             "returnDistinctValues": "false",
             "returnExtentOnly": "false",
         }
+
+        logger.debug(f"Sending request to {self.__class__.__name__}")
+
         # pylint: disable=broad-exception-caught
         # pylint: disable=unused-variable
         # pylint: disable=duplicate-code
@@ -149,12 +166,21 @@ class EcologicalMarineUnits(DataSource):
             response = requests.get(
                 base, params=payload, timeout=10, headers=user_agent()
             )
+            logger.info(
+                f"Received response from {self.__class__.__name__}. "
+                f"Status: {response.status_code}"
+            )
             return response.json()
         except Exception as e:
+            logger.error(
+                f"Failed to fetch data from {self.__class__.__name__}. " f"Error: {e}",
+                exc_info=True,
+            )
             return {}
 
     # pylint: disable=duplicate-code
     def convert_data(self) -> List[Environment]:
+        logger.debug(f"Starting data conversion in {self.__class__.__name__}")
         result = []
         unique_emu_environments = self.unique_environment()
         for unique_emu_environment in unique_emu_environments:
@@ -167,6 +193,11 @@ class EcologicalMarineUnits(DataSource):
             )
             environment.set_properties(properties)
             result.append(Environment(data=environment.data))
+            logger.debug(f"Converted environment: {properties}")
+        logger.info(
+            f"Successfully converted {len(result)} environments in "
+            f"{self.__class__.__name__}"
+        )
         return result
 
     def unique_environment(self) -> List[dict]:
@@ -177,7 +208,7 @@ class EcologicalMarineUnits(DataSource):
         return descriptors
 
     def has_environment(self) -> bool:
-        res = len(self.data["features"])
+        res = len(self.data.get("features", []))
         if res == 0:
             return False
         return True
