@@ -4,18 +4,18 @@ package "geoenvo" {
     class Resolver {
         + data_source : DataSource[*]
         + Resolver(data_source : DataSource[*])
-        + get_environment(geometry : Geometry, semantic_resource : string) : Response
+        + resolve(geometry : Geometry, semantic_resource : string) : Response
     }
 
     interface DataSource {
-        + geometry : dictionary
         + data : dictionary
+        + geometry : dictionary
         + properties : dictionary
         + DataSource()
+        + convert_data() : Environment[0..*]
         + get_environment(geometry : Geometry) : Environment[0..*]
-        - convert_data() : Environment[0..*]
-        - has_environment() : bool
-        - unique_environment() : dictionary[*]
+        + has_environment() : bool
+        + unique_environment() : dictionary[*]
     }
 
     class WorldTerrestrialEcosystems implements DataSource {
