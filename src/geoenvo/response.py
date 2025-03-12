@@ -213,8 +213,7 @@ class Response:
             "additionalProperty": additional_property,
             "keywords": self._to_schema_org_keywords(),
         }
-        logger.info(
-            "Successfully converted response data to Schema.org format")
+        logger.info("Successfully converted response data to Schema.org format")
         return schema_org
 
     def _to_schema_org_geo(self) -> Union[dict, None]:
@@ -298,7 +297,7 @@ class Response:
         return keywords
 
 
-def compile_response(
+def construct_response(
     geometry: Geometry,
     environment: List[Environment],
     identifier: str = None,
@@ -313,7 +312,8 @@ def compile_response(
         location.
     :param identifier: An optional identifier for tracking the response.
     :param description: An optional description associated with the response.
-    :return: A ``Response`` object containing the compiled environmental data.
+    :return: A ``Response`` object containing the constructed environmental
+        data.
     """
     logger.debug("Starting response compilation")
 

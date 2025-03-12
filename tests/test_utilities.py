@@ -9,7 +9,7 @@ from geoenvo.utilities import (
     EnvironmentDataModel,
     get_properties,
 )
-from geoenvo.response import Response, compile_response
+from geoenvo.response import Response, construct_response
 from tests.conftest import load_response
 
 
@@ -92,12 +92,12 @@ def test_get_properties():
     assert len(result["Not a valid attribute"]) == 0
 
 
-def test_compile_response(scenarios, mocker, empty_data_model):
-    """Test the compile_response function."""
+def test_construct_response(scenarios, mocker, empty_data_model):
+    """Test the construct_response function."""
     # Compiles a list of Environment into the data model represented by the
     # Response object and tests for expected properties
 
-    # Create a list of Environment objects, then compile
+    # Create a list of Environment objects, then construct
     environments = []
     for scenario in scenarios:
         mocker.patch("requests.get", return_value=scenario.get("response"))
@@ -106,7 +106,7 @@ def test_compile_response(scenarios, mocker, empty_data_model):
         environments.extend(environment)
     identifier = "Some identifier"
     geometry = scenarios[0]["geometry"]  # Any geometry will do
-    result = compile_response(Geometry(geometry), environments, identifier)
+    result = construct_response(Geometry(geometry), environments, identifier)
 
     # Top level keys are present
     assert result.data.keys() == empty_data_model.keys()

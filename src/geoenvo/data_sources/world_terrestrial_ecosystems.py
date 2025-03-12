@@ -144,7 +144,7 @@ class WorldTerrestrialEcosystems(DataSource):
         else:
             geometries.append(geometry)
 
-        # Resolve each geometry, and in the case of multiple points, compile
+        # Resolve each geometry, and in the case of multiple points, construct
         # a single response object emulating the API response format. This is
         # to maintain compatibility with the downstream code.
         results = []

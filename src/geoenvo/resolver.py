@@ -9,7 +9,7 @@ from typing import List
 import daiquiri
 from geoenvo.data_sources.data_source import DataSource
 from geoenvo.geometry import Geometry
-from geoenvo.response import compile_response, Response
+from geoenvo.response import construct_response, Response
 
 logger = daiquiri.getLogger(__name__)
 
@@ -81,7 +81,7 @@ class Resolver:
             for item in self.data_source:
                 environment = item.get_environment(geometry)
                 results.extend(environment)
-            result = compile_response(
+            result = construct_response(
                 geometry=geometry,
                 environment=results,
                 identifier=identifier,
@@ -92,7 +92,7 @@ class Resolver:
             return result
         except Exception as e:
             logger.error(f"Failed to resolve geometry: {e}", exc_info=True)
-            result = compile_response(geometry=geometry, environment=[])
+            result = construct_response(geometry=geometry, environment=[])
             return result
 
 

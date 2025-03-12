@@ -8,7 +8,7 @@ from geoenvo.geometry import Geometry
 from geoenvo.data_sources import EcologicalCoastalUnits
 from geoenvo.data_sources import EcologicalMarineUnits
 from geoenvo.data_sources import WorldTerrestrialEcosystems
-from geoenvo.response import Response, compile_response
+from geoenvo.response import Response, construct_response
 from geoenvo.utilities import EnvironmentDataModel
 
 
@@ -219,7 +219,7 @@ def data_model(mocker):
     geometry = Geometry(load_geometry("point_on_land"))
     environment = data_source.get_environment(geometry)
 
-    data = compile_response(
+    data = construct_response(
         geometry,
         environment,
         identifier="5b4edec5-ea5e-471a-8a3c-2c1171d59dee",

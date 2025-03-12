@@ -65,7 +65,7 @@ system.
 The ``Resolver`` class serves as the primary client-facing API. Clients
 configure the resolver with one or more ``DataSource`` instances to
 query. The ``resolve`` method iterates through the selected data sources
-using a defined ``Geometry``, compiles a list of returned
+using a defined ``Geometry``, constructs a list of returned
 ``Environment`` objects, maps them to the Environmental Ontology (ENVO)
 by default, and returns a ``Response``.
 

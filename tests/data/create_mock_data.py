@@ -7,7 +7,7 @@ from geoenvo.geometry import Geometry
 from geoenvo.data_sources import WorldTerrestrialEcosystems
 from geoenvo.data_sources import EcologicalCoastalUnits
 from geoenvo.data_sources import EcologicalMarineUnits
-from geoenvo.resolver import compile_response
+from geoenvo.resolver import construct_response
 from tests.conftest import load_geometry
 
 
@@ -88,7 +88,7 @@ def create_schema_org_fixture(
     data_source = WorldTerrestrialEcosystems()
     geometry = Geometry(load_geometry("point_on_land"))
     environment = data_source.get_environment(geometry)
-    data = compile_response(
+    data = construct_response(
         geometry,
         environment,
         identifier="5b4edec5-ea5e-471a-8a3c-2c1171d59dee",
