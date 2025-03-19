@@ -30,7 +30,9 @@ class WorldTerrestrialEcosystems(DataSource):
           ``Polygon`` geometries are supported indirectly via the ``grid_size``
           property, which enables subsampling of the polygon into
           representative points. Each point is resolved individually, and the
-          results are aggregated into the final response.
+          results are aggregated into the final response. By default,
+          ``Polygon`` geometries are resolved using the centroid of the
+          polygon.
 
     **Further Information**
         - **Spatial Resolution**: Global coverage with a resolution of
