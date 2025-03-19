@@ -192,7 +192,7 @@ class WorldTerrestrialEcosystems(DataSource):
             response = requests.get(
                 base, params=payload, timeout=10, headers=user_agent()
             )
-            logger.info(
+            logger.debug(
                 f"Received response from {self.__class__.__name__}. "
                 f"Status: {response.status_code}"
             )
@@ -216,7 +216,7 @@ class WorldTerrestrialEcosystems(DataSource):
             environment.set_properties(unique_wte_environment)
             result.append(Environment(data=environment.data))
             logger.debug("Converted environment properties")
-        logger.info(
+        logger.debug(
             f"Successfully converted {len(result)} environments in "
             f"{self.__class__.__name__}"
         )

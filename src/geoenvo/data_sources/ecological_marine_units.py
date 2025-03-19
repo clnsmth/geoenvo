@@ -166,7 +166,7 @@ class EcologicalMarineUnits(DataSource):
             response = requests.get(
                 base, params=payload, timeout=10, headers=user_agent()
             )
-            logger.info(
+            logger.debug(
                 f"Received response from {self.__class__.__name__}. "
                 f"Status: {response.status_code}"
             )
@@ -194,7 +194,7 @@ class EcologicalMarineUnits(DataSource):
             environment.set_properties(properties)
             result.append(Environment(data=environment.data))
             logger.debug(f"Converted environment: {properties}")
-        logger.info(
+        logger.debug(
             f"Successfully converted {len(result)} environments in "
             f"{self.__class__.__name__}"
         )

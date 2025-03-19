@@ -74,7 +74,10 @@ class Resolver:
         :return: A ``Response`` object containing the resolved environmental
             data.
         """
-        logger.info(f"Resolving geometry: {identifier} - {description}")
+        logger.info(
+            f"Resolving geometry with identifier: '{identifier}' and "
+            f"description: '{description}'"
+        )
         # pylint: disable=broad-exception-caught
         try:
             results = []

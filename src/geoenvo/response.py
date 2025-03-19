@@ -328,5 +328,5 @@ def construct_response(
         "geometry": geometry.data,
         "properties": {"description": description, "environment": environments},
     }
-    logger.info(f"Compiled response with {len(environments)} environments")
+    logger.debug(f"Compiled response with {len(environments)} environments")
     return Response(result)

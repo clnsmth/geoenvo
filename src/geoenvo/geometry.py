@@ -84,7 +84,7 @@ class Geometry:
                 "spatialReference": {"wkid": 4326},
             }
             esri_geometry_type = "esriGeometryPoint"
-            logger.info("Successfully converted Point geometry to Esri format")
+            logger.debug("Successfully converted Point geometry to Esri format")
             return {"geometry": geometry, "geometryType": esri_geometry_type}
         if self.geometry_type() == "Polygon":
             geometry = {
@@ -92,7 +92,7 @@ class Geometry:
                 "spatialReference": {"wkid": 4326},
             }
             esri_geometry_type = "esriGeometryPolygon"
-            logger.info("Successfully converted Polygon geometry to Esri format")
+            logger.debug("Successfully converted Polygon geometry to Esri format")
             return {"geometry": geometry, "geometryType": esri_geometry_type}
         raise ValueError("Invalid geometry type")
 
@@ -142,7 +142,7 @@ class Geometry:
                     ]
                 ],
             }
-            logger.info(
+            logger.debug(
                 f"Successfully converted Point to Polygon with buffer " f"{buffer} km"
             )
             return polygon
@@ -191,7 +191,7 @@ class Geometry:
                 result = geojson["features"][0]["geometry"]
                 points.append(result)
 
-            logger.info(f"Successfully converted Polygon to {len(points)} points")
+            logger.debug(f"Successfully converted Polygon to {len(points)} points")
             return points
 
         except Exception as e:
@@ -245,7 +245,7 @@ def grid_sample_polygon(polygon: shapely.Polygon, grid_size: float) -> gpd.GeoSe
 
         sample_points = intersecting_cells.centroid
         sample_points = sample_points[sample_points.within(polygon)]
-        logger.info(
+        logger.debug(
             f"Generated {len(sample_points)} sample points within the " f"polygon"
         )
 
