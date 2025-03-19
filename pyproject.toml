@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "geoenvo"
-version = "0.2.1"
+version = "0.3.0"
 description = "A package for mapping locations to environmental descriptions"
 authors = ["Colin Smith <colin.smith@wisc.edu>"]
 maintainers = ["Colin Smith <colin.smith@wisc.edu>"]
