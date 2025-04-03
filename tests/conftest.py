@@ -15,7 +15,7 @@ from geoenvo.utilities import EnvironmentDataModel
 @pytest.fixture()
 def use_mock():
     """Use mock data for testing purposes."""
-    return False  # Change this to False for real HTTP requests and data
+    return True  # Change this to False for real HTTP requests and data
 
 
 @pytest.fixture
