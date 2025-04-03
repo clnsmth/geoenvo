@@ -50,7 +50,7 @@ class EcologicalCoastalUnits(DataSource):
         `https://doi.org/10.5066/P9HWHSPU <https://doi.org/10.5066/P9HWHSPU>`_.
     """
 
-    def __init__(self):
+    def __init__(self, buffer: float = None):
         """
         Initializes the EcologicalCoastalUnits data source with default
         properties.
@@ -71,7 +71,7 @@ class EcologicalCoastalUnits(DataSource):
             "Chlorophyll": None,
             "CSU_Descriptor": None,
         }
-        self._buffer = None
+        self._buffer = buffer
 
     @property
     # pylint: disable=duplicate-code

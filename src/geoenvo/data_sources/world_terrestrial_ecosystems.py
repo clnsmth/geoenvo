@@ -50,7 +50,7 @@ class WorldTerrestrialEcosystems(DataSource):
         <https://doi.org/10.5066/P9DO61LP>`_.
     """
 
-    def __init__(self):
+    def __init__(self, grid_size: float = None):
         """
         Initializes the WorldTerrestrialEcosystems data source with default
         properties.
@@ -67,7 +67,7 @@ class WorldTerrestrialEcosystems(DataSource):
             "ClassName": None,
         }
 
-        self._grid_size = None
+        self._grid_size = grid_size
 
     @property
     # pylint: disable=duplicate-code
