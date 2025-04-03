@@ -3,17 +3,17 @@ channels:
   - conda-forge
   - defaults
 dependencies:
-  - python==3.11.11
-  - pandas
+  - black
+  - daiquiri
   - geopandas
+  - myst-parser
+  - pandas
+  - pylint
   - pytest
   - pytest-cov
-  - black
-  - myst-parser
-  - pylint
+  - pytest-mock
   - python-semantic-release
+  - python==3.12
   - sphinx
   - sphinx-autoapi
-  - pytest-mock
-  - daiquiri
 prefix: /opt/miniconda3/envs/geoenvo
