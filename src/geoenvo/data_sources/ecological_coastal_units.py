@@ -105,11 +105,12 @@ class EcologicalCoastalUnits(DataSource):
         Retrieves the buffer distance used for spatial resolution.
 
         Since this data source does not accept ``Point`` geometries directly,
-        setting the ``buffer`` parameter allows points to be expanded into
-        circular polygons before resolution. All overlapping coastal units
-        within the buffered area will be included in the response.
+        setting the ``buffer`` parameter converts them into circular polygons
+        of a given radius (in kilometers) before resolution. All overlapping
+        coastal units within the buffered area will be included in the
+        response.
 
-        :return: The buffer distance as a float. Units are in **kilometers**.
+        :return: The buffer radius as a float. Units are in **kilometers**.
         """
         return self._buffer
 
