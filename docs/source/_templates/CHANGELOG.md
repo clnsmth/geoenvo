@@ -3,6 +3,30 @@
 
 
 
+## v0.4.0 (2025-04-04)
+
+
+### Build system
+
+* build: update environment to Python 3.12 ([`c56c5a4`](https://github.com/clnsmth/geoenvo/commit/c56c5a472b502a1528d28499122712521fb033e7)) 
+
+### Documentation
+
+* docs: clarify `buffer` parameter details for ECU data source ([`91cc813`](https://github.com/clnsmth/geoenvo/commit/91cc813a24eb7e235be48d577a1a9e8d4cffb613)) 
+
+### Features
+
+* feat: simplify WTE and ECU parameter configuration ([`8409c53`](https://github.com/clnsmth/geoenvo/commit/8409c5301ef350df2ce5ee7e7d0a3ef8a6b0e6d0)) 
+
+### Refactoring
+
+* refactor: remove global logger setup from __init__.py ([`67da773`](https://github.com/clnsmth/geoenvo/commit/67da773262fcf44d00f6865fe6450e00f0d3e106)) 
+
+### Testing
+
+* test: organize WTE data source tests into dedicated module ([`03876b2`](https://github.com/clnsmth/geoenvo/commit/03876b23feb0c1b782ed3bc7e3bb5b804146fe03)) 
+* test: correct inconsistent mock data source response ([`fbbcaac`](https://github.com/clnsmth/geoenvo/commit/fbbcaacf497ea96bb299bd5563f85c76f38c1637)) 
+
 ## v0.3.0 (2025-03-19)
 
 
