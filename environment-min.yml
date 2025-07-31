@@ -13,7 +13,7 @@ dependencies:
   - pytest-cov
   - pytest-mock
   - python-semantic-release
-  - python==3.12
+  - python==3.11
   - sphinx
   - sphinx-autoapi
 prefix: /opt/miniconda3/envs/geoenvo
